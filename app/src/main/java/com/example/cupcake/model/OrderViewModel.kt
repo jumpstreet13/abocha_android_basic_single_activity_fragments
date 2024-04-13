@@ -12,6 +12,7 @@ import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
+import javax.inject.Inject
 
 
 /** Price for a single cupcake */
@@ -26,7 +27,7 @@ private const val PRICE_FOR_SAME_DAY_PICKUP = 3.00
  */
 
 @HiltViewModel
-class OrderViewModel : ViewModel() {
+class OrderViewModel @Inject constructor () : ViewModel() {
 
     // Quantity of cupcakes in this order
     private val _quantity = MutableStateFlow<Int>(0)

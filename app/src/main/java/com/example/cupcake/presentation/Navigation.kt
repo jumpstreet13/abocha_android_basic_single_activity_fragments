@@ -22,13 +22,15 @@ fun Navigation(viewModel: OrderViewModel, navController: NavHostController) {
             StartScreen(navController, viewModel)
         }
         composable(route = AllScreen.FlavorScreen.route) {
-            FlavorScreen(navController, viewModel)
+            val radioOptions = listOf("Vanilla", "Chocolate", "Red Velvet", "Salted Caramel", "Coffee")
+            FlavorScreen( radioOptions,navController, viewModel, true)
             BackHandler {
                 navController.popBackStack()
             }
         }
         composable(route = AllScreen.PickupScreen.route) {
-            PickupScreen(navController, viewModel)
+            val radioOptions = viewModel.dateOptions
+            FlavorScreen(radioOptions, navController, viewModel, false)
             BackHandler {
                 navController.popBackStack()
             }
