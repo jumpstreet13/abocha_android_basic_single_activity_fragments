@@ -1,28 +1,18 @@
-/*
- * Copyright (C) 2020 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package com.example.cupcake.model
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
+
 
 /** Price for a single cupcake */
 private const val PRICE_PER_CUPCAKE = 2.00
@@ -34,29 +24,35 @@ private const val PRICE_FOR_SAME_DAY_PICKUP = 3.00
  * [OrderViewModel] holds information about a cupcake order in terms of quantity, flavor, and
  * pickup date. It also knows how to calculate the total price based on these order details.
  */
+
+@HiltViewModel
 class OrderViewModel : ViewModel() {
 
     // Quantity of cupcakes in this order
-    private val _quantity = MutableLiveData<Int>()
-    val quantity: LiveData<Int> = _quantity
+    private val _quantity = MutableStateFlow<Int>(0)
+    val quantity = _quantity.asStateFlow()
 
     // Cupcake flavor for this order
-    private val _flavor = MutableLiveData<String>()
-    val flavor: LiveData<String> = _flavor
+    private val _flavor = MutableStateFlow<String>("")
+    val flavor = _flavor.asStateFlow()
 
     // Possible date options
     val dateOptions: List<String> = getPickupOptions()
 
     // Pickup date
-    private val _date = MutableLiveData<String>()
-    val date: LiveData<String> = _date
+    private val _date = MutableStateFlow<String>("")
+    val date = _date.asStateFlow()
 
     // Price of the order so far
-    private val _price = MutableLiveData<Double>()
-    val price: LiveData<String> = Transformations.map(_price) {
+    private val _price = MutableStateFlow<Double>(0.0)
+    val price = _price.map {
         // Format the price into the local currency and return this as LiveData<String>
-        NumberFormat.getCurrencyInstance().format(it)
-    }
+        NumberFormat.getCurrencyInstance().format(it).toString()
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.Eagerly,
+        initialValue = _price.value
+    )
 
     init {
         // Set initial values for the order
@@ -96,7 +92,7 @@ class OrderViewModel : ViewModel() {
      * Returns true if a flavor has not been selected for the order yet. Returns false otherwise.
      */
     fun hasNoFlavorSet(): Boolean {
-        return _flavor.value.isNullOrEmpty()
+        return _flavor.value.isEmpty()
     }
 
     /**
