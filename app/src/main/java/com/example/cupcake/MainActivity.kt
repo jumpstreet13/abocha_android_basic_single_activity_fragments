@@ -15,34 +15,40 @@
  */
 package com.example.cupcake
 
+import android.content.Context
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.NavController
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.activity.viewModels
+import androidx.compose.material3.Scaffold
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
+import com.example.cupcake.model.OrderViewModel
+import com.example.cupcake.ui.theme.CupcakeTheme
 
 /**
  * Activity for cupcake order flow.
  */
-class MainActivity : AppCompatActivity(R.layout.activity_main) {
+class MainActivity : ComponentActivity() {
 
-    private lateinit var navController: NavController
-
+    private lateinit var navController: NavHostController
+    private val viewModel: OrderViewModel by viewModels { OrderViewModel.Factory }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        appContext = applicationContext
 
-        // Retrieve NavController from the NavHostFragment
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-        navController = navHostFragment.navController
-
-        // Set up the action bar for use with the NavController
-        setupActionBarWithNavController(navController)
+        setContent {
+            CupcakeTheme {
+                navController = rememberNavController()
+            }
+            Scaffold() { paddingValues ->
+                SetupNavGraph(navController, paddingValues, viewModel)
+            }
+        }
     }
+    companion object {
 
-    /**
-     * Handle navigation when the user chooses Up from the action bar.
-     */
-    override fun onSupportNavigateUp(): Boolean {
-        return navController.navigateUp() || super.onSupportNavigateUp()
+        lateinit  var appContext: Context
+
     }
 }
