@@ -96,7 +96,7 @@ fun SummaryScreen(navController: NavHostController, sharedViewModel: OrderViewMo
             modifier = Modifier.fillMaxWidth(),
             colors = ButtonDefaults.buttonColors(containerColor = ButtonPink)
         ) {
-            Text(text = stringResource(id = R.string.next))
+            Text(text = stringResource(id = R.string.send))
         }
         Button(
             onClick = { cancelOrder(navController, sharedViewModel) },
