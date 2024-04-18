@@ -38,6 +38,7 @@ class MainActivity : ComponentActivity() {
         appContext = applicationContext
 
         setContent {
+            ViewGroupScreen()
             CupcakeTheme {
                 navController = rememberNavController()
             }
