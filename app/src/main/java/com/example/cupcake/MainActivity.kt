@@ -15,34 +15,44 @@
  */
 package com.example.cupcake
 
+import android.content.Intent
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.NavController
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.activity.viewModels
+import androidx.navigation.compose.rememberNavController
+import com.example.cupcake.model.OrderViewModel
+import com.example.cupcake.ui.theme.CupCakeTheme
 
 /**
  * Activity for cupcake order flow.
  */
-class MainActivity : AppCompatActivity(R.layout.activity_main) {
-
-    private lateinit var navController: NavController
+class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Retrieve NavController from the NavHostFragment
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-        navController = navHostFragment.navController
-
-        // Set up the action bar for use with the NavController
-        setupActionBarWithNavController(navController)
+        setContent {
+            val navController = rememberNavController()
+            val sharedViewModel: OrderViewModel by viewModels()
+            CupCakeTheme {
+                CupCakeNavGraph(navController, sharedViewModel) { sendOrderClick(it) }
+            }
+        }
     }
 
-    /**
-     * Handle navigation when the user chooses Up from the action bar.
-     */
-    override fun onSupportNavigateUp(): Boolean {
-        return navController.navigateUp() || super.onSupportNavigateUp()
+    private fun sendOrderClick(orderSummary: String) {
+        // Create an ACTION_SEND implicit intent with order details in the intent extras
+        val intent = Intent(Intent.ACTION_SEND)
+            .setType("text/plain")
+            .putExtra(Intent.EXTRA_SUBJECT, getString(R.string.new_cupcake_order))
+            .putExtra(Intent.EXTRA_TEXT, orderSummary)
+
+        // Check if there's an app that can handle this intent before launching it
+        if (packageManager?.resolveActivity(intent, 0) != null) {
+            // Start a new activity with the given intent (this may open the share dialog on a
+            // device if multiple apps can handle this intent)
+            startActivity(intent)
+        }
     }
 }

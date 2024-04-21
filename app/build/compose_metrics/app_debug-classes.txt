@@ -1,0 +1,29 @@
+stable class MainActivity {
+  <runtime stability> = Stable
+}
+unstable class OrderViewModel {
+  unstable val _quantity: MutableLiveData<Int>
+  unstable val quantity: LiveData<Int>
+  unstable val _flavor: MutableLiveData<String>
+  unstable val flavor: LiveData<String>
+  unstable val dateOptions: List<String>
+  unstable val _date: MutableLiveData<String>
+  unstable val date: LiveData<String>
+  unstable val _price: MutableLiveData<String>
+  unstable val price: LiveData<String>
+  <runtime stability> = Unstable
+}
+stable class TextDimensions {
+  stable val Title1TextSize: TextUnit
+  stable val Body1TextSize: TextUnit
+  stable val Body2TextSize: TextUnit
+  stable val Title1LineHeight: TextUnit
+  stable val Body1LineHeight: TextUnit
+  stable val Body2LineHeight: TextUnit
+  <runtime stability> = Stable
+}
+stable class Paddings {
+  stable val medium: Dp
+  stable val xsmall: Dp
+  <runtime stability> = Stable
+}
