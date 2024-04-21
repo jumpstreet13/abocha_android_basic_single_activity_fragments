@@ -1,0 +1,45 @@
+restartable scheme("[androidx.compose.ui.UiComposable]") fun CupCakeNavGraph(
+  unstable navController: NavHostController
+  unstable viewModel: OrderViewModel
+  stable onSendOrderClick: Function1<String, Unit>
+)
+restartable scheme("[androidx.compose.ui.UiComposable]") fun FlavorScreen(
+  unstable navController: NavHostController
+  unstable viewModel: OrderViewModel
+  stable isFlavorScreen: Boolean = @dynamic LiveLiterals$FlavorScreenKt.Boolean$param-isFlavorScreen$fun-FlavorScreen()
+)
+restartable scheme("[androidx.compose.ui.UiComposable]") fun MultipleOptions(
+  unstable viewModel: OrderViewModel
+  stable isFlavorScreen: Boolean
+  stable priceText: MutableState<String>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun PreviewFlavorScreen()
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun PreviewPickUprScreen()
+restartable scheme("[androidx.compose.ui.UiComposable]") fun StartScreen(
+  unstable navController: NavHostController
+  unstable sharedViewModel: OrderViewModel
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun PreviewStartScreen()
+restartable scheme("[androidx.compose.ui.UiComposable]") fun SummaryScreen(
+  unstable navController: NavHostController
+  unstable viewModel: OrderViewModel
+  stable onSendOrderClick: Function1<String, Unit>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun OrderDetail(
+  stable titleText: Int
+  stable quantityOfCupcakes: String
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun SummaryFlavorScreen()
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun CupCakeAppBar(
+  stable titleText: String
+  stable navIconClick: Function0<Unit>? = @static null
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable, [androidx.compose.ui.UiComposable]]") fun DiagonalColumn(
+  stable modifier: Modifier? = @static Companion
+  stable content: Function2<Composer, Int, Unit>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun PreviewDiagonalColumn()
+restartable skippable scheme("[0, [0]]") fun CupCakeTheme(
+  stable darkTheme: Boolean = @dynamic isSystemInDarkTheme($composer, 0)
+  stable content: Function2<Composer, Int, Unit>
+)
