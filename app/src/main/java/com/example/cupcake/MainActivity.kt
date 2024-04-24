@@ -17,22 +17,25 @@ package com.example.cupcake
 
 import android.content.Context
 import android.os.Bundle
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.material3.Scaffold
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.cupcake.model.OrderViewModel
 import com.example.cupcake.ui.theme.CupcakeTheme
+import dagger.hilt.android.AndroidEntryPoint
 
 /**
  * Activity for cupcake order flow.
  */
-class MainActivity : ComponentActivity() {
+
+@AndroidEntryPoint
+class MainActivity : AppCompatActivity() {
 
     private lateinit var navController: NavHostController
-    private val viewModel: OrderViewModel by viewModels { OrderViewModel.Factory }
+    private val viewModel: OrderViewModel by viewModels ()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         appContext = applicationContext

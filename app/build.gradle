@@ -2,7 +2,8 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'kotlin-kapt'
-    id "com.github.takahirom.decomposer"
+    id 'com.github.takahirom.decomposer'
+    id 'com.google.dagger.hilt.android'
 }
 
 android {
@@ -71,7 +72,16 @@ dependencies {
     implementation("androidx.compose.material3:material3-window-size-class:1.2.1")
     implementation("androidx.compose.material3:material3-adaptive-navigation-suite:1.0.0-alpha05")
 
-    //navigation
+    // Navigation
     def nav_compose_version = "2.7.7"
     implementation("androidx.navigation:navigation-compose:$nav_compose_version")
+
+    // Hilt
+    implementation "com.google.dagger:hilt-android:2.44"
+    kapt "com.google.dagger:hilt-compiler:2.44"
+}
+
+// Allow references to generated code
+kapt {
+    correctErrorTypes true
 }

@@ -26,23 +26,23 @@ import com.example.cupcake.model.OrderViewModel
 import com.example.cupcake.ui.theme.ButtonPink
 
 @Composable
-fun FlavorScreen(navController: NavHostController, sharedViewModel: OrderViewModel) {
+fun FlavorScreen(
+    flavorItems: List<String>,
+    navController: NavHostController,
+    sharedViewModel: OrderViewModel
+) {
 
-    val flavorItems = listOf(
-        stringResource(R.string.vanilla),
-        stringResource(R.string.chocolate),
-        stringResource(R.string.red_velvet),
-        stringResource(R.string.salted_caramel),
-        stringResource(R.string.coffee)
-    )
+    val flavorItemsListState = remember {
+        mutableStateOf(flavorItems)
+    }
+    val priceText = mutableStateOf("${sharedViewModel.price.value}")
 
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(dimensionResource(id = R.dimen.side_margin))
     ) {
-        val priceText = mutableStateOf("${sharedViewModel.price.value}")
-        MultipleRadioButtons(sharedViewModel, "flavor", flavorItems, priceText)
+        MultipleRadioButtons(sharedViewModel, "flavor", flavorItemsListState.value, priceText)
         Text(
             text = "${stringResource(R.string.subtotal_price)} ${priceText.value}",
             modifier = Modifier.fillMaxWidth(),
@@ -124,4 +124,3 @@ fun MultipleRadioButtons(
         }
     }
 }
-

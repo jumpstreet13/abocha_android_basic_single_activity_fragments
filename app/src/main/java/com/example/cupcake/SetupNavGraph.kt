@@ -11,6 +11,7 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -68,7 +69,13 @@ fun SetupNavGraph(
             popEnterTransition = popEnterTransition,
             popExitTransition = popExitTransition
         ) {
-            FlavorScreen(navController, viewModel)
+            FlavorScreen(listOf(
+                stringResource(R.string.vanilla),
+                stringResource(R.string.chocolate),
+                stringResource(R.string.red_velvet),
+                stringResource(R.string.salted_caramel),
+                stringResource(R.string.coffee)
+            ), navController, viewModel)
         }
         composable(
             NavScreen.PickupScreenNav.route,

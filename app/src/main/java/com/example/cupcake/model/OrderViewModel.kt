@@ -15,14 +15,18 @@
  */
 package com.example.cupcake.model
 
+import android.content.Intent
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewmodel.CreationExtras
+import com.example.cupcake.MainActivity
+import com.example.cupcake.R
+import dagger.hilt.android.lifecycle.HiltViewModel
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
+import javax.inject.Inject
 
 /** Price for a single cupcake */
 private const val PRICE_PER_CUPCAKE = 2.00
@@ -34,20 +38,8 @@ private const val PRICE_FOR_SAME_DAY_PICKUP = 3.00
  * [OrderViewModel] holds information about a cupcake order in terms of quantity, flavor, and
  * pickup date. It also knows how to calculate the total price based on these order details.
  */
-class OrderViewModel : ViewModel() {
-
-    companion object {
-
-        val Factory: ViewModelProvider.Factory = object : ViewModelProvider.Factory {
-            @Suppress("UNCHECKED_CAST")
-            override fun <T : ViewModel> create(
-                modelClass: Class<T>,
-                extras: CreationExtras
-            ): T {
-                return OrderViewModel() as T
-            }
-        }
-    }
+@HiltViewModel
+class OrderViewModel @Inject constructor() : ViewModel() {
 
     // Quantity of cupcakes in this order
     private val _quantity = MutableLiveData<Int>()
@@ -143,5 +135,38 @@ class OrderViewModel : ViewModel() {
             calendar.add(Calendar.DATE, 1)
         }
         return options
+    }
+
+    fun sendOrder() {
+        // Construct the order summary text with information from the view model
+        val numberOfCupcakes = quantity.value ?: 0
+        val orderSummary = MainActivity.appContext.getString(
+            R.string.order_details,
+            MainActivity.appContext.resources.getQuantityString(
+                R.plurals.cupcakes,
+                numberOfCupcakes,
+                numberOfCupcakes
+            ),
+            flavor.value.toString(),
+            date.value.toString(),
+            price.value.toString()
+        )
+
+        // Create an ACTION_SEND implicit intent with order details in the intent extras
+        val intent = Intent(Intent.ACTION_SEND)
+            .setType("text/plain")
+            .putExtra(
+                Intent.EXTRA_SUBJECT,
+                MainActivity.appContext.getString(R.string.new_cupcake_order)
+            )
+            .putExtra(Intent.EXTRA_TEXT, orderSummary)
+            .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+
+        // Check if there's an app that can handle this intent before launching it
+        if (MainActivity.appContext.packageManager?.resolveActivity(intent, 0) != null) {
+            // Start a new activity with the given intent (this may open the share dialog on a
+            // device if multiple apps can handle this intent)
+            ContextCompat.startActivity(MainActivity.appContext, intent, null)
+        }
     }
 }
