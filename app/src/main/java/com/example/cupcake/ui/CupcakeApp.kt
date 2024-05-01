@@ -64,7 +64,7 @@ fun CupcakeApp(
                 price = price.orEmpty(),
                 onElementClick = { viewModel.setFlavor(it) },
                 onBackButtonClick = { navController.popBackStack() },
-                onCancelClick = cancelOrder(viewModel, navController),
+                onCancelClick = CancelOrder(viewModel, navController),
                 onNextClick = { navController.navigate(Screen.DATE.name) },
             )
         }
@@ -83,7 +83,7 @@ fun CupcakeApp(
                 price = price.orEmpty(),
                 onElementClick = { viewModel.setDate(it) },
                 onBackButtonClick = { navController.popBackStack() },
-                onCancelClick = cancelOrder(viewModel, navController),
+                onCancelClick = CancelOrder(viewModel, navController),
                 onNextClick = { navController.navigate(Screen.SUMMARY.name) },
             )
         }
@@ -103,7 +103,7 @@ fun CupcakeApp(
                 date = date.orEmpty(),
                 price = price.orEmpty(),
                 onBackButtonClick = { navController.popBackStack() },
-                onCancelClick = cancelOrder(viewModel, navController),
+                onCancelClick = CancelOrder(viewModel, navController),
                 onSendClick = { shareAction(it) },
             )
         }
@@ -111,7 +111,7 @@ fun CupcakeApp(
 }
 
 @Composable
-private fun cancelOrder(
+private fun CancelOrder(
     viewModel: OrderViewModel,
     navController: NavHostController
 ): () -> Unit = {
