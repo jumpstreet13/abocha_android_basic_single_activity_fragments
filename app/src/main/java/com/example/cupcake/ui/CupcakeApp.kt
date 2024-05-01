@@ -11,6 +11,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.cupcake.R
 import com.example.cupcake.model.OrderViewModel
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toImmutableList
 
 enum class Screen {
 
@@ -50,7 +52,7 @@ fun CupcakeApp(
         ) {
             val flavor by viewModel.flavor.observeAsState()
             val price by viewModel.price.observeAsState()
-            val flavors = listOf(
+            val flavors = persistentListOf(
                 stringResource(R.string.vanilla),
                 stringResource(R.string.chocolate),
                 stringResource(R.string.red_velvet),
@@ -78,7 +80,7 @@ fun CupcakeApp(
             val price by viewModel.price.observeAsState()
             ChooseScreen(
                 title = stringResource(id = R.string.pickup_date),
-                elements = viewModel.dateOptions,
+                elements = viewModel.dateOptions.toImmutableList(),
                 selectedElement = date.orEmpty(),
                 price = price.orEmpty(),
                 onElementClick = { viewModel.setDate(it) },

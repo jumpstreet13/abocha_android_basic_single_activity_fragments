@@ -22,11 +22,13 @@ import com.example.cupcake.ui.theme.CupcakeTheme
 import com.example.cupcake.ui.view.Chooser
 import com.example.cupcake.ui.view.Toolbar
 import com.example.cupcake.ui.view.WizardButtons
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 fun ChooseScreen(
     title: String,
-    elements: List<String>,
+    elements: ImmutableList<String>,
     selectedElement: String,
     price: String,
     onElementClick: (element: String) -> Unit,
@@ -75,7 +77,7 @@ fun ChooseScreenPreview() {
     CupcakeTheme {
         ChooseScreen(
             title = "a-b-c-d",
-            elements = listOf("a", "b", "c", "d"),
+            elements = persistentListOf("a", "b", "c", "d"),
             price = "4",
             selectedElement = "b",
             onElementClick = {},

@@ -17,7 +17,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.pluralStringResource
-import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -27,6 +26,7 @@ import androidx.compose.ui.unit.sp
 import com.example.cupcake.R
 import com.example.cupcake.ui.theme.CupcakeTheme
 import com.example.cupcake.ui.view.Toolbar
+import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 fun SummaryScreen(
@@ -61,7 +61,7 @@ fun SummaryScreen(
                 date,
                 price,
             )
-            val list = listOf(
+            val list = persistentListOf(
                 stringResource(id = R.string.quantity).uppercase() to quantity.toString(),
                 stringResource(id = R.string.flavor).uppercase() to flavor,
                 stringResource(id = R.string.pickup_date).uppercase() to date,

@@ -9,10 +9,11 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import kotlinx.collections.immutable.ImmutableList
 
 @Composable
 fun Chooser(
-    elements:List<String>,
+    elements: ImmutableList<String>,
     selectedElement: String,
     onElementSelect: (element: String) -> Unit,
 ) {
