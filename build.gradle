@@ -16,6 +16,15 @@ allprojects {
         google()
         mavenCentral()
     }
+
+    tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
+        kotlinOptions.freeCompilerArgs += [
+            '-P',
+            "plugin:androidx.compose.compiler.plugins.kotlin:metricsDestination=${layout.buildDirectory.asFile.get().absolutePath}/compose_metrics",
+            '-P',
+            "plugin:androidx.compose.compiler.plugins.kotlin:reportsDestination=${layout.buildDirectory.asFile.get().absolutePath}/compose_metrics"
+        ]
+    }
 }
 
 tasks.register('clean', Delete) {

@@ -1,0 +1,42 @@
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun App()
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun AppBar(
+  stable modifier: Modifier? = @static Companion
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun AppContent(
+  stable modifier: Modifier? = @static Companion
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun FlavorScreen(
+  unstable model: OrderViewModel? = @dynamic viewModel(null, null, null, null, $composer, 0, 0b1111)
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun FlavorPreview()
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun PickupScreen(
+  unstable model: OrderViewModel? = @dynamic viewModel(null, null, null, null, $composer, 0, 0b1111)
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun PickupPreview()
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun StartScreen(
+  unstable model: OrderViewModel? = @dynamic viewModel(null, null, null, null, $composer, 0, 0b1111)
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun StartPreview()
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun SummaryScreen(
+  unstable model: OrderViewModel? = @dynamic viewModel(null, null, null, null, $composer, 0, 0b1111)
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun PickupPreview()
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun PrimaryButton(
+  stable labelId: Int
+  stable modifier: Modifier? = @static Companion
+  stable onClick: Function0<Unit>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun SecondaryButton(
+  stable labelId: Int
+  stable modifier: Modifier? = @static Companion
+  stable onClick: Function0<Unit>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun RadioSelect(
+  stable label: String
+  stable isSelected: Boolean
+  stable isEnabled: Boolean = @static true
+  stable action: Function0<Unit>
+)
+restartable skippable scheme("[0, [0]]") fun MainTheme(
+  stable content: Function2<Composer, Int, Unit>
+)

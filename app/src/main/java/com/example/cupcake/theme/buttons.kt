@@ -1,4 +1,4 @@
-package com.example.cupcake
+package com.example.cupcake.theme
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Row
@@ -23,6 +23,7 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.text.toUpperCase
 import androidx.compose.ui.unit.dp
+import com.example.cupcake.R
 
 
 @Composable

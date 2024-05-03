@@ -1,4 +1,4 @@
-package com.example.cupcake
+package com.example.cupcake.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.MaterialTheme
@@ -7,6 +7,7 @@ import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
+import com.example.cupcake.R
 
 @Composable
 fun MainTheme(content: @Composable () -> Unit) {
