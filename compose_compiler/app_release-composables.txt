@@ -1,0 +1,33 @@
+restartable skippable scheme("[0, [0]]") fun AppTheme(
+  stable darkTheme: Boolean = @dynamic isSystemInDarkTheme($composer, 0)
+  stable content: Function2<Composer, Int, Unit>
+)
+restartable scheme("[androidx.compose.ui.UiComposable]") fun FlavorScreen(
+  unstable viewModel: OrderViewModel
+  unstable navController: NavController
+)
+restartable scheme("[androidx.compose.ui.UiComposable]") fun Main(
+  unstable viewModel: OrderViewModel
+  unstable navController: NavHostController? = @dynamic rememberNavController(
+  $composer   =   $composer  , 
+  $changed   =   8
+)
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun AppBar(
+  stable currentScreen: Screen
+  stable canNavigateBack: Boolean
+  stable navigateUp: Function0<Unit>
+  stable modifier: Modifier? = @static Companion
+)
+restartable scheme("[androidx.compose.ui.UiComposable]") fun PickupScreen(
+  unstable viewModel: OrderViewModel
+  unstable navController: NavController
+)
+restartable scheme("[androidx.compose.ui.UiComposable]") fun StartScreen(
+  unstable viewModel: OrderViewModel
+  unstable navController: NavController
+)
+restartable scheme("[androidx.compose.ui.UiComposable]") fun SummaryScreen(
+  unstable viewModel: OrderViewModel
+  unstable navController: NavController
+)
