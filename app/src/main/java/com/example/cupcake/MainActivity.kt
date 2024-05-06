@@ -15,7 +15,6 @@
  */
 package com.example.cupcake
 
-import android.content.Context
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -38,7 +37,6 @@ class MainActivity : AppCompatActivity() {
     private val viewModel: OrderViewModel by viewModels ()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        appContext = applicationContext
 
         setContent {
             ViewGroupScreen()
@@ -49,10 +47,5 @@ class MainActivity : AppCompatActivity() {
                 SetupNavGraph(navController, paddingValues, viewModel)
             }
         }
-    }
-    companion object {
-
-        lateinit  var appContext: Context
-
     }
 }

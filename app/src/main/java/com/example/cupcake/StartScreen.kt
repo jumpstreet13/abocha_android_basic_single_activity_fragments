@@ -82,7 +82,7 @@ fun orderCupcake(
 
     // If no flavor is set in the view model yet, select vanilla as default flavor
     if (sharedViewModel.hasNoFlavorSet()) {
-        sharedViewModel.setFlavor(MainActivity.appContext.resources.getString(R.string.vanilla))
+        sharedViewModel.setVanillaFlavor()
     }
 
     // Navigate to the next destination to select the flavor of the cupcakes

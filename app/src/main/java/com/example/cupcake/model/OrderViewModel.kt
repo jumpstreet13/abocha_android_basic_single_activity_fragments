@@ -15,14 +15,15 @@
  */
 package com.example.cupcake.model
 
+import android.content.Context
 import android.content.Intent
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.cupcake.MainActivity
 import com.example.cupcake.R
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -39,7 +40,7 @@ private const val PRICE_FOR_SAME_DAY_PICKUP = 3.00
  * pickup date. It also knows how to calculate the total price based on these order details.
  */
 @HiltViewModel
-class OrderViewModel @Inject constructor() : ViewModel() {
+class OrderViewModel @Inject constructor(@ApplicationContext val appContext: Context) : ViewModel() {
 
     // Quantity of cupcakes in this order
     private val _quantity = MutableLiveData<Int>()
@@ -82,6 +83,9 @@ class OrderViewModel @Inject constructor() : ViewModel() {
      */
     fun setFlavor(desiredFlavor: String) {
         _flavor.value = desiredFlavor
+    }
+    fun setVanillaFlavor() {
+        _flavor.value = appContext.resources.getString(R.string.vanilla)
     }
 
     /**
@@ -140,9 +144,9 @@ class OrderViewModel @Inject constructor() : ViewModel() {
     fun sendOrder() {
         // Construct the order summary text with information from the view model
         val numberOfCupcakes = quantity.value ?: 0
-        val orderSummary = MainActivity.appContext.getString(
+        val orderSummary = appContext.getString(
             R.string.order_details,
-            MainActivity.appContext.resources.getQuantityString(
+            appContext.resources.getQuantityString(
                 R.plurals.cupcakes,
                 numberOfCupcakes,
                 numberOfCupcakes
@@ -157,16 +161,16 @@ class OrderViewModel @Inject constructor() : ViewModel() {
             .setType("text/plain")
             .putExtra(
                 Intent.EXTRA_SUBJECT,
-                MainActivity.appContext.getString(R.string.new_cupcake_order)
+                appContext.getString(R.string.new_cupcake_order)
             )
             .putExtra(Intent.EXTRA_TEXT, orderSummary)
             .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
 
         // Check if there's an app that can handle this intent before launching it
-        if (MainActivity.appContext.packageManager?.resolveActivity(intent, 0) != null) {
+        if (appContext.packageManager?.resolveActivity(intent, 0) != null) {
             // Start a new activity with the given intent (this may open the share dialog on a
             // device if multiple apps can handle this intent)
-            ContextCompat.startActivity(MainActivity.appContext, intent, null)
+            ContextCompat.startActivity(appContext, intent, null)
         }
     }
 }
