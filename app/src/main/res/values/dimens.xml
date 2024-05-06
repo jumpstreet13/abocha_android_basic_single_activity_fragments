@@ -15,10 +15,10 @@
      limitations under the License.
 -->
 <resources>
-    <dimen name="image_size">300dp</dimen>
-    <dimen name="order_cupcake_button_width">250dp</dimen>
-    <dimen name="side_margin">16dp</dimen>
-    <dimen name="margin_between_elements">8dp</dimen>
-    <dimen name="radio_button_padding">8dp</dimen>
-    <dimen name="order_summary_margin">4dp</dimen>
+    <dimen name="image_size">300.dp</dimen>
+    <dimen name="order_cupcake_button_width">250.dp</dimen>
+    <dimen name="side_margin">16.dp</dimen>
+    <dimen name="margin_between_elements">8.dp</dimen>
+    <dimen name="radio_button_padding">8.dp</dimen>
+    <dimen name="order_summary_margin">4.dp</dimen>
 </resources>
