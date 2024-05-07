@@ -1,0 +1,16 @@
+unstable class MainActivity {
+  unstable val viewModel$delegate: Lazy<OrderViewModel>
+  <runtime stability> = Unstable
+}
+unstable class OrderViewModel {
+  unstable val _quantity: MutableLiveData<Int>
+  unstable val quantity: LiveData<Int>
+  unstable val _flavor: MutableLiveData<String>
+  unstable val flavor: LiveData<String>
+  unstable val dateOptions: List<String>
+  unstable val _date: MutableLiveData<String>
+  unstable val date: LiveData<String>
+  unstable val _price: MutableLiveData<Double>
+  unstable val price: LiveData<String>
+  <runtime stability> = Unstable
+}
