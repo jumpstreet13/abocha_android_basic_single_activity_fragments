@@ -1,0 +1,70 @@
+restartable fun AppNavHost(
+  unstable sharedViewModel: OrderViewModel
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable, [androidx.compose.ui.UiComposable]]") fun AppScreenWrapper(
+  stable title: String
+  stable onBackButtonClick: Function0<Unit>? = @static null
+  stable content: @[ExtensionFunctionType] Function3<BoxScope, Composer, Int, Unit>
+)
+restartable scheme("[androidx.compose.ui.UiComposable]") fun OrderComponent(
+  unstable choices: List<String>
+  stable selected: String
+  stable price: String
+  stable onNextButtonClick: Function0<Unit>
+  stable onCancelButtonClick: Function0<Unit>
+  stable onSelect: Function1<String, Unit>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun PreviewOrderComponent()
+restartable scheme("[androidx.compose.ui.UiComposable]") fun FlavorScreen(
+  unstable choices: List<String>
+  stable selected: String
+  stable price: String
+  stable onBackButtonClick: Function0<Unit>
+  stable onNextButtonClick: Function0<Unit>
+  stable onCancelButtonClick: Function0<Unit>
+  stable onSelect: Function1<String, Unit>
+)
+restartable scheme("[androidx.compose.ui.UiComposable]") fun PickupScreen(
+  unstable choices: List<String>
+  stable selected: String
+  stable price: String
+  stable onBackButtonClick: Function0<Unit>
+  stable onNextButtonClick: Function0<Unit>
+  stable onCancelButtonClick: Function0<Unit>
+  stable onSelect: Function1<String, Unit>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun StartScreen(
+  stable onOrderButtonClick: Function1<Int, Unit>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun PreviewStartScreen()
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun SummaryScreen(
+  stable quantity: String
+  stable flavor: String
+  stable date: String
+  stable price: String
+  stable onBackButtonClick: Function0<Unit>
+  stable onSendOrderButtonClick: Function0<Unit>
+  stable onCancelButtonClick: Function0<Unit>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun SummaryItem(
+  stable title: String
+  stable value: String
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun PreviewSummaryScreen()
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun AppButton(
+  stable text: String
+  stable onClick: Function0<Unit>
+  stable modifier: Modifier? = @static Companion
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun AppSecondaryButton(
+  stable text: String
+  stable onClick: Function0<Unit>
+  stable modifier: Modifier? = @static Companion
+)
+restartable scheme("[androidx.compose.ui.UiComposable]") fun AppRadioGroup(
+  unstable choices: List<String>
+  stable selected: String
+  stable onSelect: Function1<String, Unit>
+  stable modifier: Modifier? = @static Companion
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun PreviewAppRadioGroup()
