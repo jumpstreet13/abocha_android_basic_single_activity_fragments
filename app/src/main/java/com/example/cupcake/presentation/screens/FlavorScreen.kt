@@ -15,6 +15,8 @@ import com.example.cupcake.navigation.getScreenEnterTransition
 import com.example.cupcake.navigation.getScreenExitTransition
 import com.example.cupcake.presentation.components.AppScreenWrapper
 import com.example.cupcake.presentation.components.OrderComponent
+import kotlinx.collections.immutable.PersistentList
+import kotlinx.collections.immutable.persistentListOf
 
 fun NavGraphBuilder.addFlavorDestination(
     navHostController: NavHostController,
@@ -28,13 +30,11 @@ fun NavGraphBuilder.addFlavorDestination(
 
         FlavorScreen(
             choices = remember {
-                listOf(
-                    context.getString(R.string.vanilla),
+                persistentListOf(context.getString(R.string.vanilla),
                     context.getString(R.string.chocolate),
                     context.getString(R.string.red_velvet),
                     context.getString(R.string.salted_caramel),
-                    context.getString(R.string.coffee)
-                )
+                    context.getString(R.string.coffee))
             },
             selected = sharedViewModel.flavor.observeAsState(context.getString(R.string.vanilla)).value,
             price = sharedViewModel.price.observeAsState().value.orEmpty(),
@@ -51,7 +51,7 @@ fun NavGraphBuilder.addFlavorDestination(
 
 @Composable
 private fun FlavorScreen(
-    choices: List<String>,
+    choices: PersistentList<String>,
     selected: String,
     price: String,
     onBackButtonClick: () -> Unit,

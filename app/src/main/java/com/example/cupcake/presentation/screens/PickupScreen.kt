@@ -13,6 +13,8 @@ import com.example.cupcake.navigation.getScreenEnterTransition
 import com.example.cupcake.navigation.getScreenExitTransition
 import com.example.cupcake.presentation.components.AppScreenWrapper
 import com.example.cupcake.presentation.components.OrderComponent
+import kotlinx.collections.immutable.PersistentList
+import kotlinx.collections.immutable.toPersistentList
 
 fun NavGraphBuilder.addPickupDestination(
     navHostController: NavHostController,
@@ -23,7 +25,7 @@ fun NavGraphBuilder.addPickupDestination(
         exitTransition = getScreenExitTransition()
     ) {
         PickupScreen(
-            choices = sharedViewModel.dateOptions,
+            choices = sharedViewModel.dateOptions.toPersistentList(),
             selected = sharedViewModel.date.observeAsState().value.orEmpty(),
             price = sharedViewModel.price.observeAsState().value.orEmpty(),
             onBackButtonClick = navHostController::popBackStack,
@@ -39,7 +41,7 @@ fun NavGraphBuilder.addPickupDestination(
 
 @Composable
 private fun PickupScreen(
-    choices: List<String>,
+    choices: PersistentList<String>,
     selected: String,
     price: String,
     onBackButtonClick: () -> Unit,

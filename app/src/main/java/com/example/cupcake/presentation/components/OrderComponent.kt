@@ -18,10 +18,12 @@ import com.example.cupcake.R
 import com.example.cupcake.uikit.AppButton
 import com.example.cupcake.uikit.AppRadioGroup
 import com.example.cupcake.uikit.AppSecondaryButton
+import kotlinx.collections.immutable.PersistentList
+import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 fun OrderComponent(
-    choices: List<String>,
+    choices: PersistentList<String>,
     selected: String,
     price: String,
     onNextButtonClick: () -> Unit,
@@ -61,7 +63,7 @@ fun OrderComponent(
 private fun PreviewOrderComponent() {
     AppScreenWrapper(title = "Screen title") {
         OrderComponent(
-            choices = listOf("radio_button_1", "radio_button_2", "radio_button_3"),
+            choices = persistentListOf("radio_button_1", "radio_button_2", "radio_button_3"),
             selected = "radio_button_1",
             price = "12$",
             onNextButtonClick = { },

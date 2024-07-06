@@ -11,10 +11,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.cupcake.theme.AppColors
+import kotlinx.collections.immutable.PersistentList
+import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 fun AppRadioGroup(
-    choices: List<String>,
+    choices: PersistentList<String>,
     selected: String,
     onSelect: (String) -> Unit,
     modifier: Modifier = Modifier
@@ -40,7 +42,7 @@ fun AppRadioGroup(
 @Composable
 private fun PreviewAppRadioGroup() {
     AppRadioGroup(
-        choices = listOf("radio_button_1", "radio_button_2", "radio_button_3"),
+        choices = persistentListOf("radio_button_1", "radio_button_2", "radio_button_3"),
         selected = "radio_button_1",
         onSelect = {},
     )
