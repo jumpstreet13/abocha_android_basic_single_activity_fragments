@@ -1,0 +1,29 @@
+unstable class MainActivity {
+  unstable val orderViewModel: OrderViewModel
+  <runtime stability> = Unstable
+}
+unstable class OrderViewModel {
+  stable val onSendOrder: Function1<String, Unit>
+  unstable val _quantity: MutableLiveData<Int>
+  unstable val quantity: LiveData<Int>
+  unstable val _flavor: MutableLiveData<String>
+  unstable val flavor: LiveData<String>
+  unstable val dateOptions: List<String>
+  unstable val _date: MutableLiveData<String>
+  unstable val date: LiveData<String>
+  unstable val _price: MutableLiveData<Double>
+  unstable val price: LiveData<Double>
+  <runtime stability> = Unstable
+}
+stable class FlavorDestination {
+  <runtime stability> = Stable
+}
+stable class PickUpDestination {
+  <runtime stability> = Stable
+}
+stable class StartDestination {
+  <runtime stability> = Stable
+}
+stable class SummaryDestination {
+  <runtime stability> = Stable
+}

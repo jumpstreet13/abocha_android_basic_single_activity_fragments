@@ -1,0 +1,78 @@
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun BaseButton(
+  stable text: String
+  stable onClick: Function0<Unit>
+  stable modifier: Modifier? = @static Companion
+  stable type: ButtonType? = @static ButtonType.PRIMARY
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun BaseTopBar(
+  stable title: String
+  stable modifier: Modifier? = @static Companion
+  stable onBackClick: Function0<Unit>? = @static null
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable, [androidx.compose.ui.UiComposable]]") fun DiagonalColumn(
+  stable modifier: Modifier? = @static Companion
+  stable content: Function2<Composer, Int, Unit>
+)
+fun diagonalMeasurePolicy()
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun DiagonalColumnPreview()
+restartable scheme("[androidx.compose.ui.UiComposable]") fun AppNavHost(
+  unstable navController: NavHostController
+  unstable viewModel: OrderViewModel
+)
+restartable scheme("[androidx.compose.ui.UiComposable]") fun FlavorScreen(
+  unstable viewModel: OrderViewModel
+  stable onNavigateToBack: Function0<Unit>
+  stable onNavigateToPickUpScreen: Function0<Unit>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun Content(
+  stable modifier: Modifier
+  stable selectedFlavor: String
+  stable price: String
+  stable onCancelClick: Function0<Unit>
+  stable onNavigateToPickUpScreen: Function0<Unit>
+  stable onSelectFlavor: Function1<String, Unit>
+)
+restartable scheme("[androidx.compose.ui.UiComposable]") fun MainScreen(
+  unstable viewModel: OrderViewModel
+)
+restartable scheme("[androidx.compose.ui.UiComposable]") fun PickUpScreen(
+  unstable viewModel: OrderViewModel
+  stable onNavigateToBack: Function0<Unit>
+  stable onCancel: Function0<Unit>
+  stable onNavigateToSummary: Function0<Unit>
+)
+restartable scheme("[androidx.compose.ui.UiComposable]") fun Content(
+  stable modifier: Modifier
+  unstable dates: List<String>
+  stable selectedDate: String?
+  stable price: String
+  stable onCancelClick: Function0<Unit>
+  stable onNextClick: Function0<Unit>
+  stable onSelectDate: Function1<String, Unit>
+)
+restartable scheme("[androidx.compose.ui.UiComposable]") fun StartScreen(
+  unstable viewModel: OrderViewModel
+  stable onNavigateToFlavor: Function0<Unit>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun Content(
+  stable modifier: Modifier
+  stable onSetQuantity: Function1<Int, Unit>
+)
+restartable scheme("[androidx.compose.ui.UiComposable]") fun SummaryScreen(
+  unstable viewModel: OrderViewModel
+  stable onNavigateToBack: Function0<Unit>
+  stable onCancel: Function0<Unit>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun Content(
+  stable modifier: Modifier
+  stable quantity: Int?
+  stable flavor: String?
+  stable date: String?
+  stable price: String
+  stable onCancelClick: Function0<Unit>
+  stable onSendOrderClick: Function1<String, Unit>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun Cell(
+  stable title: String
+  stable value: String
+)
