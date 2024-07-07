@@ -63,7 +63,7 @@ private fun Content(modifier: Modifier, onSetQuantity: (Int) -> Unit) {
         )
         Text(
             text = stringResource(R.string.order_cupcakes),
-            color = colorResource(R.color.material_on_background_emphasis_medium),
+            color = colorResource(com.google.android.material.R.color.material_on_background_emphasis_medium),
             style = TextStyle(fontSize = 34.sp)
         )
         val buttonModifier = Modifier.defaultMinSize(minWidth = 250.dp)
