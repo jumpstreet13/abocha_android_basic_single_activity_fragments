@@ -17,9 +17,7 @@ package com.example.cupcake.model
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
-import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -34,7 +32,7 @@ private const val PRICE_FOR_SAME_DAY_PICKUP = 3.00
  * [OrderViewModel] holds information about a cupcake order in terms of quantity, flavor, and
  * pickup date. It also knows how to calculate the total price based on these order details.
  */
-class OrderViewModel : ViewModel() {
+class OrderViewModel(private val onSendOrder: (String) -> Unit) : ViewModel() {
 
     // Quantity of cupcakes in this order
     private val _quantity = MutableLiveData<Int>()
@@ -53,10 +51,7 @@ class OrderViewModel : ViewModel() {
 
     // Price of the order so far
     private val _price = MutableLiveData<Double>()
-    val price: LiveData<String> = Transformations.map(_price) {
-        // Format the price into the local currency and return this as LiveData<String>
-        NumberFormat.getCurrencyInstance().format(it)
-    }
+    val price: LiveData<Double> = _price
 
     init {
         // Set initial values for the order
@@ -108,6 +103,8 @@ class OrderViewModel : ViewModel() {
         _date.value = dateOptions[0]
         _price.value = 0.0
     }
+
+    fun sendOrder(orderSummary: String) = onSendOrder(orderSummary)
 
     /**
      * Updates the price based on the order details.
