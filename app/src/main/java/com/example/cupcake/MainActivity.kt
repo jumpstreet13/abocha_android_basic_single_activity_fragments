@@ -21,9 +21,17 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.compose.animation.AnimatedContentScope
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.staticCompositionLocalOf
+import androidx.navigation.NavBackStackEntry
+import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -32,32 +40,6 @@ import com.example.cupcake.model.OrderViewModel
 import com.example.cupcake.ui.FlavorScreen
 import com.example.cupcake.ui.StartScreen
 import com.example.cupcake.ui.SummaryScreen
-
-/**
- * Activity for cupcake order flow.
- */
-/*class MainActivity : AppCompatActivity(R.layout.activity_main) {
-
-    private lateinit var navController: NavController
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        // Retrieve NavController from the NavHostFragment
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-        navController = navHostFragment.navController
-
-        // Set up the action bar for use with the NavController
-        setupActionBarWithNavController(navController)
-    }
-
-    /**
-     * Handle navigation when the user chooses Up from the action bar.
-     */
-    override fun onSupportNavigateUp(): Boolean {
-        return navController.navigateUp() || super.onSupportNavigateUp()
-    }
-}*/
 
 val LocalNavController = staticCompositionLocalOf<NavHostController> {
     error("NavHostController not provided")
@@ -74,9 +56,6 @@ class MainActivity : ComponentActivity() {
             CompositionLocalProvider(LocalNavController provides navController) {
                 NavGraph(sharedViewModel) { sendOrderClick(it) }
             }
-
-
-
         }
     }
 
@@ -103,31 +82,63 @@ fun NavGraph(
 ) {
     val navController = LocalNavController.current
     NavHost(navController = navController, startDestination = Navigation.START_SCREEN.route) {
-        composable(Navigation.START_SCREEN.route) {
-            StartScreen(viewModel)
-        }
-
-        composable(Navigation.FLAVOR_SCREEN.route) {
+        addComposableWithAnimations(
+            route = Navigation.START_SCREEN.route,
+            content = { StartScreen(viewModel) }
+        )
+        addComposableWithAnimations(Navigation.FLAVOR_SCREEN.route) {
             FlavorScreen(viewModel)
             BackHandler {
                 navController.popBackStack()
             }
         }
-
-        composable(Navigation.PICKUP_SCREEN.route) {
+        addComposableWithAnimations(Navigation.PICKUP_SCREEN.route) {
             FlavorScreen(viewModel, isFlavorScreen = false)
             BackHandler {
                 navController.popBackStack()
             }
         }
-
-        composable(Navigation.SUMMARY_SCREEN.route) {
+        addComposableWithAnimations(Navigation.SUMMARY_SCREEN.route) {
             SummaryScreen(viewModel, onSendOrderClick)
             BackHandler {
                 navController.popBackStack()
             }
         }
     }
+}
+
+fun NavGraphBuilder.addComposableWithAnimations(
+    route: String,
+    content: @Composable (AnimatedContentScope.(NavBackStackEntry) -> Unit)
+) {
+    composable(
+        route = route,
+        enterTransition = {
+            slideInHorizontally(
+                initialOffsetX = { fullWidth -> fullWidth },
+                animationSpec = tween(durationMillis = 1500)
+            ) + fadeIn(animationSpec = tween(200))
+        },
+        exitTransition = {
+            slideOutHorizontally(
+                targetOffsetX = { fullWidth -> -fullWidth },
+                animationSpec = tween(durationMillis = 1500)
+            ) + fadeOut(animationSpec = tween(200))
+        },
+        popEnterTransition = {
+            slideInHorizontally(
+                initialOffsetX = { fullWidth -> -fullWidth },
+                animationSpec = tween(durationMillis = 1500)
+            ) + fadeIn(animationSpec = tween(200))
+        },
+        popExitTransition = {
+            slideOutHorizontally(
+                targetOffsetX = { fullWidth -> fullWidth },
+                animationSpec = tween(durationMillis = 1500)
+            ) + fadeOut(animationSpec = tween(200))
+        },
+        content = content
+    )
 }
 
 enum class Navigation(var route: String) {

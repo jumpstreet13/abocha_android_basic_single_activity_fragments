@@ -28,11 +28,6 @@ data object TextDimensions {
     val Body2LineHeight: TextUnit = 24.sp
 }
 
-data object Paddings {
-    val medium = 16.dp
-    val xsmall = 8.dp
-}
-
 private val textStyle = TextStyle(
     lineHeightStyle = LineHeightStyle(
         alignment = LineHeightStyle.Alignment.Proportional,
