@@ -1,8 +1,8 @@
-package com.example.cupcake
+package com.example.cupcake.compose
 
 import androidx.compose.runtime.Composable
 
 @Composable
-fun StartScreen() {
+fun FlavorScreen() {
 
 }

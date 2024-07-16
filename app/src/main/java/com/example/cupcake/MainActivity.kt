@@ -18,42 +18,28 @@ package com.example.cupcake
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.NavController
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.setupActionBarWithNavController
-
-///**
-// * Activity for cupcake order flow.
-// */
-//class MainActivity : AppCompatActivity(R.layout.activity_main) {
-//
-//    private lateinit var navController: NavController
-//
-//    override fun onCreate(savedInstanceState: Bundle?) {
-//        super.onCreate(savedInstanceState)
-//
-//        // Retrieve NavController from the NavHostFragment
-//        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-//        navController = navHostFragment.navController
-//
-//        // Set up the action bar for use with the NavController
-//        setupActionBarWithNavController(navController)
-//    }
-//
-//    /**
-//     * Handle navigation when the user chooses Up from the action bar.
-//     */
-//    override fun onSupportNavigateUp(): Boolean {
-//        return navController.navigateUp() || super.onSupportNavigateUp()
-//    }
-//}
+import androidx.activity.viewModels
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
+import com.example.cupcake.compose.MainNavGraph
+import com.example.cupcake.model.OrderViewModel
+import com.example.cupcake.theme.CupcakeTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val viewModel: OrderViewModel by viewModels()
+
         setContent {
-            MainNavGraph()
+            val navController: NavHostController = rememberNavController()
+
+            CupcakeTheme {
+                MainNavGraph(
+                    navController = navController,
+                    viewModel = viewModel
+                )
+            }
         }
     }
 }
