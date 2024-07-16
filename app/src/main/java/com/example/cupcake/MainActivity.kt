@@ -16,33 +16,72 @@
 package com.example.cupcake
 
 import android.os.Bundle
+import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.NavController
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
+import androidx.compose.material.Scaffold
+import androidx.compose.material.Text
+import androidx.compose.material.TopAppBar
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
+import com.example.cupcake.model.OrderViewModel
+import com.example.cupcake.nav.CupcakeNavHost
+import com.example.cupcake.nav.Destinations
+import com.example.cupcake.nav.Start
+import com.example.cupcake.ui.CupcakeTheme
 
 /**
  * Activity for cupcake order flow.
  */
-class MainActivity : AppCompatActivity(R.layout.activity_main) {
+class MainActivity : AppCompatActivity() {
 
-    private lateinit var navController: NavController
+   private val viewModel: OrderViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        // Retrieve NavController from the NavHostFragment
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-        navController = navHostFragment.navController
-
-        // Set up the action bar for use with the NavController
-        setupActionBarWithNavController(navController)
+        setContent {
+            AppScreen(viewModel)
+        }
     }
+}
 
-    /**
-     * Handle navigation when the user chooses Up from the action bar.
-     */
-    override fun onSupportNavigateUp(): Boolean {
-        return navController.navigateUp() || super.onSupportNavigateUp()
+@Composable
+fun AppScreen(
+    viewModel: OrderViewModel) {
+    CupcakeTheme {
+        val navController = rememberNavController()
+        val backStack by navController.currentBackStackEntryAsState()
+        val route = backStack?.destination?.route ?: Start.route
+        val destination = Destinations.find { it.route == route} ?: Start
+
+       Scaffold(
+           topBar = {
+               TopAppBar(
+                   title = { Text(stringResource(destination.titleResId)) },
+                   navigationIcon = {
+                       destination.navIcon?.let {
+                           IconButton(onClick = {
+                               navController.popBackStack()
+                           }) {
+                               Icon(it, null)
+                           }
+                       }
+                   }
+               )
+           }
+       ) { innerPadding ->
+           CupcakeNavHost(
+               viewModel = viewModel,
+               navController = navController,
+               modifier = Modifier.padding(innerPadding)
+           )
+       }
     }
 }

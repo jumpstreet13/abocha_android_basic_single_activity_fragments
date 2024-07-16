@@ -15,10 +15,16 @@
  */
 package com.example.cupcake.model
 
+import android.content.Context
+import android.content.Intent
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
+
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.map
+import com.example.cupcake.R
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -36,27 +42,16 @@ private const val PRICE_FOR_SAME_DAY_PICKUP = 3.00
  */
 class OrderViewModel : ViewModel() {
 
-    // Quantity of cupcakes in this order
-    private val _quantity = MutableLiveData<Int>()
-    val quantity: LiveData<Int> = _quantity
+    data class UiState(
+        val quantity: Int = 0,
+        val flavor: String = "",
+        val dateOptions: List<String> = emptyList(),
+        val date: String = "",
+        val price: Float = 0f,
+    )
 
-    // Cupcake flavor for this order
-    private val _flavor = MutableLiveData<String>()
-    val flavor: LiveData<String> = _flavor
-
-    // Possible date options
-    val dateOptions: List<String> = getPickupOptions()
-
-    // Pickup date
-    private val _date = MutableLiveData<String>()
-    val date: LiveData<String> = _date
-
-    // Price of the order so far
-    private val _price = MutableLiveData<Double>()
-    val price: LiveData<String> = Transformations.map(_price) {
-        // Format the price into the local currency and return this as LiveData<String>
-        NumberFormat.getCurrencyInstance().format(it)
-    }
+    private val _uiState = MutableStateFlow(UiState())
+    val uiState = _uiState.asStateFlow()
 
     init {
         // Set initial values for the order
@@ -69,7 +64,7 @@ class OrderViewModel : ViewModel() {
      * @param numberCupcakes to order
      */
     fun setQuantity(numberCupcakes: Int) {
-        _quantity.value = numberCupcakes
+        _uiState.value = _uiState.value.copy(quantity = numberCupcakes)
         updatePrice()
     }
 
@@ -79,7 +74,7 @@ class OrderViewModel : ViewModel() {
      * @param desiredFlavor is the cupcake flavor as a string
      */
     fun setFlavor(desiredFlavor: String) {
-        _flavor.value = desiredFlavor
+        _uiState.value = _uiState.value.copy(flavor = desiredFlavor)
     }
 
     /**
@@ -88,7 +83,7 @@ class OrderViewModel : ViewModel() {
      * @param pickupDate is the date for pickup as a string
      */
     fun setDate(pickupDate: String) {
-        _date.value = pickupDate
+        _uiState.value = _uiState.value.copy(date = pickupDate)
         updatePrice()
     }
 
@@ -96,29 +91,28 @@ class OrderViewModel : ViewModel() {
      * Returns true if a flavor has not been selected for the order yet. Returns false otherwise.
      */
     fun hasNoFlavorSet(): Boolean {
-        return _flavor.value.isNullOrEmpty()
+        return uiState.value.flavor.isEmpty()
     }
 
     /**
      * Reset the order by using initial default values for the quantity, flavor, date, and price.
      */
     fun resetOrder() {
-        _quantity.value = 0
-        _flavor.value = ""
-        _date.value = dateOptions[0]
-        _price.value = 0.0
+        _uiState.value = UiState().copy(
+            dateOptions = getPickupOptions()
+        )
     }
 
     /**
      * Updates the price based on the order details.
      */
     private fun updatePrice() {
-        var calculatedPrice = (quantity.value ?: 0) * PRICE_PER_CUPCAKE
+        var calculatedPrice = uiState.value.quantity * PRICE_PER_CUPCAKE
         // If the user selected the first option (today) for pickup, add the surcharge
-        if (dateOptions[0] == _date.value) {
+        if (uiState.value.dateOptions[0] == uiState.value.date) {
             calculatedPrice += PRICE_FOR_SAME_DAY_PICKUP
         }
-        _price.value = calculatedPrice
+        _uiState.value = _uiState.value.copy(price = calculatedPrice.toFloat())
     }
 
     /**
@@ -133,5 +127,33 @@ class OrderViewModel : ViewModel() {
             calendar.add(Calendar.DATE, 1)
         }
         return options
+    }
+
+    /**
+     * Submit the order by sharing out the order details to another app via an implicit intent.
+     */
+    fun sendOrder(context: Context) {
+        // Construct the order summary text with information from the view model
+        val numberOfCupcakes = uiState.value.quantity
+        val orderSummary = context.getString(
+            R.string.order_details,
+            context.resources.getQuantityString(R.plurals.cupcakes, numberOfCupcakes, numberOfCupcakes),
+            uiState.value.flavor,
+            uiState.value.date,
+            uiState.value.price.toString()
+        )
+
+        // Create an ACTION_SEND implicit intent with order details in the intent extras
+        val intent = Intent(Intent.ACTION_SEND)
+            .setType("text/plain")
+            .putExtra(Intent.EXTRA_SUBJECT, context.getString(R.string.new_cupcake_order))
+            .putExtra(Intent.EXTRA_TEXT, orderSummary)
+
+        // Check if there's an app that can handle this intent before launching it
+        if (context.packageManager?.resolveActivity(intent, 0) != null) {
+            // Start a new activity with the given intent (this may open the share dialog on a
+            // device if multiple apps can handle this intent)
+            context.startActivity(intent)
+        }
     }
 }
