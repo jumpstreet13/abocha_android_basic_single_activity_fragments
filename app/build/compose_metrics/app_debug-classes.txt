@@ -1,0 +1,41 @@
+unstable class MainActivity {
+  unstable val viewModel$delegate: Lazy<OrderViewModel>
+  <runtime stability> = Unstable
+}
+unstable class UiState {
+  stable val quantity: Int
+  stable val flavor: String
+  unstable val dateOptions: List<String>
+  stable val date: String
+  stable val price: Float
+  <runtime stability> = Unstable
+}
+unstable class OrderViewModel {
+  unstable val _uiState: MutableStateFlow<UiState>
+  unstable val uiState: StateFlow<UiState>
+  <runtime stability> = Unstable
+}
+unstable class Start {
+  unstable val navIcon: Nothing?
+  stable val route: String
+  stable val titleResId: Int
+  <runtime stability> = Unstable
+}
+stable class ChooseFlavor {
+  stable val navIcon: ImageVector
+  stable val route: String
+  stable val titleResId: Int
+  <runtime stability> = Stable
+}
+stable class PickupDate {
+  stable val navIcon: ImageVector
+  stable val route: String
+  stable val titleResId: Int
+  <runtime stability> = Stable
+}
+stable class Summary {
+  stable val navIcon: ImageVector
+  stable val route: String
+  stable val titleResId: Int
+  <runtime stability> = Stable
+}
