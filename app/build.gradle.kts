@@ -1,9 +1,12 @@
 plugins {
     alias(libs.plugins.com.android.application)
     alias(libs.plugins.org.jetbrains.kotlin.android)
+
+
 }
 
 android {
+    namespace = "com.example.cupcake"
     compileSdk = 34
 
     defaultConfig {
@@ -17,6 +20,7 @@ android {
 
     buildFeatures {
         dataBinding = true
+        compose = true
     }
 
     buildTypes {
@@ -37,7 +41,10 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
-    namespace = "com.example.cupcake"
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.10"
+    }
 }
 
 dependencies {
@@ -55,4 +62,12 @@ dependencies {
 
     implementation(libs.navigation.fragment.ktx)
     implementation(libs.navigation.ui.ktx)
+
+    implementation(libs.compose.ui)
+    implementation(libs.compose.ui.tooling.preview)
+    implementation(libs.compose.material3)
+    implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidx.activity.compose)
+
+    debugImplementation(libs.compose.ui.tooling)
 }
