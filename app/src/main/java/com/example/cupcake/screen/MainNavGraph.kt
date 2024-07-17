@@ -1,11 +1,19 @@
 package com.example.cupcake.screen
 
 import android.content.Intent
+import androidx.compose.animation.AnimatedContentScope
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
+import androidx.navigation.NavBackStackEntry
+import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -28,7 +36,7 @@ fun MainNavGraph(
         navController = navController,
         startDestination = DestinationMain.START_ROUTE
     ) {
-        composable(DestinationMain.START_ROUTE) {
+        addComposableWithAnimations(DestinationMain.START_ROUTE) {
             val defaultFlavor = stringResource(id = R.string.vanilla)
 
             StartScreen {
@@ -39,7 +47,7 @@ fun MainNavGraph(
             }
         }
 
-        composable(DestinationMain.FLAVOR_ROUTE) {
+        addComposableWithAnimations(DestinationMain.FLAVOR_ROUTE) {
             FlavorScreen(
                 price = viewModel.price.collectAsState(),
                 setFlavor = {
@@ -55,7 +63,7 @@ fun MainNavGraph(
             )
         }
 
-        composable(DestinationMain.PICKUP_ROUTE) {
+        addComposableWithAnimations(DestinationMain.PICKUP_ROUTE) {
             PickupScreen(
                 price = viewModel.price.collectAsState(),
                 dateOptions = viewModel.dateOptions,
@@ -73,7 +81,7 @@ fun MainNavGraph(
             )
         }
 
-        composable(DestinationMain.SUMMARY_ROUTE) {
+        addComposableWithAnimations(DestinationMain.SUMMARY_ROUTE) {
             val context = LocalContext.current
             val orderIntent = orderIntent(viewModel = viewModel)
 
@@ -97,6 +105,40 @@ fun MainNavGraph(
             )
         }
     }
+}
+
+fun NavGraphBuilder.addComposableWithAnimations(
+    route: String,
+    content: @Composable (AnimatedContentScope.(NavBackStackEntry) -> Unit)
+) {
+    composable(
+        route = route,
+        enterTransition = {
+            slideInVertically(
+                initialOffsetY = { fullWidth -> fullWidth },
+                animationSpec = tween(durationMillis = 1000)
+            ) + fadeIn()
+        },
+        exitTransition = {
+            slideOutVertically(
+                targetOffsetY = { fullWidth -> -fullWidth },
+                animationSpec = tween(durationMillis = 1000)
+            ) + fadeOut()
+        },
+        popEnterTransition = {
+            slideInVertically(
+                initialOffsetY = { fullWidth -> -fullWidth },
+                animationSpec = tween(durationMillis = 1000)
+            ) + fadeIn()
+        },
+        popExitTransition = {
+            slideOutVertically(
+                targetOffsetY = { fullWidth -> fullWidth },
+                animationSpec = tween(durationMillis = 1000)
+            ) + fadeOut()
+        },
+        content = content
+    )
 }
 
 /**
