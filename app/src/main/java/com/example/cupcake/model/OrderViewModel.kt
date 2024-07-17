@@ -19,6 +19,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.map
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -57,6 +60,8 @@ class OrderViewModel : ViewModel() {
         // Format the price into the local currency and return this as LiveData<String>
         NumberFormat.getCurrencyInstance().format(it)
     }
+    private val _priceF = MutableStateFlow(0.0)
+    val priceF = _priceF.asStateFlow()
 
     init {
         // Set initial values for the order
@@ -107,6 +112,7 @@ class OrderViewModel : ViewModel() {
         _flavor.value = ""
         _date.value = dateOptions[0]
         _price.value = 0.0
+        _priceF.value = 0.0
     }
 
     /**
@@ -119,6 +125,7 @@ class OrderViewModel : ViewModel() {
             calculatedPrice += PRICE_FOR_SAME_DAY_PICKUP
         }
         _price.value = calculatedPrice
+        _priceF.value = calculatedPrice
     }
 
     /**

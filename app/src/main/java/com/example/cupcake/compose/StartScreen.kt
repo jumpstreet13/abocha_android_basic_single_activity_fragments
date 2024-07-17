@@ -48,7 +48,7 @@ fun StartScreen(
 }
 
 @Composable
-fun StartScreenContent(
+private fun StartScreenContent(
     paddingValues: PaddingValues,
     orderCupcake: (Int) -> Unit
 ) {
