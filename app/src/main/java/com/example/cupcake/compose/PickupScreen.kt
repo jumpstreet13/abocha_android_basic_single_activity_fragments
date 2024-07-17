@@ -21,8 +21,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -30,32 +28,26 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.cupcake.R
-import com.example.cupcake.theme.CupcakeTheme
-
-@Preview
-@Composable
-private fun FlavorScreenPreview() {
-    CupcakeTheme {
-        FlavorScreen(viewModel(), {}, {}, {})
-    }
-}
+import kotlinx.coroutines.flow.StateFlow
 
 @Composable
-fun FlavorScreen(
+fun PickupScreen(
     price: State<Double>,
-    setFlavor: (String) -> Unit,
+    dateOptions: List<String>,
+    selectDate: StateFlow<String>,
+    setDate: (String) -> Unit,
     cancelOrder: () -> Unit,
     goToNextScreen: () -> Unit
 ) {
     Scaffold { paddingValues ->
-        FlavorScreenContent(
+        PickupScreenContent(
             paddingValues = paddingValues,
             price = price,
-            setFlavor = setFlavor,
+            dateOptions = dateOptions,
+            selectDate = selectDate,
+            setDate = setDate,
             cancelOrder = cancelOrder,
             goToNextScreen = goToNextScreen
         )
@@ -63,10 +55,12 @@ fun FlavorScreen(
 }
 
 @Composable
-private fun FlavorScreenContent(
+private fun PickupScreenContent(
     paddingValues: PaddingValues,
     price: State<Double>,
-    setFlavor: (String) -> Unit,
+    dateOptions: List<String>,
+    selectDate: StateFlow<String>,
+    setDate: (String) -> Unit,
     cancelOrder: () -> Unit,
     goToNextScreen: () -> Unit
 ) {
@@ -78,18 +72,10 @@ private fun FlavorScreenContent(
             .verticalScroll(rememberScrollState()),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        val list = listOf(
-            stringResource(id = R.string.vanilla),
-            stringResource(id = R.string.chocolate),
-            stringResource(id = R.string.red_velvet),
-            stringResource(id = R.string.salted_caramel),
-            stringResource(id = R.string.coffee),
-        )
-        val (selectedOption, onOptionSelected) = remember { mutableStateOf(list[0]) }
-        setFlavor(list[0])
+        val (selectedOption, onOptionSelected) = remember { mutableStateOf(selectDate.value) }
 
         Column(Modifier.selectableGroup()) {
-            list.forEach { text ->
+            dateOptions.forEach { text ->
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically
@@ -98,7 +84,7 @@ private fun FlavorScreenContent(
                     RadioButton(
                         selected = (text == selectedOption),
                         onClick = {
-                            setFlavor(text)
+                            setDate(text)
                             onOptionSelected(text)
                         }
                     )

@@ -20,7 +20,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.map
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import java.text.NumberFormat
 import java.text.SimpleDateFormat
@@ -60,6 +59,10 @@ class OrderViewModel : ViewModel() {
         // Format the price into the local currency and return this as LiveData<String>
         NumberFormat.getCurrencyInstance().format(it)
     }
+
+    private val _dateF = MutableStateFlow("")
+    val dateF = _dateF.asStateFlow()
+
     private val _priceF = MutableStateFlow(0.0)
     val priceF = _priceF.asStateFlow()
 
@@ -94,6 +97,7 @@ class OrderViewModel : ViewModel() {
      */
     fun setDate(pickupDate: String) {
         _date.value = pickupDate
+        _dateF.value = pickupDate
         updatePrice()
     }
 
@@ -111,6 +115,7 @@ class OrderViewModel : ViewModel() {
         _quantity.value = 0
         _flavor.value = ""
         _date.value = dateOptions[0]
+        _dateF.value = dateOptions[0]
         _price.value = 0.0
         _priceF.value = 0.0
     }
@@ -121,7 +126,7 @@ class OrderViewModel : ViewModel() {
     private fun updatePrice() {
         var calculatedPrice = (quantity.value ?: 0) * PRICE_PER_CUPCAKE
         // If the user selected the first option (today) for pickup, add the surcharge
-        if (dateOptions[0] == _date.value) {
+        if (dateOptions[0] == _date.value || dateOptions[0] == _dateF.value) {
             calculatedPrice += PRICE_FOR_SAME_DAY_PICKUP
         }
         _price.value = calculatedPrice
