@@ -1,8 +1,6 @@
 plugins {
     alias(libs.plugins.com.android.application)
     alias(libs.plugins.org.jetbrains.kotlin.android)
-
-
 }
 
 android {
@@ -19,7 +17,6 @@ android {
     }
 
     buildFeatures {
-        dataBinding = true
         compose = true
     }
 

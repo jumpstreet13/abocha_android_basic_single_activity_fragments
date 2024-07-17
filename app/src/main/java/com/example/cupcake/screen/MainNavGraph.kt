@@ -14,7 +14,7 @@ import com.example.cupcake.model.OrderViewModel
 
 object DestinationMain {
     const val START_ROUTE = "start"
-    const val FLAVOR_ROUTE = "flawor"
+    const val FLAVOR_ROUTE = "flavor"
     const val PICKUP_ROUTE = "pickup"
     const val SUMMARY_ROUTE = "summary"
 }
