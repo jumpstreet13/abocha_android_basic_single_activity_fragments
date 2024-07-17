@@ -37,6 +37,8 @@ private const val PRICE_FOR_SAME_DAY_PICKUP = 3.00
  * pickup date. It also knows how to calculate the total price based on these order details.
  */
 class OrderViewModel : ViewModel() {
+    // Possible date options
+    val dateOptions: List<String> = getPickupOptions()
 
     // Quantity of cupcakes in this order
     private val _quantity = MutableLiveData<Int>()
@@ -45,9 +47,6 @@ class OrderViewModel : ViewModel() {
     // Cupcake flavor for this order
     private val _flavor = MutableLiveData<String>()
     val flavor: LiveData<String> = _flavor
-
-    // Possible date options
-    val dateOptions: List<String> = getPickupOptions()
 
     // Pickup date
     private val _date = MutableLiveData<String>()
@@ -59,6 +58,12 @@ class OrderViewModel : ViewModel() {
         // Format the price into the local currency and return this as LiveData<String>
         NumberFormat.getCurrencyInstance().format(it)
     }
+
+    private val _quantityF = MutableStateFlow(0)
+    val quantityF = _quantityF.asStateFlow()
+
+    private val _flavorF = MutableStateFlow("")
+    val flavorF = _flavorF.asStateFlow()
 
     private val _dateF = MutableStateFlow("")
     val dateF = _dateF.asStateFlow()
@@ -78,6 +83,7 @@ class OrderViewModel : ViewModel() {
      */
     fun setQuantity(numberCupcakes: Int) {
         _quantity.value = numberCupcakes
+        _quantityF.value = numberCupcakes
         updatePrice()
     }
 
@@ -88,6 +94,8 @@ class OrderViewModel : ViewModel() {
      */
     fun setFlavor(desiredFlavor: String) {
         _flavor.value = desiredFlavor
+        _flavorF.value = desiredFlavor
+        println("fwkf ${_flavorF.value}")
     }
 
     /**
@@ -113,7 +121,9 @@ class OrderViewModel : ViewModel() {
      */
     fun resetOrder() {
         _quantity.value = 0
+        _quantityF.value = 0
         _flavor.value = ""
+        _flavorF.value = ""
         _date.value = dateOptions[0]
         _dateF.value = dateOptions[0]
         _price.value = 0.0

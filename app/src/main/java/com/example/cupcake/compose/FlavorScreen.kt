@@ -21,8 +21,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -40,7 +38,12 @@ import com.example.cupcake.theme.CupcakeTheme
 @Composable
 private fun FlavorScreenPreview() {
     CupcakeTheme {
-        FlavorScreen(viewModel(), {}, {}, {})
+        FlavorScreen(
+            viewModel(),
+            {},
+            {},
+            {}
+        )
     }
 }
 
@@ -86,7 +89,6 @@ private fun FlavorScreenContent(
             stringResource(id = R.string.coffee),
         )
         val (selectedOption, onOptionSelected) = remember { mutableStateOf(list[0]) }
-        setFlavor(list[0])
 
         Column(Modifier.selectableGroup()) {
             list.forEach { text ->
