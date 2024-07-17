@@ -1,4 +1,4 @@
-package com.example.cupcake.compose
+package com.example.cupcake.screen
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column

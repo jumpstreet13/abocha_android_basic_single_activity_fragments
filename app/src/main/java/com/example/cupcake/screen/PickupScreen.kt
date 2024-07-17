@@ -1,32 +1,36 @@
-package com.example.cupcake.compose
+package com.example.cupcake.screen
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.example.cupcake.R
 import com.example.cupcake.theme.CupcakeTheme
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -36,48 +40,48 @@ import kotlinx.coroutines.flow.asStateFlow
 @Composable
 private fun SummaryScreenPreview() {
     CupcakeTheme {
-        SummaryScreen(
+        PickupScreen(
             price = MutableStateFlow(0.0).asStateFlow().collectAsState(),
-            quantity = MutableStateFlow(0).asStateFlow().collectAsState(),
-            flavor = MutableStateFlow("").asStateFlow().collectAsState(),
+            dateOptions = listOf("Пятница", "Суббота"),
             date = MutableStateFlow("").asStateFlow().collectAsState(),
-            sendOrder = {},
-            cancelOrder = {}
+            setDate = {},
+            cancelOrder = {},
+            goToNextScreen = {}
         )
     }
 }
 
 @Composable
-fun SummaryScreen(
+fun PickupScreen(
     price: State<Double>,
-    quantity: State<Int>,
-    flavor: State<String>,
+    dateOptions: List<String>,
     date: State<String>,
-    sendOrder: () -> Unit,
-    cancelOrder: () -> Unit
+    setDate: (String) -> Unit,
+    cancelOrder: () -> Unit,
+    goToNextScreen: () -> Unit
 ) {
     Scaffold { paddingValues ->
-        SummaryScreenContent(
+        PickupScreenContent(
             paddingValues = paddingValues,
             price = price,
-            quantity = quantity,
-            flavor = flavor,
+            dateOptions = dateOptions,
             date = date,
+            setDate = setDate,
             cancelOrder = cancelOrder,
-            sendOrder = sendOrder
+            goToNextScreen = goToNextScreen
         )
     }
 }
 
 @Composable
-private fun SummaryScreenContent(
+private fun PickupScreenContent(
     paddingValues: PaddingValues,
     price: State<Double>,
-    quantity: State<Int>,
-    flavor: State<String>,
+    dateOptions: List<String>,
     date: State<String>,
+    setDate: (String) -> Unit,
     cancelOrder: () -> Unit,
-    sendOrder: () -> Unit
+    goToNextScreen: () -> Unit
 ) {
     Column(
         Modifier
@@ -85,49 +89,50 @@ private fun SummaryScreenContent(
             .padding(paddingValues)
             .padding(16.dp)
             .verticalScroll(rememberScrollState()),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        ItemData(
-            stringResource(id = R.string.quantity),
-            quantity.value.toString()
-        )
+        val (selectedOption, onOptionSelected) = remember { mutableStateOf(date.value) }
 
-        ItemData(
-            stringResource(id = R.string.flavor),
-            flavor.value
-        )
+        Column(Modifier.selectableGroup()) {
+            dateOptions.forEach { text ->
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically
+                )
+                {
+                    RadioButton(
+                        selected = (text == selectedOption),
+                        onClick = {
+                            setDate(text)
+                            onOptionSelected(text)
+                        }
+                    )
 
-        ItemData(
-            stringResource(id = R.string.pickup_date),
-            date.value
-        )
+                    Text(text = text)
+                }
+            }
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        HorizontalDivider()
+
+        Spacer(modifier = Modifier.height(16.dp))
 
         Text(
-            text = "Total $${price.value}".uppercase(),
+            text = "Subtotal %s ${price.value}",
             modifier = Modifier.fillMaxWidth(),
             textAlign = TextAlign.End,
-            style = MaterialTheme.typography.titleLarge,
-            fontWeight = FontWeight.Bold
         )
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        Column(
+        Row(
             Modifier.fillMaxWidth(),
-            verticalArrangement = Arrangement.spacedBy(14.dp)
+            horizontalArrangement = Arrangement.spacedBy(14.dp)
         ) {
-            Button(
-                modifier = Modifier.fillMaxWidth(),
-                shape = MaterialTheme.shapes.extraSmall,
-                onClick = { sendOrder() }
-            ) {
-                Text(
-                    text = stringResource(id = R.string.send).uppercase(),
-                    color = colorResource(id = R.color.white)
-                )
-            }
-
             OutlinedButton(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.weight(1f),
                 shape = MaterialTheme.shapes.extraSmall,
                 onClick = { cancelOrder() }
             ) {
@@ -135,33 +140,17 @@ private fun SummaryScreenContent(
                     text = stringResource(id = R.string.cancel).uppercase(),
                 )
             }
+
+            Button(
+                modifier = Modifier.weight(1f),
+                shape = MaterialTheme.shapes.extraSmall,
+                onClick = { goToNextScreen() }
+            ) {
+                Text(
+                    text = stringResource(id = R.string.next).uppercase(),
+                    color = colorResource(id = R.color.white)
+                )
+            }
         }
     }
-}
-
-@Composable
-private fun ItemData(
-    labelText: String,
-    text: String
-) {
-    Text(
-        text = labelText.uppercase(),
-        style = MaterialTheme.typography.bodyLarge,
-        fontSize = 20.sp
-    )
-
-    Spacer(modifier = Modifier.height(4.dp))
-
-    Text(
-        text = text,
-        style = MaterialTheme.typography.bodyLarge,
-        fontWeight = FontWeight.Bold,
-        fontSize = 18.sp
-    )
-
-    Spacer(modifier = Modifier.height(16.dp))
-
-    HorizontalDivider()
-
-    Spacer(modifier = Modifier.height(16.dp))
 }

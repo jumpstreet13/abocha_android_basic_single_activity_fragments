@@ -1,4 +1,4 @@
-package com.example.cupcake.compose
+package com.example.cupcake.screen
 
 import android.content.Intent
 import androidx.compose.runtime.Composable
@@ -30,16 +30,18 @@ fun MainNavGraph(
     ) {
         composable(DestinationMain.START_ROUTE) {
             val defaultFlavor = stringResource(id = R.string.vanilla)
+
             StartScreen {
+                if (viewModel.hasNoFlavorSet()) viewModel.setFlavor(defaultFlavor)
+
                 viewModel.setQuantity(it)
-                viewModel.setFlavor(defaultFlavor)
                 navController.navigate(DestinationMain.FLAVOR_ROUTE)
             }
         }
 
         composable(DestinationMain.FLAVOR_ROUTE) {
             FlavorScreen(
-                price = viewModel.priceF.collectAsState(),
+                price = viewModel.price.collectAsState(),
                 setFlavor = {
                     viewModel.setFlavor(it)
                 },
@@ -55,9 +57,9 @@ fun MainNavGraph(
 
         composable(DestinationMain.PICKUP_ROUTE) {
             PickupScreen(
-                price = viewModel.priceF.collectAsState(),
+                price = viewModel.price.collectAsState(),
                 dateOptions = viewModel.dateOptions,
-                date = viewModel.dateF.collectAsState(),
+                date = viewModel.date.collectAsState(),
                 setDate = {
                     viewModel.setDate(it)
                 },
@@ -76,10 +78,10 @@ fun MainNavGraph(
             val orderIntent = orderIntent(viewModel = viewModel)
 
             SummaryScreen(
-                price = viewModel.priceF.collectAsState(),
-                quantity = viewModel.quantityF.collectAsState(),
-                flavor = viewModel.flavorF.collectAsState(),
-                date = viewModel.dateF.collectAsState(),
+                price = viewModel.price.collectAsState(),
+                quantity = viewModel.quantity.collectAsState(),
+                flavor = viewModel.flavor.collectAsState(),
+                date = viewModel.date.collectAsState(),
                 cancelOrder = {
                     viewModel.resetOrder()
                     navController.popBackStack(DestinationMain.START_ROUTE, inclusive = false)
@@ -103,13 +105,13 @@ fun MainNavGraph(
 @Composable
 fun orderIntent(viewModel: OrderViewModel): Intent {
     // Construct the order summary text with information from the view model
-    val numberOfCupcakes = viewModel.quantity.value ?: 0
+    val numberOfCupcakes = viewModel.quantity.collectAsState().value
     val orderSummary = stringResource(
         R.string.order_details,
         pluralStringResource(id = R.plurals.cupcakes, numberOfCupcakes, numberOfCupcakes),
-        viewModel.flavorF.collectAsState().value,
-        viewModel.dateF.collectAsState().value,
-        viewModel.priceF.collectAsState().value.toString()
+        viewModel.flavor.collectAsState().value,
+        viewModel.date.collectAsState().value,
+        viewModel.price.collectAsState().value.toString()
     )
 
     // Create an ACTION_SEND implicit intent with order details in the intent extras

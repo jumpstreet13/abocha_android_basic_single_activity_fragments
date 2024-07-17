@@ -18,11 +18,10 @@ package com.example.cupcake
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.viewModels
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.example.cupcake.compose.MainNavGraph
+import com.example.cupcake.screen.MainNavGraph
 import com.example.cupcake.model.OrderViewModel
 import com.example.cupcake.theme.CupcakeTheme
 
