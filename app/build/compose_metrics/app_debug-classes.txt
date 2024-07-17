@@ -1,0 +1,22 @@
+stable class MainActivity {
+  <runtime stability> = Stable
+}
+unstable class OrderViewModel {
+  unstable val dateOptions: List<String>
+  unstable val _quantity: MutableStateFlow<Int>
+  unstable val quantity: StateFlow<Int>
+  unstable val _flavor: MutableStateFlow<String>
+  unstable val flavor: StateFlow<String>
+  unstable val _date: MutableStateFlow<String>
+  unstable val date: StateFlow<String>
+  unstable val _price: MutableStateFlow<Double>
+  unstable val price: StateFlow<Double>
+  <runtime stability> = Unstable
+}
+stable class DestinationMain {
+  stable val START_ROUTE: String
+  stable val FLAVOR_ROUTE: String
+  stable val PICKUP_ROUTE: String
+  stable val SUMMARY_ROUTE: String
+  <runtime stability> = Stable
+}
