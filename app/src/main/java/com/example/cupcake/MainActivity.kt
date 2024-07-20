@@ -15,34 +15,136 @@
  */
 package com.example.cupcake
 
+import android.content.Intent
 import android.os.Bundle
+import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.NavController
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.remember
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.example.cupcake.compose.core.CupcakeTheme
+import com.example.cupcake.compose.screens.FlavorScreen
+import com.example.cupcake.compose.screens.PickupScreen
+import com.example.cupcake.compose.screens.StartScreen
+import com.example.cupcake.compose.screens.SummaryScreen
+import com.example.cupcake.model.OrderViewModel
 
 /**
  * Activity for cupcake order flow.
  */
-class MainActivity : AppCompatActivity(R.layout.activity_main) {
+class MainActivity : AppCompatActivity() {
 
-    private lateinit var navController: NavController
+    private val viewModel: OrderViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Retrieve NavController from the NavHostFragment
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-        navController = navHostFragment.navController
+        setContent {
+            val navController = rememberNavController()
 
-        // Set up the action bar for use with the NavController
-        setupActionBarWithNavController(navController)
+            val cancelOrder = remember {
+                {
+                    viewModel.resetOrder()
+                    navController.popBackStack(Screens.START.value, false)
+                }
+            }
+
+            CupcakeTheme {
+                NavHost(navController = navController, startDestination = Screens.START.value) {
+                    composable(Screens.START.value) {
+                        StartScreen(onButtonClick = {
+                            orderCupcake(quantity = it)
+                            navController.navigate(Screens.FLAVOR.value)
+                        })
+                    }
+
+                    composable(Screens.FLAVOR.value) {
+                        val selectedFlavor = viewModel.flavor.observeAsState()
+                        val subtotalPrice = viewModel.price.observeAsState()
+
+                        FlavorScreen(
+                            selectedFlavor = selectedFlavor,
+                            subtotalPrice = subtotalPrice,
+                            onSelect = viewModel::setFlavor,
+                            onCancelOrder = {
+                                cancelOrder()
+                            },
+                            onNext = {
+                                navController.navigate(Screens.PICKUP.value)
+                            }
+                        )
+                    }
+
+                    composable(Screens.PICKUP.value) {
+                        val dates = remember { viewModel.dateOptions }
+                        val selectedDay = viewModel.date.observeAsState()
+                        val subtotalPrice = viewModel.price.observeAsState()
+
+                        PickupScreen(
+                            dates = dates,
+                            selectedDay = selectedDay,
+                            subtotalPrice = subtotalPrice,
+                            onSelect = viewModel::setDate,
+                            onCancelOrder = {
+                                cancelOrder()
+                            },
+                            onNext = {
+                                navController.navigate(Screens.SUMMARY.value)
+                            }
+                        )
+                    }
+
+                    composable(Screens.SUMMARY.value) {
+                        val quantity = viewModel.quantity.observeAsState()
+                        val flavor = viewModel.flavor.observeAsState()
+                        val date = viewModel.date.observeAsState()
+                        val price = viewModel.price.observeAsState()
+                        SummaryScreen(
+                            quantity = quantity,
+                            flavor = flavor,
+                            pickupDate = date,
+                            totalPrice = price,
+                            onCancelOrder = {
+                                cancelOrder()
+                            },
+                            onSendOrder = {
+                                sendOrder()
+                            }
+                        )
+                    }
+                }
+            }
+        }
     }
 
-    /**
-     * Handle navigation when the user chooses Up from the action bar.
-     */
-    override fun onSupportNavigateUp(): Boolean {
-        return navController.navigateUp() || super.onSupportNavigateUp()
+    private fun orderCupcake(quantity: Int) {
+        viewModel.setQuantity(quantity)
+
+        if (viewModel.hasNoFlavorSet()) {
+            viewModel.setFlavor(getString(R.string.vanilla))
+        }
+    }
+
+    private fun sendOrder() {
+        val numberOfCupcakes = viewModel.quantity.value ?: 0
+        val orderSummary = getString(
+            R.string.order_details,
+            resources.getQuantityString(R.plurals.cupcakes, numberOfCupcakes, numberOfCupcakes),
+            viewModel.flavor.value.toString(),
+            viewModel.date.value.toString(),
+            viewModel.price.value.toString()
+        )
+
+        val intent = Intent(Intent.ACTION_SEND)
+            .setType("text/plain")
+            .putExtra(Intent.EXTRA_SUBJECT, getString(R.string.new_cupcake_order))
+            .putExtra(Intent.EXTRA_TEXT, orderSummary)
+
+        if (packageManager?.resolveActivity(intent, 0) != null) {
+            startActivity(intent)
+        }
     }
 }
