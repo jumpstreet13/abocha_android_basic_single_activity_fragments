@@ -39,7 +39,8 @@ fun SummaryScreen(
             orderItemTitle = stringResource(id = R.string.quantity),
             orderItemText = pluralStringResource(
                 id = R.plurals.cupcakes,
-                count = quantity.value ?: 0
+                count = quantity.value ?: 0,
+                quantity.value ?: 0
             ),
         )
 
