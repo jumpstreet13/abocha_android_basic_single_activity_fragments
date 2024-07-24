@@ -1,3 +1,9 @@
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun DiagonalColumnPreview()
+restartable skippable scheme("[androidx.compose.ui.UiComposable, [androidx.compose.ui.UiComposable]]") fun DiagonalColumn(
+  stable modifier: Modifier? = @static Companion
+  stable diagonalOffset: Dp
+  stable content: Function2<Composer, Int, Unit>
+)
 restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun FlavorScreenPreview()
 restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun FlavorScreen(
   stable price: State<Double>

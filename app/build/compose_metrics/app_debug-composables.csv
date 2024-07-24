@@ -1,4 +1,6 @@
 package,name,composable,skippable,restartable,readonly,inline,isLambda,hasDefaults,defaultsGroup,groups,calls,
+com.example.cupcake.component.DiagonalColumnPreview,DiagonalColumnPreview,1,1,1,0,0,0,0,0,1,1,
+com.example.cupcake.component.DiagonalColumn,DiagonalColumn,1,1,1,0,0,0,0,0,1,1,
 com.example.cupcake.screen.FlavorScreenPreview,FlavorScreenPreview,1,1,1,0,0,0,0,0,1,1,
 com.example.cupcake.screen.FlavorScreen,FlavorScreen,1,1,1,0,0,0,0,0,1,1,
 com.example.cupcake.screen.FlavorScreenContent,FlavorScreenContent,1,1,1,0,0,0,0,0,1,2,
