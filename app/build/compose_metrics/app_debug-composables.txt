@@ -1,0 +1,80 @@
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun DiagonalColumnPreview()
+restartable skippable scheme("[androidx.compose.ui.UiComposable, [androidx.compose.ui.UiComposable]]") fun DiagonalColumn(
+  stable modifier: Modifier? = @static Companion
+  stable diagonalOffset: Dp
+  stable content: Function2<Composer, Int, Unit>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun FlavorScreenPreview()
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun FlavorScreen(
+  stable price: State<Double>
+  stable setFlavor: Function1<String, Unit>
+  stable cancelOrder: Function0<Unit>
+  stable goToNextScreen: Function0<Unit>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun FlavorScreenContent(
+  stable paddingValues: PaddingValues
+  stable price: State<Double>
+  stable setFlavor: Function1<String, Unit>
+  stable cancelOrder: Function0<Unit>
+  stable goToNextScreen: Function0<Unit>
+)
+restartable scheme("[androidx.compose.ui.UiComposable]") fun MainNavGraph(
+  unstable navController: NavHostController
+  unstable viewModel: OrderViewModel
+)
+fun orderIntent(
+  unstable viewModel: OrderViewModel
+): Intent
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun SummaryScreenPreview()
+restartable scheme("[androidx.compose.ui.UiComposable]") fun PickupScreen(
+  stable price: State<Double>
+  unstable dateOptions: List<String>
+  stable date: State<String>
+  stable setDate: Function1<String, Unit>
+  stable cancelOrder: Function0<Unit>
+  stable goToNextScreen: Function0<Unit>
+)
+restartable scheme("[androidx.compose.ui.UiComposable]") fun PickupScreenContent(
+  stable paddingValues: PaddingValues
+  stable price: State<Double>
+  unstable dateOptions: List<String>
+  stable date: State<String>
+  stable setDate: Function1<String, Unit>
+  stable cancelOrder: Function0<Unit>
+  stable goToNextScreen: Function0<Unit>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun StartScreenPreview()
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun StartScreen(
+  stable orderCupcake: Function1<Int, Unit>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun StartScreenContent(
+  stable paddingValues: PaddingValues
+  stable orderCupcake: Function1<Int, Unit>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun SummaryScreenPreview()
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun SummaryScreen(
+  stable price: State<Double>
+  stable quantity: State<Int>
+  stable flavor: State<String>
+  stable date: State<String>
+  stable sendOrder: Function0<Unit>
+  stable cancelOrder: Function0<Unit>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun SummaryScreenContent(
+  stable paddingValues: PaddingValues
+  stable price: State<Double>
+  stable quantity: State<Int>
+  stable flavor: State<String>
+  stable date: State<String>
+  stable cancelOrder: Function0<Unit>
+  stable sendOrder: Function0<Unit>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun ItemData(
+  stable labelText: String
+  stable text: String
+)
+restartable skippable scheme("[0, [0]]") fun CupcakeTheme(
+  stable darkTheme: Boolean = @dynamic isSystemInDarkTheme($composer, 0)
+  stable dynamicColor: Boolean = @static false
+  stable content: Function2<Composer, Int, Unit>
+)
