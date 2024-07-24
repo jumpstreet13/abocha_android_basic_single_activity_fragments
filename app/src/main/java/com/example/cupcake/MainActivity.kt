@@ -31,6 +31,7 @@ import com.example.cupcake.compose.screens.PickupScreen
 import com.example.cupcake.compose.screens.StartScreen
 import com.example.cupcake.compose.screens.SummaryScreen
 import com.example.cupcake.model.OrderViewModel
+import kotlinx.collections.immutable.toImmutableList
 
 /**
  * Activity for cupcake order flow.
@@ -79,7 +80,7 @@ class MainActivity : AppCompatActivity() {
                     }
 
                     composable(Screens.PICKUP.value) {
-                        val dates = remember { viewModel.dateOptions }
+                        val dates = remember { viewModel.dateOptions.toImmutableList() }
                         val selectedDay = viewModel.date.observeAsState()
                         val subtotalPrice = viewModel.price.observeAsState()
 

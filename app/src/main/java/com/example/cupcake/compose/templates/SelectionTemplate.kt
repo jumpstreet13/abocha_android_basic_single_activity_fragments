@@ -21,10 +21,12 @@ import androidx.compose.ui.res.stringResource
 import com.example.cupcake.R
 import com.example.cupcake.compose.core.CupcakeButton
 import com.example.cupcake.compose.core.OutlinedCupcakeButton
+import com.example.cupcake.compose.core.StepsColumn
+import kotlinx.collections.immutable.ImmutableList
 
 @Composable
 fun SelectionTemplate(
-    items: List<String>,
+    items: ImmutableList<String>,
     selectedItem: State<String?>,
     subtotalPrice: State<String?>,
     onSelect: (String) -> Unit,
@@ -35,12 +37,14 @@ fun SelectionTemplate(
         modifier = Modifier.padding(dimensionResource(id = R.dimen.side_margin))
     ) {
 
-        items.forEach {
-            SelectionRadioButton(
-                item = it,
-                isSelected = selectedItem.value == it,
-                onSelect = { onSelect(it) }
-            )
+        StepsColumn {
+            items.forEach {
+                SelectionRadioButton(
+                    item = it,
+                    isSelected = selectedItem.value == it,
+                    onSelect = { onSelect(it) }
+                )
+            }
         }
 
         Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.side_margin)))

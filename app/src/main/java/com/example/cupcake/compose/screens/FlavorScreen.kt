@@ -6,6 +6,8 @@ import androidx.compose.runtime.State
 import androidx.compose.ui.res.stringResource
 import com.example.cupcake.R
 import com.example.cupcake.compose.templates.SelectionTemplate
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 fun FlavorScreen(
@@ -27,8 +29,8 @@ fun FlavorScreen(
 
 @Composable
 @NonRestartableComposable
-fun getFlavors(): List<String> {
-    return listOf(
+fun getFlavors(): ImmutableList<String> {
+    return persistentListOf(
         stringResource(id = R.string.vanilla),
         stringResource(id = R.string.chocolate),
         stringResource(id = R.string.red_velvet),
