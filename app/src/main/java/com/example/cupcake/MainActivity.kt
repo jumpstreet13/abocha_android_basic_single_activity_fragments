@@ -20,8 +20,13 @@ import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
+import androidx.compose.animation.core.EaseIn
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
 import androidx.compose.material.Surface
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -79,6 +84,16 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
                 composable(
                     route = NavigationRouts.SUMMARY.rout,
+                    enterTransition = {
+                        fadeIn(
+                            animationSpec = tween(
+                                550, easing = LinearEasing
+                            )
+                        ) + slideIntoContainer(
+                            animationSpec = tween(550, easing = EaseIn),
+                            towards = AnimatedContentTransitionScope.SlideDirection.Start
+                        )
+                    }
                 ) {
                     SummaryScreen(
                         navHostController = navController,
