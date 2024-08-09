@@ -16,33 +16,121 @@
 package com.example.cupcake
 
 import android.os.Bundle
+import androidx.activity.compose.BackHandler
+import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.NavController
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
+import androidx.compose.animation.core.EaseIn
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutVertically
+import androidx.compose.material.Surface
+import androidx.compose.ui.Alignment
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.example.cupcake.model.NavigationRouts
+import com.example.cupcake.screens.FlavorScreen
+import com.example.cupcake.screens.PickupScreen
+import com.example.cupcake.screens.StartScreen
+import com.example.cupcake.screens.SummaryScreen
+import com.example.cupcake.viewModel.OrderViewModel
 
 /**
  * Activity for cupcake order flow.
  */
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
-    private lateinit var navController: NavController
+    private val viewModel: OrderViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Retrieve NavController from the NavHostFragment
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-        navController = navHostFragment.navController
+        setContent {
+            val navController = rememberNavController()
 
-        // Set up the action bar for use with the NavController
-        setupActionBarWithNavController(navController)
-    }
+            BackHandler {
+                navController.navigateUp()
+            }
 
-    /**
-     * Handle navigation when the user chooses Up from the action bar.
-     */
-    override fun onSupportNavigateUp(): Boolean {
-        return navController.navigateUp() || super.onSupportNavigateUp()
+            NavHost(
+                navController = navController,
+                startDestination = NavigationRouts.START.rout,
+                enterTransition = { EnterTransition.None },
+                exitTransition = { ExitTransition.None }
+            ) {
+                composable(NavigationRouts.START.rout) {
+                    StartScreen(
+                        navHostController = navController,
+                        viewModel = viewModel
+                    )
+                }
+
+                composable(
+                    route = NavigationRouts.FLAVOR.rout,
+                    enterTransition = {
+                        fadeIn(
+                            animationSpec = tween(
+                                550, easing = LinearEasing
+                            )
+                        ) + slideIntoContainer(
+                            animationSpec = tween(550, easing = EaseIn),
+                            towards = AnimatedContentTransitionScope.SlideDirection.Start
+                        )
+                    },
+                    exitTransition = {
+                        slideOutVertically ()
+                    }
+                ) {
+                    FlavorScreen(
+                        navHostController = navController,
+                        viewModel = viewModel,
+                    )
+                }
+
+                composable(
+                    route = NavigationRouts.PICKUP.rout,
+                    enterTransition = {
+                        fadeIn(
+                            animationSpec = tween(
+                                550, easing = LinearEasing
+                            )
+                        ) + slideIntoContainer(
+                            animationSpec = tween(550, easing = EaseIn),
+                            towards = AnimatedContentTransitionScope.SlideDirection.Start
+                        )
+                    },
+                    exitTransition = {
+                        slideOutVertically ()
+                    }
+                ) {
+                    PickupScreen(
+                        navHostController = navController,
+                        viewModel = viewModel
+                    )
+                }
+
+                composable(
+                    route = NavigationRouts.SUMMARY.rout,
+                    enterTransition = {
+                        slideInHorizontally(
+                            initialOffsetX = { -1000 }
+                        ) + expandVertically(expandFrom = Alignment.Top)
+                    }
+                ) {
+                    SummaryScreen(
+                        navHostController = navController,
+                        viewModel = viewModel,
+                        packageManager = packageManager
+                    )
+                }
+            }
+        }
     }
 }

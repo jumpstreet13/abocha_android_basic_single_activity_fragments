@@ -13,12 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example.cupcake.model
+package com.example.cupcake.viewModel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asFlow
+import androidx.lifecycle.map
+import kotlinx.coroutines.flow.Flow
 import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -53,10 +55,10 @@ class OrderViewModel : ViewModel() {
 
     // Price of the order so far
     private val _price = MutableLiveData<Double>()
-    val price: LiveData<String> = Transformations.map(_price) {
+    val price: Flow<String> = _price.map {
         // Format the price into the local currency and return this as LiveData<String>
         NumberFormat.getCurrencyInstance().format(it)
-    }
+    }.asFlow()
 
     init {
         // Set initial values for the order
