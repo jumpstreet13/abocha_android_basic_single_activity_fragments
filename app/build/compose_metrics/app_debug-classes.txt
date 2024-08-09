@@ -1,0 +1,78 @@
+stable class MainActivity {
+  <runtime stability> = Stable
+}
+stable class StartScreen {
+  <runtime stability> = Stable
+}
+stable class PickupScreen {
+  <runtime stability> = Stable
+}
+stable class FlavorScreen {
+  <runtime stability> = Stable
+}
+stable class SummaryScreen {
+  <runtime stability> = Stable
+}
+stable class Routes {
+  stable val route: String
+  <runtime stability> = Stable
+}
+unstable class OrderViewModel {
+  unstable val _quantity: MutableLiveData<Int>
+  unstable val quantity: LiveData<Int>
+  unstable val _flavor: MutableLiveData<String>
+  unstable val flavor: LiveData<String>
+  unstable val dateOptions: List<String>
+  unstable val _date: MutableLiveData<String>
+  unstable val date: LiveData<String>
+  unstable val _price: MutableLiveData<Double>
+  <runtime stability> = Unstable
+}
+stable class AppColors {
+  stable val primary: Color
+  stable val secondary: Color
+  stable val lines: Color
+  stable val background: Color
+  stable val backgroundReverse: Color
+  stable val iconColor: Color
+  stable val iconColorReverse: Color
+  stable val toolbar: Color
+  stable val toolbarReverse: Color
+  stable val card: Color
+  stable val cardReverse: Color
+  stable val text: Color
+  stable val textAccent: Color
+  stable val textSecondary: Color
+  stable val textReverse: Color
+  stable val textReverseSecondary: Color
+  stable val success: Color
+  stable val warning: Color
+  stable val error: Color
+  stable val light: Color
+  stable val dark: Color
+  stable val transparent: Color
+  <runtime stability> = Stable
+}
+stable class AppSizes {
+  stable val smaller: Dp
+  stable val small: Dp
+  stable val medium: Dp
+  stable val large: Dp
+  stable val larger: Dp
+  stable val bottomNavigationHeight: Dp
+  stable val appBarHeight: Dp
+  <runtime stability> = Stable
+}
+stable class Elevations {
+  stable val card: Dp
+  stable val default: Dp
+  <runtime stability> = Stable
+}
+stable class AppTheme {
+  <runtime stability> = Stable
+}
+stable class AppTypography {
+  stable val paragraph1: TextStyle
+  stable val materialTypography: Typography
+  <runtime stability> = Stable
+}

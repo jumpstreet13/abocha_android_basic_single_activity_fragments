@@ -1,0 +1,62 @@
+restartable scheme("[androidx.compose.ui.UiComposable]") fun CupcakesApp(
+  unused stable onToggleTheme: Function0<Unit>
+  stable darkTheme: Boolean
+  unstable context: Context
+)
+restartable scheme("[androidx.compose.ui.UiComposable]") fun FlavorScreen(
+  unstable sharedViewModel: OrderViewModel
+  stable onCancelOrder: Function0<Unit>
+  stable onClickNext: Function0<Unit>
+)
+restartable scheme("[androidx.compose.ui.UiComposable]") fun PickupScreen(
+  unstable sharedViewModel: OrderViewModel
+  stable onCancelOrder: Function0<Unit>
+  stable onClickNext: Function0<Unit>
+)
+restartable scheme("[androidx.compose.ui.UiComposable]") fun StartScreen(
+  unstable viewModel: OrderViewModel
+  stable goToFlavorScreen: Function0<Unit>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun OrderCupcakeButton(
+  stable text: String
+  stable quantity: Int
+  stable callback: Function1<Int, Unit>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun StartScreenPreview()
+restartable scheme("[androidx.compose.ui.UiComposable]") fun SummaryScreen(
+  unstable sharedViewModel: OrderViewModel
+  unstable context: Context
+  stable onCancelOrder: Function0<Unit>
+)
+restartable skippable fun SummaryPreview()
+restartable skippable scheme("[androidx.compose.ui.UiComposable, [androidx.compose.ui.UiComposable]]") fun StepsColumn(
+  stable modifier: Modifier? = @static Companion
+  stable content: Function2<Composer, Int, Unit>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun PreviewStepsColumn()
+restartable skippable fun ExampleProvider()
+restartable skippable scheme("[0, [0]]") fun CupecakesTheme(
+  stable darkTheme: Boolean
+  stable typography: AppTypography? = @dynamic AppTypography()
+  stable content: Function2<Composer, Int, Unit>
+)
+fun <get-colors>(
+  unused stable <this>: AppTheme
+): ColorPalette
+fun <get-typography>(
+  unused stable <this>: AppTheme
+): AppTypography
+fun <get-sizes>(
+  unused stable <this>: AppTheme
+): AppSizes
+restartable skippable scheme("[androidx.compose.ui.UiComposable, [androidx.compose.ui.UiComposable]]") fun CommonLayout(
+  stable subtotal: String
+  stable onCancelOrder: Function0<Unit>
+  stable onClickNext: Function0<Unit>
+  stable radioButtons: Function2<Composer, Int, Unit>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun RadioButtonWithLabel(
+  stable isSelected: Boolean
+  stable label: String
+  stable callback: Function1<String, Unit>
+)
