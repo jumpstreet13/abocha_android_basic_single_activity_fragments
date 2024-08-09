@@ -26,8 +26,12 @@ import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.core.EaseIn
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.material.Surface
+import androidx.compose.ui.Alignment
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -68,22 +72,8 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
                     )
                 }
 
-                composable(NavigationRouts.FLAVOR.rout) {
-                    FlavorScreen(
-                        navHostController = navController,
-                        viewModel = viewModel,
-                    )
-                }
-
-                composable(NavigationRouts.PICKUP.rout) {
-                    PickupScreen(
-                        navHostController = navController,
-                        viewModel = viewModel
-                    )
-                }
-
                 composable(
-                    route = NavigationRouts.SUMMARY.rout,
+                    route = NavigationRouts.FLAVOR.rout,
                     enterTransition = {
                         fadeIn(
                             animationSpec = tween(
@@ -93,6 +83,45 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
                             animationSpec = tween(550, easing = EaseIn),
                             towards = AnimatedContentTransitionScope.SlideDirection.Start
                         )
+                    },
+                    exitTransition = {
+                        slideOutVertically ()
+                    }
+                ) {
+                    FlavorScreen(
+                        navHostController = navController,
+                        viewModel = viewModel,
+                    )
+                }
+
+                composable(
+                    route = NavigationRouts.PICKUP.rout,
+                    enterTransition = {
+                        fadeIn(
+                            animationSpec = tween(
+                                550, easing = LinearEasing
+                            )
+                        ) + slideIntoContainer(
+                            animationSpec = tween(550, easing = EaseIn),
+                            towards = AnimatedContentTransitionScope.SlideDirection.Start
+                        )
+                    },
+                    exitTransition = {
+                        slideOutVertically ()
+                    }
+                ) {
+                    PickupScreen(
+                        navHostController = navController,
+                        viewModel = viewModel
+                    )
+                }
+
+                composable(
+                    route = NavigationRouts.SUMMARY.rout,
+                    enterTransition = {
+                        slideInHorizontally(
+                            initialOffsetX = { -1000 }
+                        ) + expandVertically(expandFrom = Alignment.Top)
                     }
                 ) {
                     SummaryScreen(
