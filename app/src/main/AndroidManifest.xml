@@ -24,7 +24,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Cupcake">
         <activity
-            android:name=".MainActivity"
+            android:name=".fragments.MainActivityFragments"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
