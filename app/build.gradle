@@ -69,6 +69,7 @@ dependencies {
     implementation 'androidx.compose.material:material'
     implementation 'androidx.compose.runtime:runtime-livedata'
     implementation "org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.7"
+    implementation 'androidx.compose.ui:ui-tooling-preview:1.6.8'
 
     implementation 'androidx.appcompat:appcompat:1.6.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'

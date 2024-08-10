@@ -1,5 +1,6 @@
 package com.example.cupcake.compose.ui.designsystem
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -87,9 +88,16 @@ fun SelectionRadioButton(
             colors = RadioButtonDefaults.colors(
                 selectedColor = MaterialTheme.colors.primary
             ),
-            onClick = { onSelect() }
+            onClick = {
+                onSelect()
+            }
         )
 
-        Text(item)
+        Text(
+            text = item,
+            modifier = Modifier.clickable {
+                onSelect()
+            }
+        )
     }
 }
