@@ -15,14 +15,23 @@
  */
 package com.example.cupcake.model
 
+import android.content.Context
+import android.content.Intent
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
-import java.text.NumberFormat
+import androidx.lifecycle.viewModelScope
+import com.example.cupcake.R
+import com.example.cupcake.di.ApplicationScope
+import com.example.cupcake.navigation.Destination
+import com.example.cupcake.navigation.NavigationObserver
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
+import javax.inject.Inject
 
 /** Price for a single cupcake */
 private const val PRICE_PER_CUPCAKE = 2.00
@@ -34,33 +43,86 @@ private const val PRICE_FOR_SAME_DAY_PICKUP = 3.00
  * [OrderViewModel] holds information about a cupcake order in terms of quantity, flavor, and
  * pickup date. It also knows how to calculate the total price based on these order details.
  */
-class OrderViewModel : ViewModel() {
+@ApplicationScope
+class OrderViewModel @Inject constructor(
+    private val navigationObserver: NavigationObserver
+): ViewModel() {
 
     // Quantity of cupcakes in this order
     private val _quantity = MutableLiveData<Int>()
     val quantity: LiveData<Int> = _quantity
 
     // Cupcake flavor for this order
-    private val _flavor = MutableLiveData<String>()
-    val flavor: LiveData<String> = _flavor
+    private val _flavor = MutableStateFlow("Vanilla")
+    val flavor = _flavor.asStateFlow()
 
     // Possible date options
     val dateOptions: List<String> = getPickupOptions()
 
     // Pickup date
-    private val _date = MutableLiveData<String>()
-    val date: LiveData<String> = _date
+    private val _date = MutableStateFlow<String?>(null)
+    val date = _date.asStateFlow()
 
     // Price of the order so far
-    private val _price = MutableLiveData<Double>()
-    val price: LiveData<String> = Transformations.map(_price) {
-        // Format the price into the local currency and return this as LiveData<String>
-        NumberFormat.getCurrencyInstance().format(it)
-    }
+    private val _price = MutableLiveData<String>()
+    val price: LiveData<String> = _price
 
     init {
         // Set initial values for the order
         resetOrder()
+    }
+
+    fun orderCupcake(quantity: Int) {
+        setQuantity(quantity)
+        navigateToFlavor()
+    }
+
+    fun cancelOrder() {
+        resetOrder()
+        viewModelScope.launch {
+            navigationObserver.navigateTo(Destination.Start.route)
+        }
+    }
+
+    private fun navigateToFlavor() {
+        viewModelScope.launch {
+            navigationObserver.navigateTo(Destination.Flavor.route)
+        }
+    }
+
+    fun navigateToPickup() {
+        viewModelScope.launch {
+            navigationObserver.navigateTo(Destination.Pickup.route)
+        }
+    }
+
+    fun navigateToSummary() {
+        viewModelScope.launch {
+            navigationObserver.navigateTo(Destination.Summary.route)
+        }
+    }
+
+    fun send(context: Context) {
+        val numberOfCupcakes = quantity.value ?: 0
+        val orderSummary = context.getString(
+            R.string.order_details,
+            context.resources.getQuantityString(
+                R.plurals.cupcakes,
+                numberOfCupcakes,
+                numberOfCupcakes
+            ),
+            flavor.value,
+            date.value.toString(),
+            price.value.toString()
+        )
+
+        val intent = Intent(Intent.ACTION_SEND)
+            .setType("text/plain")
+            .putExtra(Intent.EXTRA_SUBJECT, context.getString(R.string.new_cupcake_order))
+            .putExtra(Intent.EXTRA_TEXT, orderSummary)
+        if (context.packageManager?.resolveActivity(intent, 0) != null) {
+            context.startActivity(intent)
+        }
     }
 
     /**
@@ -68,7 +130,7 @@ class OrderViewModel : ViewModel() {
      *
      * @param numberCupcakes to order
      */
-    fun setQuantity(numberCupcakes: Int) {
+    private fun setQuantity(numberCupcakes: Int) {
         _quantity.value = numberCupcakes
         updatePrice()
     }
@@ -93,20 +155,13 @@ class OrderViewModel : ViewModel() {
     }
 
     /**
-     * Returns true if a flavor has not been selected for the order yet. Returns false otherwise.
-     */
-    fun hasNoFlavorSet(): Boolean {
-        return _flavor.value.isNullOrEmpty()
-    }
-
-    /**
      * Reset the order by using initial default values for the quantity, flavor, date, and price.
      */
     fun resetOrder() {
         _quantity.value = 0
-        _flavor.value = ""
+        _flavor.value = "Vanilla"
         _date.value = dateOptions[0]
-        _price.value = 0.0
+        _price.value = "0.0"
     }
 
     /**
@@ -118,7 +173,7 @@ class OrderViewModel : ViewModel() {
         if (dateOptions[0] == _date.value) {
             calculatedPrice += PRICE_FOR_SAME_DAY_PICKUP
         }
-        _price.value = calculatedPrice
+        _price.value = calculatedPrice.toString()
     }
 
     /**
@@ -128,10 +183,14 @@ class OrderViewModel : ViewModel() {
         val options = mutableListOf<String>()
         val formatter = SimpleDateFormat("E MMM d", Locale.getDefault())
         val calendar = Calendar.getInstance()
-        repeat(4) {
+        repeat(DAY_COUNT) {
             options.add(formatter.format(calendar.time))
             calendar.add(Calendar.DATE, 1)
         }
         return options
+    }
+
+    companion object {
+        const val DAY_COUNT = 4
     }
 }

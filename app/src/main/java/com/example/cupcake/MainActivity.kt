@@ -16,33 +16,67 @@
 package com.example.cupcake
 
 import android.os.Bundle
+import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.NavController
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.compose.runtime.remember
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.example.cupcake.custom_view.CustomViewScreen
+import com.example.cupcake.di.ViewModelFactory
+import com.example.cupcake.flavor_screen.FlavorScreen
+import com.example.cupcake.navigation.Destination
+import com.example.cupcake.theme.CupcakeTheme
+import com.example.cupcake.start_screen.StartScreen
+import com.example.cupcake.navigation.NavigationEffects
+import com.example.cupcake.navigation.NavigationObserver
+import com.example.cupcake.pickup_screen.PickupScreen
+import com.example.cupcake.summary_screen.SummaryScreen
+import javax.inject.Inject
 
 /**
  * Activity for cupcake order flow.
  */
-class MainActivity : AppCompatActivity(R.layout.activity_main) {
+class MainActivity : AppCompatActivity() {
 
-    private lateinit var navController: NavController
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
+    @Inject
+    lateinit var navigationObserver: NavigationObserver
+
+    private val component by lazy { (application as MainApplication).component }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        component.inject(this)
         super.onCreate(savedInstanceState)
+        setContent {
+            val navHostController = rememberNavController()
+            val getVmFactory: () -> ViewModelProvider.Factory = remember { { viewModelFactory } }
 
-        // Retrieve NavController from the NavHostFragment
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-        navController = navHostFragment.navController
-
-        // Set up the action bar for use with the NavController
-        setupActionBarWithNavController(navController)
-    }
-
-    /**
-     * Handle navigation when the user chooses Up from the action bar.
-     */
-    override fun onSupportNavigateUp(): Boolean {
-        return navController.navigateUp() || super.onSupportNavigateUp()
+            CupcakeTheme {
+                NavigationEffects(
+                    navigationFlow = navigationObserver.navigateState,
+                    navHostController = navHostController
+                )
+                NavHost(
+                    navController = navHostController,
+                    startDestination = Destination.Start.route
+                ) {
+                    composable(Destination.Start.route) {
+                        StartScreen(getVmFactory = getVmFactory)
+                    }
+                    composable(Destination.Flavor.route) {
+                        FlavorScreen(getVmFactory = getVmFactory)
+                    }
+                    composable(Destination.Pickup.route) {
+                        PickupScreen(getVmFactory = getVmFactory)
+                    }
+                    composable(Destination.Summary.route) {
+                        SummaryScreen(getVmFactory = getVmFactory)
+                    }
+                }
+            }
+        }
     }
 }
