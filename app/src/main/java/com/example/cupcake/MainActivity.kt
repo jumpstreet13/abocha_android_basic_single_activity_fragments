@@ -16,33 +16,39 @@
 package com.example.cupcake
 
 import android.os.Bundle
+import androidx.activity.SystemBarStyle
+import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.NavController
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.core.content.ContextCompat
+import com.arkivanov.decompose.defaultComponentContext
+import com.example.cupcake.navigation.RootComponent
+import com.example.cupcake.screen.RootContent
+import com.example.cupcake.ui.MyApplicationTheme
 
 /**
  * Activity for cupcake order flow.
  */
-class MainActivity : AppCompatActivity(R.layout.activity_main) {
-
-    private lateinit var navController: NavController
+class MainActivity: AppCompatActivity(R.layout.activity_main) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Retrieve NavController from the NavHostFragment
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-        navController = navHostFragment.navController
+        val statusBarLightColor = ContextCompat.getColor(this, R.color.pink_950)
+        val statusBarDarkColor = ContextCompat.getColor(this, R.color.pink_950)
+        enableEdgeToEdge(
+            statusBarStyle = SystemBarStyle.auto(
+                statusBarLightColor,
+                statusBarDarkColor,
+            ),
+        )
 
-        // Set up the action bar for use with the NavController
-        setupActionBarWithNavController(navController)
-    }
+        val rootComponent = RootComponent(defaultComponentContext())
 
-    /**
-     * Handle navigation when the user chooses Up from the action bar.
-     */
-    override fun onSupportNavigateUp(): Boolean {
-        return navController.navigateUp() || super.onSupportNavigateUp()
+        setContent {
+            MyApplicationTheme {
+                RootContent(rootComponent)
+            }
+        }
     }
 }
