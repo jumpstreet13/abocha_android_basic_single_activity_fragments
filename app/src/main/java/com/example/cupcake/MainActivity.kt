@@ -15,7 +15,9 @@
  */
 package com.example.cupcake
 
+import android.content.Intent
 import android.os.Bundle
+import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -37,6 +39,16 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
         // Set up the action bar for use with the NavController
         setupActionBarWithNavController(navController)
+
+        setComposeButtonListener()
+    }
+
+    private fun setComposeButtonListener() {
+        val openComposeScreenButton = findViewById<Button>(R.id.btn_open_compose_screen)
+        openComposeScreenButton.setOnClickListener {
+            val openComposeScreen = Intent(this, MainComposeActivity::class.java)
+            startActivity(openComposeScreen)
+        }
     }
 
     /**
