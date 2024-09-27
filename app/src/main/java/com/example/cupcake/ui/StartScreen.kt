@@ -1,7 +1,6 @@
 package com.example.cupcake.ui
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -69,7 +68,6 @@ fun CupcakeImage(modifier: Modifier = Modifier) {
             .width(300.dp)
             .height(300.dp)
             .padding(top = 8.dp)
-            .background(color = androidx.compose.ui.graphics.Color.White)
     )
 }
 
