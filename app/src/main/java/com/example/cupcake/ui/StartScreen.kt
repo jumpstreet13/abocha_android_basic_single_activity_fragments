@@ -77,8 +77,8 @@ fun CupcakeImage(modifier: Modifier = Modifier) {
 fun OrderCupcakesText(modifier: Modifier = Modifier) {
     Text(
         text = stringResource(id = R.string.order_cupcakes),
-        style = MaterialTheme.typography.headlineMedium,
-        color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f),
+        style = MaterialTheme.typography.headlineLarge,
+        color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f),
         modifier = modifier.padding(bottom = 16.dp),
     )
 }
