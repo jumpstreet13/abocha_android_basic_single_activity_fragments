@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
 import com.example.cupcake.ui.StartScreen
@@ -17,7 +18,7 @@ class MainComposeActivity : ComponentActivity() {
         setContent {
             CupcakeTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    StartScreen()
+                    StartScreen(modifier = Modifier.padding(innerPadding))
                 }
             }
         }
