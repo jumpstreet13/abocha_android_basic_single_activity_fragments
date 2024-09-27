@@ -95,16 +95,16 @@ fun OrderCupcakeButton(modifier: Modifier = Modifier) {
 
 @Preview(showBackground = true)
 @Composable
-fun StartScreenPreview() {
-    CupcakeTheme {
+fun StartScreenLightPreview() {
+    CupcakeTheme(darkTheme = false) {
         StartScreen()
     }
 }
 
 @Preview(showBackground = true)
 @Composable
-fun GreetingPreview3() {
-    CupcakeTheme {
-        OrderCupcakesText()
+fun StartScreenDarkPreview() {
+    CupcakeTheme(darkTheme = true) {
+        StartScreen()
     }
 }
