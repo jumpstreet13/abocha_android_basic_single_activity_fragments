@@ -1,0 +1,81 @@
+package com.example.cupcake.ui
+
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
+import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import com.example.cupcake.R
+import com.example.cupcake.ui.theme.CupcakeTheme
+
+@Composable
+fun StartScreen(modifier: Modifier = Modifier) {
+    Column(
+        modifier = modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        CupcakeImage()
+        OrderCupcakesText()
+        OrderCupcakeButton()
+        OrderCupcakeButton()
+        OrderCupcakeButton()
+    }
+}
+
+@Composable
+fun CupcakeImage(modifier: Modifier = Modifier) {
+    Image(
+        painter = painterResource(id = R.drawable.cupcake),
+        contentDescription = "Cupcake",
+        contentScale = ContentScale.Inside,
+        modifier = modifier
+            .width(300.dp)
+            .height(300.dp)
+            .padding(top = 16.dp)
+            .background(color = androidx.compose.ui.graphics.Color.White)
+    )
+}
+
+@Composable
+fun OrderCupcakesText(modifier: Modifier = Modifier) {
+    Text(
+        text = stringResource(id = R.string.order_cupcakes),
+        style = MaterialTheme.typography.headlineMedium,
+        color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f),
+        modifier = modifier.padding(bottom = 16.dp),
+    )
+}
+
+@Composable
+fun OrderCupcakeButton(modifier: Modifier = Modifier) {
+    Button(
+        onClick = { /* TODO */ },
+        modifier = modifier
+            .padding(top = 8.dp)
+            .widthIn(min = 250.dp)
+    ) {
+        Text(text = stringResource(id = R.string.one_cupcake))
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun GreetingPreview3() {
+    CupcakeTheme {
+        OrderCupcakesText()
+    }
+}
