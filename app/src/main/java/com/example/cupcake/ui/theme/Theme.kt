@@ -1,10 +1,19 @@
 package com.example.cupcake.ui.theme
 
+import android.app.Activity
+import android.os.Build
+import android.view.View
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
+import androidx.compose.ui.graphics.compositeOver
+import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.platform.LocalView
+import androidx.core.view.WindowCompat
 
 private val DarkColorScheme = darkColorScheme(
     primary = Purple80,
@@ -39,9 +48,45 @@ fun CupcakeTheme(
         else -> LightColorScheme
     }
 
+    SetStatusNavigationBarsAppearance(colorScheme, darkTheme)
+
     MaterialTheme(
         colorScheme = colorScheme,
         typography = Typography,
         content = content
     )
+}
+
+@Composable
+private fun SetStatusNavigationBarsAppearance(colorScheme: ColorScheme, darkTheme: Boolean) {
+    val view = LocalView.current
+    if (!view.isInEditMode) {
+        SideEffect {
+            val activity = view.context as Activity
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                setStatusBarAppearance(activity, colorScheme, view, darkTheme)
+                setNavigationBarAppearance(activity, colorScheme, view)
+            }
+        }
+    }
+}
+
+private fun setStatusBarAppearance(
+    activity: Activity,
+    colorScheme: ColorScheme,
+    view: View,
+    darkTheme: Boolean
+) {
+    activity.window.navigationBarColor =
+        colorScheme.primary.copy(alpha = 0.2f)
+            .compositeOver(colorScheme.surface.copy()).toArgb()
+    WindowCompat.getInsetsController(activity.window, view)
+        .isAppearanceLightNavigationBars = !darkTheme
+}
+
+private fun setNavigationBarAppearance(activity: Activity, colorScheme: ColorScheme, view: View) {
+    activity.window.statusBarColor =
+        colorScheme.primaryContainer.toArgb()
+    WindowCompat.getInsetsController(activity.window, view)
+        .isAppearanceLightStatusBars = false
 }
