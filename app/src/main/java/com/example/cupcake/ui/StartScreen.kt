@@ -52,9 +52,9 @@ private fun StartScreenContent(modifier: Modifier) {
     ) {
         CupcakeImage()
         OrderCupcakesText()
-        OrderCupcakeButton()
-        OrderCupcakeButton()
-        OrderCupcakeButton()
+        OrderCupcakeButton(stringResource(R.string.one_cupcake))
+        OrderCupcakeButton(stringResource(R.string.six_cupcakes))
+        OrderCupcakeButton(stringResource(R.string.twelve_cupcakes))
     }
 }
 
@@ -82,14 +82,14 @@ fun OrderCupcakesText(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun OrderCupcakeButton(modifier: Modifier = Modifier) {
+fun OrderCupcakeButton(buttonText: String, modifier: Modifier = Modifier) {
     Button(
         onClick = { /* TODO */ },
         modifier = modifier
             .padding(top = 8.dp)
             .widthIn(min = 250.dp)
     ) {
-        Text(text = stringResource(id = R.string.one_cupcake))
+        Text(buttonText)
     }
 }
 
