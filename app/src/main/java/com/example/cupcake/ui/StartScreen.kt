@@ -27,7 +27,7 @@ import com.example.cupcake.ui.theme.CupcakeTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun StartScreen(modifier: Modifier = Modifier) {
+fun StartScreen(onNavigateToFlavorScreen: () -> Unit, modifier: Modifier = Modifier) {
     Scaffold(
         topBar = {
             TopAppBar(
@@ -40,21 +40,21 @@ fun StartScreen(modifier: Modifier = Modifier) {
         }
     )
     { paddingValues ->
-        StartScreenContent(modifier.padding(paddingValues))
+        StartScreenContent(onNavigateToFlavorScreen, modifier.padding(paddingValues))
     }
 }
 
 @Composable
-private fun StartScreenContent(modifier: Modifier) {
+private fun StartScreenContent(onNavigateToFlavorScreen: () -> Unit, modifier: Modifier) {
     Column(
         modifier = modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         CupcakeImage()
         OrderCupcakesText()
-        OrderCupcakeButton(stringResource(R.string.one_cupcake))
-        OrderCupcakeButton(stringResource(R.string.six_cupcakes))
-        OrderCupcakeButton(stringResource(R.string.twelve_cupcakes))
+        OrderCupcakeButton(stringResource(R.string.one_cupcake), onNavigateToFlavorScreen)
+        OrderCupcakeButton(stringResource(R.string.six_cupcakes), onNavigateToFlavorScreen)
+        OrderCupcakeButton(stringResource(R.string.twelve_cupcakes), onNavigateToFlavorScreen)
     }
 }
 
@@ -82,9 +82,9 @@ fun OrderCupcakesText(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun OrderCupcakeButton(buttonText: String, modifier: Modifier = Modifier) {
+fun OrderCupcakeButton(buttonText: String, onClick: () -> Unit , modifier: Modifier = Modifier) {
     Button(
-        onClick = { /* TODO */ },
+        onClick = onClick,
         modifier = modifier
             .padding(top = 8.dp)
             .widthIn(min = 250.dp)
@@ -97,7 +97,7 @@ fun OrderCupcakeButton(buttonText: String, modifier: Modifier = Modifier) {
 @Composable
 fun StartScreenLightPreview() {
     CupcakeTheme(darkTheme = false) {
-        StartScreen()
+        StartScreen(onNavigateToFlavorScreen = {})
     }
 }
 
@@ -105,6 +105,6 @@ fun StartScreenLightPreview() {
 @Composable
 fun StartScreenDarkPreview() {
     CupcakeTheme(darkTheme = true) {
-        StartScreen()
+        StartScreen(onNavigateToFlavorScreen = {})
     }
 }

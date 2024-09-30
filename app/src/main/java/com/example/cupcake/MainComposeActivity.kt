@@ -18,7 +18,7 @@ class MainComposeActivity : ComponentActivity() {
         setContent {
             CupcakeTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    StartScreen(modifier = Modifier.padding(innerPadding))
+                    Navigation(modifier = Modifier.padding(innerPadding))
                 }
             }
         }
