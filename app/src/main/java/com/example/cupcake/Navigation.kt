@@ -6,6 +6,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
+import com.example.cupcake.model.OrderViewModel
 import com.example.cupcake.ui.FlavorScreen
 import com.example.cupcake.ui.StartScreen
 import kotlinx.serialization.Serializable
@@ -18,7 +19,7 @@ object FlavorDestination
 
 
 @Composable
-fun Navigation(modifier: Modifier = Modifier) {
+fun Navigation(sharedViewModel: OrderViewModel, modifier: Modifier = Modifier) {
     val navController = rememberNavController()
 
     NavHost(navController = navController, startDestination = StartDestination) {
@@ -26,7 +27,7 @@ fun Navigation(modifier: Modifier = Modifier) {
 
             val start : StartDestination = backStackEntry.toRoute()
 
-            StartScreen(
+            StartScreen(sharedViewModel,
                 onNavigateToFlavorScreen = {
                     navController.navigate(FlavorDestination)
                 },

@@ -23,11 +23,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.cupcake.R
+import com.example.cupcake.model.OrderViewModel
 import com.example.cupcake.ui.theme.CupcakeTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun StartScreen(onNavigateToFlavorScreen: () -> Unit, modifier: Modifier = Modifier) {
+fun StartScreen(sharedViewModel: OrderViewModel, onNavigateToFlavorScreen: () -> Unit, modifier: Modifier = Modifier) {
     Scaffold(
         topBar = {
             TopAppBar(
@@ -40,21 +41,24 @@ fun StartScreen(onNavigateToFlavorScreen: () -> Unit, modifier: Modifier = Modif
         }
     )
     { paddingValues ->
-        StartScreenContent(onNavigateToFlavorScreen, modifier.padding(paddingValues))
+        sharedViewModel.resetOrder()
+        StartScreenContent(sharedViewModel, onNavigateToFlavorScreen, modifier.padding(paddingValues))
     }
 }
 
 @Composable
-private fun StartScreenContent(onNavigateToFlavorScreen: () -> Unit, modifier: Modifier) {
+private fun StartScreenContent(
+    sharedViewModel: OrderViewModel, onNavigateToFlavorScreen: () -> Unit, modifier: Modifier
+) {
     Column(
         modifier = modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         CupcakeImage()
         OrderCupcakesText()
-        OrderCupcakeButton(stringResource(R.string.one_cupcake), onNavigateToFlavorScreen)
-        OrderCupcakeButton(stringResource(R.string.six_cupcakes), onNavigateToFlavorScreen)
-        OrderCupcakeButton(stringResource(R.string.twelve_cupcakes), onNavigateToFlavorScreen)
+        OrderCupcakeButton(sharedViewModel, 1, stringResource(R.string.one_cupcake), onNavigateToFlavorScreen)
+        OrderCupcakeButton(sharedViewModel, 6, stringResource(R.string.six_cupcakes), onNavigateToFlavorScreen)
+        OrderCupcakeButton(sharedViewModel, 12, stringResource(R.string.twelve_cupcakes), onNavigateToFlavorScreen)
     }
 }
 
@@ -82,7 +86,13 @@ fun OrderCupcakesText(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun OrderCupcakeButton(buttonText: String, onClick: () -> Unit , modifier: Modifier = Modifier) {
+fun OrderCupcakeButton(
+    sharedViewModel: OrderViewModel,
+    quantity: Int,
+    buttonText: String,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
     Button(
         onClick = onClick,
         modifier = modifier
@@ -90,6 +100,7 @@ fun OrderCupcakeButton(buttonText: String, onClick: () -> Unit , modifier: Modif
             .widthIn(min = 250.dp)
     ) {
         Text(buttonText)
+        sharedViewModel.orderCupcake(quantity, stringResource(R.string.vanilla))
     }
 }
 
@@ -97,7 +108,7 @@ fun OrderCupcakeButton(buttonText: String, onClick: () -> Unit , modifier: Modif
 @Composable
 fun StartScreenLightPreview() {
     CupcakeTheme(darkTheme = false) {
-        StartScreen(onNavigateToFlavorScreen = {})
+        StartScreen(sharedViewModel = OrderViewModel(), onNavigateToFlavorScreen = {})
     }
 }
 
@@ -105,6 +116,6 @@ fun StartScreenLightPreview() {
 @Composable
 fun StartScreenDarkPreview() {
     CupcakeTheme(darkTheme = true) {
-        StartScreen(onNavigateToFlavorScreen = {})
+        StartScreen(sharedViewModel = OrderViewModel(), onNavigateToFlavorScreen = {})
     }
 }
