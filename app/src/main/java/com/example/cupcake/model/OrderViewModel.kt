@@ -66,6 +66,19 @@ class OrderViewModel : ViewModel() {
     }
 
     /**
+     * Set the quantity of cupcakes and default flavor if not set.
+     *
+     * @param quantity Number of cupcakes to order
+     * @param defaultFlavor Default flavor to set if no flavor is selected
+     */
+    fun orderCupcake(quantity: Int, defaultFlavor: String) {
+        setQuantity(quantity)
+        if (hasNoFlavorSet()) {
+            setFlavor(defaultFlavor)
+        }
+    }
+
+    /**
      * Set the quantity of cupcakes for this order.
      *
      * @param numberCupcakes to order
