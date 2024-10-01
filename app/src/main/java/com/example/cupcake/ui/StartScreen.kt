@@ -15,6 +15,9 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -56,9 +59,32 @@ private fun StartScreenContent(
     ) {
         CupcakeImage()
         OrderCupcakesText()
-        OrderCupcakeButton(sharedViewModel, 1, stringResource(R.string.one_cupcake), onNavigateToFlavorScreen)
-        OrderCupcakeButton(sharedViewModel, 6, stringResource(R.string.six_cupcakes), onNavigateToFlavorScreen)
-        OrderCupcakeButton(sharedViewModel, 12, stringResource(R.string.twelve_cupcakes), onNavigateToFlavorScreen)
+        OrderCupcakeButtons(sharedViewModel, onNavigateToFlavorScreen)
+    }
+}
+
+@Composable
+private fun OrderCupcakeButtons(sharedViewModel: OrderViewModel, onNavigateToFlavorScreen: () -> Unit) {
+    val defaultFlavor = stringResource(R.string.vanilla)
+    val cupcakeQuantities by remember {
+        mutableStateOf(
+            listOf(
+                R.string.one_cupcake to 1,
+                R.string.six_cupcakes to 6,
+                R.string.twelve_cupcakes to 12
+            )
+        )
+    }
+
+    cupcakeQuantities.forEach { (stringRes, quantity) ->
+        val buttonText = stringResource(stringRes)
+        OrderCupcakeButton(
+            buttonText = buttonText,
+            onClick = {
+                sharedViewModel.orderCupcake(quantity, defaultFlavor)
+                onNavigateToFlavorScreen()
+            }
+        )
     }
 }
 
@@ -87,8 +113,6 @@ fun OrderCupcakesText(modifier: Modifier = Modifier) {
 
 @Composable
 fun OrderCupcakeButton(
-    sharedViewModel: OrderViewModel,
-    quantity: Int,
     buttonText: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier
@@ -100,7 +124,6 @@ fun OrderCupcakeButton(
             .widthIn(min = 250.dp)
     ) {
         Text(buttonText)
-        sharedViewModel.orderCupcake(quantity, stringResource(R.string.vanilla))
     }
 }
 
