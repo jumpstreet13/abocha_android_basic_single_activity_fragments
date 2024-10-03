@@ -1,5 +1,6 @@
 package com.example.cupcake.ui
 
+import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -13,6 +14,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
@@ -157,6 +159,23 @@ private fun NavigationButtons(modifier: Modifier = Modifier) {
         }
     }
 }
+
+
+@Preview(
+    name = "Dark Mode With System UI",
+    uiMode = Configuration.UI_MODE_NIGHT_UNDEFINED,
+    showBackground = true,
+    showSystemUi = true
+)
+@Composable
+private fun FlavorScreenContentDarkWithSystemUi() {
+    CupcakeTheme(darkTheme = true) {
+        Surface {
+            FlavorScreenContent()
+        }
+    }
+}
+
 
 @Preview(showBackground = true)
 @Composable
