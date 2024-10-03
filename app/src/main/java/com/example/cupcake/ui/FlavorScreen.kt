@@ -2,7 +2,9 @@ package com.example.cupcake.ui
 
 import android.content.res.Configuration
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -118,16 +120,29 @@ private fun FlavorRadioButton(
     text: String, selected: Boolean, modifier: Modifier = Modifier, onClick: () -> Unit
 ) {
     Row(
-        modifier.fillMaxWidth().clickable(onClick = onClick),
+        modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        RadioButton(
-            selected = selected,
-            onClick = null
+        Box(
+            modifier = Modifier.clickable(onClick = onClick)
+        ) {
+            RadioButton(
+                selected = selected,
+                onClick = null
+            )
+        }
+        Text(
+            text = text,
+            modifier = Modifier
+                .padding(start = 16.dp)
+                .clickable(
+                    onClick = onClick,
+                    indication = null,
+                    interactionSource = remember { MutableInteractionSource() })
         )
-        Text(text = text, modifier = Modifier.padding(start = 16.dp))
     }
 }
+
 
 @Composable
 fun Divider(modifier: Modifier = Modifier) {
