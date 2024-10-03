@@ -7,9 +7,13 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.selection.selectableGroup
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.RadioButton
@@ -27,12 +31,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import com.example.cupcake.R
 import com.example.cupcake.ui.theme.CupcakeTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FlavorScreen(modifier: Modifier = Modifier) {
+fun FlavorScreen(navHostController: NavHostController, modifier: Modifier = Modifier) {
     Scaffold(
         topBar = {
             TopAppBar(
@@ -40,7 +45,16 @@ fun FlavorScreen(modifier: Modifier = Modifier) {
                     containerColor = MaterialTheme.colorScheme.primary,
                     titleContentColor = MaterialTheme.colorScheme.onPrimary,
                 ),
-                title = { Text(text = stringResource(id = R.string.app_name)) }
+                title = { Text(text = stringResource(id = R.string.choose_flavor)) },
+                navigationIcon = {
+                    IconButton(
+                        onClick = { navHostController.navigateUp() }) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = null
+                        )
+                    }
+                }
             )
         }
     )
