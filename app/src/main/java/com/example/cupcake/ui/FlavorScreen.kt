@@ -1,6 +1,7 @@
 package com.example.cupcake.ui
 
 import android.content.res.Configuration
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -104,7 +105,7 @@ private fun FlavorPickerRadioGroup(flavors: List<String>, modifier: Modifier = M
                 FlavorRadioButton(
                     text = text,
                     selected = (text == selectedOption),
-                    modifier = modifier,
+                    modifier = modifier.padding(vertical = 16.dp),
                     onClick = { onOptionSelected(text) }
                 )
             }
@@ -117,14 +118,14 @@ private fun FlavorRadioButton(
     text: String, selected: Boolean, modifier: Modifier = Modifier, onClick: () -> Unit
 ) {
     Row(
-        modifier.fillMaxWidth(),
+        modifier.fillMaxWidth().clickable(onClick = onClick),
         verticalAlignment = Alignment.CenterVertically
     ) {
         RadioButton(
             selected = selected,
-            onClick = onClick
+            onClick = null
         )
-        Text(text = text)
+        Text(text = text, modifier = Modifier.padding(start = 16.dp))
     }
 }
 
