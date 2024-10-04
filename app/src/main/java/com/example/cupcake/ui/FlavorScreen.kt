@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
@@ -119,30 +120,39 @@ private fun FlavorPickerRadioGroup(flavors: List<String>, modifier: Modifier = M
 private fun FlavorRadioButton(
     text: String, selected: Boolean, modifier: Modifier = Modifier, onClick: () -> Unit
 ) {
+    val interactionSource = remember { MutableInteractionSource() }
+    val ripple = rememberRipple(bounded = false)
+
     Row(
         modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Box(
-            modifier = Modifier.clickable(onClick = onClick)
+            modifier = Modifier
+                .clickable(
+                    interactionSource = interactionSource,
+                    indication = ripple,
+                    onClick = onClick
+                )
         ) {
             RadioButton(
                 selected = selected,
-                onClick = null
+                onClick = null,
+                modifier = Modifier.padding(4.dp)
             )
         }
         Text(
             text = text,
             modifier = Modifier
-                .padding(start = 16.dp)
+                .padding(start = 8.dp)
                 .clickable(
-                    onClick = onClick,
+                    interactionSource = interactionSource,
                     indication = null,
-                    interactionSource = remember { MutableInteractionSource() })
+                    onClick = onClick
+                )
         )
     }
 }
-
 
 @Composable
 fun Divider(modifier: Modifier = Modifier) {
