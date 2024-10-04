@@ -1,10 +1,7 @@
 package com.example.cupcake.ui
 
 import android.content.res.Configuration
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -12,7 +9,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
@@ -20,7 +16,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -38,6 +33,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.cupcake.R
 import com.example.cupcake.ui.theme.CupcakeTheme
+import com.example.cupcake.ui.widgets.RadioButtonWithRipple
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -97,7 +93,6 @@ private fun FlavorScreenContent(modifier: Modifier = Modifier) {
     }
 }
 
-
 @Composable
 private fun FlavorPickerRadioGroup(flavors: List<String>, modifier: Modifier = Modifier) {
     val (selectedOption: String, onOptionSelected: (String) -> Unit) =
@@ -105,7 +100,7 @@ private fun FlavorPickerRadioGroup(flavors: List<String>, modifier: Modifier = M
     Column {
         Column(Modifier.selectableGroup()) {
             flavors.forEach { text ->
-                FlavorRadioButton(
+                RadioButtonWithRipple(
                     text = text,
                     selected = (text == selectedOption),
                     modifier = modifier.padding(vertical = 16.dp),
@@ -113,44 +108,6 @@ private fun FlavorPickerRadioGroup(flavors: List<String>, modifier: Modifier = M
                 )
             }
         }
-    }
-}
-
-@Composable
-private fun FlavorRadioButton(
-    text: String, selected: Boolean, modifier: Modifier = Modifier, onClick: () -> Unit
-) {
-    val interactionSource = remember { MutableInteractionSource() }
-    val ripple = rememberRipple(bounded = false)
-
-    Row(
-        modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Box(
-            modifier = Modifier
-                .clickable(
-                    interactionSource = interactionSource,
-                    indication = ripple,
-                    onClick = onClick
-                )
-        ) {
-            RadioButton(
-                selected = selected,
-                onClick = null,
-                modifier = Modifier.padding(4.dp)
-            )
-        }
-        Text(
-            text = text,
-            modifier = Modifier
-                .padding(start = 8.dp)
-                .clickable(
-                    interactionSource = interactionSource,
-                    indication = null,
-                    onClick = onClick
-                )
-        )
     }
 }
 
