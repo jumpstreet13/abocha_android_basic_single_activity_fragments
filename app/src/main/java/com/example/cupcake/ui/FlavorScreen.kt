@@ -7,19 +7,12 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.selection.selectableGroup
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -33,10 +26,10 @@ import androidx.compose.ui.unit.sp
 import com.example.cupcake.R
 import com.example.cupcake.model.OrderViewModel
 import com.example.cupcake.ui.theme.CupcakeTheme
+import com.example.cupcake.ui.widgets.CupcakeTopBar
 import com.example.cupcake.ui.widgets.RadioButtonWithRipple
 import com.example.cupcake.ui.widgets.RectangularFilledButton
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FlavorScreen(
     sharedViewModel: OrderViewModel,
@@ -46,20 +39,10 @@ fun FlavorScreen(
 ) {
     Scaffold(
         topBar = {
-            TopAppBar(
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primary,
-                    titleContentColor = MaterialTheme.colorScheme.onPrimary,
-                ),
-                title = { Text(text = stringResource(id = R.string.choose_flavor)) },
-                navigationIcon = {
-                    IconButton(onClick = onNavigateUp) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = null
-                        )
-                    }
-                }
+            CupcakeTopBar(
+                title = stringResource(id = R.string.choose_flavor),
+                showUpArrow = true,
+                onNavigateUp = onNavigateUp
             )
         }
     )

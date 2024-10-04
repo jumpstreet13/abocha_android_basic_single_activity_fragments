@@ -2,17 +2,9 @@ package com.example.cupcake.ui
 
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -21,9 +13,9 @@ import androidx.compose.ui.unit.sp
 import com.example.cupcake.R
 import com.example.cupcake.model.OrderViewModel
 import com.example.cupcake.ui.theme.CupcakeTheme
+import com.example.cupcake.ui.widgets.CupcakeTopBar
 
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PickupScreen(
     sharedViewModel: OrderViewModel,
@@ -33,20 +25,10 @@ fun PickupScreen(
 ) {
     Scaffold(
         topBar = {
-            TopAppBar(
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primary,
-                    titleContentColor = MaterialTheme.colorScheme.onPrimary,
-                ),
-                title = { Text(text = stringResource(id = R.string.choose_flavor)) },
-                navigationIcon = {
-                    IconButton(onClick = onNavigateUp) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = null
-                        )
-                    }
-                }
+            CupcakeTopBar(
+                title = stringResource(id = R.string.pickup_date),
+                showUpArrow = true,
+                onNavigateUp = onNavigateUp
             )
         }
     )
