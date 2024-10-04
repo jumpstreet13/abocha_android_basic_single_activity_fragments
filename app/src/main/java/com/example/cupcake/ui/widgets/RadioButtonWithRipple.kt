@@ -14,6 +14,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 
 /**
  * Radio button with a text label and ripple effect. The ripple effect is
@@ -52,6 +53,7 @@ fun RadioButtonWithRipple(
         }
         Text(
             text = text,
+            fontSize = 18.sp,
             modifier = Modifier
                 .padding(start = 8.dp)
                 .clickable(

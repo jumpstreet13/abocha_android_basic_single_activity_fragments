@@ -30,6 +30,7 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.cupcake.R
 import com.example.cupcake.ui.theme.CupcakeTheme
@@ -127,6 +128,7 @@ fun Divider(modifier: Modifier = Modifier) {
 fun SubtotalPrice(price: MutableState<String>, modifier: Modifier = Modifier) {
     Text(
         text = stringResource(id = R.string.subtotal_price, price.value),
+        fontSize = 20.sp,
         modifier = modifier
     )
 }
