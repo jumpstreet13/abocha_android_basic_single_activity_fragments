@@ -6,8 +6,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.widthIn
-import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -28,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import com.example.cupcake.R
 import com.example.cupcake.model.OrderViewModel
 import com.example.cupcake.ui.theme.CupcakeTheme
+import com.example.cupcake.ui.widgets.RectangularFilledButton
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -78,12 +77,13 @@ private fun OrderCupcakeButtons(sharedViewModel: OrderViewModel, onNavigateToFla
 
     cupcakeQuantities.forEach { (stringRes, quantity) ->
         val buttonText = stringResource(stringRes)
-        OrderCupcakeButton(
+        RectangularFilledButton(
             buttonText = buttonText,
             onClick = {
                 sharedViewModel.orderCupcake(quantity, defaultFlavor)
                 onNavigateToFlavorScreen()
-            }
+            },
+            modifier = Modifier.padding(top = 8.dp, bottom = 8.dp)
         )
     }
 }
@@ -109,22 +109,6 @@ fun OrderCupcakesText(modifier: Modifier = Modifier) {
         color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f),
         modifier = modifier.padding(bottom = 16.dp),
     )
-}
-
-@Composable
-fun OrderCupcakeButton(
-    buttonText: String,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    Button(
-        onClick = onClick,
-        modifier = modifier
-            .padding(top = 8.dp)
-            .widthIn(min = 250.dp)
-    ) {
-        Text(buttonText)
-    }
 }
 
 @Preview(showBackground = true)

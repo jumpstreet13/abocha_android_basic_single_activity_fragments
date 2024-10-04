@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -34,6 +33,7 @@ import androidx.navigation.NavHostController
 import com.example.cupcake.R
 import com.example.cupcake.ui.theme.CupcakeTheme
 import com.example.cupcake.ui.widgets.RadioButtonWithRipple
+import com.example.cupcake.ui.widgets.RectangularFilledButton
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -146,14 +146,13 @@ private fun NavigationButtons(modifier: Modifier = Modifier) {
             Text(text = stringResource(id = R.string.cancel))
         }
 
-        Button(
+        RectangularFilledButton(
+            buttonText = stringResource(id = R.string.next),
             onClick = { /*TODO*/ },
             modifier = Modifier
                 .weight(1f)
-                .padding(top = 16.dp),
-        ) {
-            Text(text = stringResource(id = R.string.next))
-        }
+                .padding(top = 16.dp)
+        )
     }
 }
 
