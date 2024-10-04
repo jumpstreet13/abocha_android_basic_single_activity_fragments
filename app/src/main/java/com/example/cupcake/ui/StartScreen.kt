@@ -43,7 +43,6 @@ fun StartScreen(sharedViewModel: OrderViewModel, onNavigateToFlavorScreen: () ->
         }
     )
     { paddingValues ->
-        sharedViewModel.resetOrder()
         StartScreenContent(sharedViewModel, onNavigateToFlavorScreen, modifier.padding(paddingValues))
     }
 }
