@@ -38,7 +38,7 @@ fun Navigation(sharedViewModel: OrderViewModel, modifier: Modifier = Modifier) {
 
             val flavorDestination : FlavorDestination = backStackEntry.toRoute()
 
-            FlavorScreen(navController, modifier = modifier)
+            FlavorScreen(sharedViewModel, navController, modifier = modifier)
         }
 
     }

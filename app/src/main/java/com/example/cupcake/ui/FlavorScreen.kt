@@ -33,13 +33,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.cupcake.R
+import com.example.cupcake.model.OrderViewModel
 import com.example.cupcake.ui.theme.CupcakeTheme
 import com.example.cupcake.ui.widgets.RadioButtonWithRipple
 import com.example.cupcake.ui.widgets.RectangularFilledButton
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FlavorScreen(navHostController: NavHostController, modifier: Modifier = Modifier) {
+fun FlavorScreen(sharedViewModel: OrderViewModel, navHostController: NavHostController, modifier: Modifier = Modifier) {
     Scaffold(
         topBar = {
             TopAppBar(
@@ -61,12 +62,12 @@ fun FlavorScreen(navHostController: NavHostController, modifier: Modifier = Modi
         }
     )
     { paddingValues ->
-        FlavorScreenContent(modifier.padding(paddingValues))
+        FlavorScreenContent(sharedViewModel, modifier.padding(paddingValues))
     }
 }
 
 @Composable
-private fun FlavorScreenContent(modifier: Modifier = Modifier) {
+private fun FlavorScreenContent(sharedViewModel: OrderViewModel, modifier: Modifier = Modifier) {
     Column(
         modifier = modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -78,7 +79,10 @@ private fun FlavorScreenContent(modifier: Modifier = Modifier) {
             stringResource(R.string.salted_caramel),
             stringResource(R.string.coffee),
         )
-        FlavorPickerRadioGroup(flavors, modifier = Modifier.padding(start = 16.dp))
+        FlavorPickerRadioGroup(
+            flavors,
+            onFlavorSelected = { flavor -> sharedViewModel.setFlavor(flavor) },
+            modifier = Modifier.padding(start = 16.dp))
 
         Divider(modifier = Modifier.padding(horizontal = 16.dp))
 
@@ -96,7 +100,11 @@ private fun FlavorScreenContent(modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun FlavorPickerRadioGroup(flavors: List<String>, modifier: Modifier = Modifier) {
+private fun FlavorPickerRadioGroup(
+    flavors: List<String>,
+    onFlavorSelected: (String) -> Unit,
+    modifier: Modifier = Modifier
+) {
     val (selectedOption: String, onOptionSelected: (String) -> Unit) =
         remember { mutableStateOf(flavors[0]) }
     Column {
@@ -106,7 +114,10 @@ private fun FlavorPickerRadioGroup(flavors: List<String>, modifier: Modifier = M
                     text = text,
                     selected = (text == selectedOption),
                     modifier = modifier.padding(vertical = 16.dp),
-                    onClick = { onOptionSelected(text) }
+                    onClick = {
+                        onOptionSelected(text)
+                        onFlavorSelected(text)
+                    }
                 )
             }
         }
@@ -171,7 +182,7 @@ private fun NavigationButtons(modifier: Modifier = Modifier) {
 private fun FlavorScreenContentDarkWithSystemUi() {
     CupcakeTheme(darkTheme = true) {
         Surface {
-            FlavorScreenContent()
+            FlavorScreenContent(sharedViewModel = OrderViewModel())
         }
     }
 }
@@ -181,7 +192,7 @@ private fun FlavorScreenContentDarkWithSystemUi() {
 @Composable
 private fun FlavorScreenContentLightPreview() {
     CupcakeTheme(darkTheme = false) {
-        FlavorScreenContent()
+        FlavorScreenContent(sharedViewModel = OrderViewModel())
     }
 }
 
@@ -190,6 +201,6 @@ private fun FlavorScreenContentLightPreview() {
 @Composable
 private fun FlavorScreenContentDarkPreview() {
     CupcakeTheme(darkTheme = true) {
-        FlavorScreenContent()
+        FlavorScreenContent(sharedViewModel = OrderViewModel())
     }
 }
