@@ -30,7 +30,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavHostController
 import com.example.cupcake.R
 import com.example.cupcake.model.OrderViewModel
 import com.example.cupcake.ui.theme.CupcakeTheme
@@ -39,7 +38,12 @@ import com.example.cupcake.ui.widgets.RectangularFilledButton
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FlavorScreen(sharedViewModel: OrderViewModel, navHostController: NavHostController, modifier: Modifier = Modifier) {
+fun FlavorScreen(
+    sharedViewModel: OrderViewModel,
+    onNavigateToPickupScreen: () -> Unit,
+    onNavigateUp: () -> Unit,
+    modifier: Modifier = Modifier
+) {
     Scaffold(
         topBar = {
             TopAppBar(
@@ -49,8 +53,7 @@ fun FlavorScreen(sharedViewModel: OrderViewModel, navHostController: NavHostCont
                 ),
                 title = { Text(text = stringResource(id = R.string.choose_flavor)) },
                 navigationIcon = {
-                    IconButton(
-                        onClick = { navHostController.navigateUp() }) {
+                    IconButton(onClick = onNavigateUp) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = null
@@ -61,12 +64,17 @@ fun FlavorScreen(sharedViewModel: OrderViewModel, navHostController: NavHostCont
         }
     )
     { paddingValues ->
-        FlavorScreenContent(sharedViewModel, modifier.padding(paddingValues))
+        FlavorScreenContent(sharedViewModel, onNavigateToPickupScreen, onNavigateUp,  modifier.padding(paddingValues))
     }
 }
 
 @Composable
-private fun FlavorScreenContent(sharedViewModel: OrderViewModel, modifier: Modifier = Modifier) {
+private fun FlavorScreenContent(
+    sharedViewModel: OrderViewModel,
+    onNavigateToPickupScreen: () -> Unit,
+    onNavigateUp: () -> Unit,
+    modifier: Modifier = Modifier
+) {
     Column(
         modifier = modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -97,7 +105,7 @@ private fun FlavorScreenContent(sharedViewModel: OrderViewModel, modifier: Modif
                 .align(alignment = Alignment.End)
         )
 
-        NavigationButtons()
+        NavigationButtons(onNavigateToPickupScreen, onNavigateUp)
     }
 }
 
@@ -143,14 +151,18 @@ fun SubtotalPrice(price: String, modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun NavigationButtons(modifier: Modifier = Modifier) {
+private fun NavigationButtons(
+    onNavigateToPickupScreen: () -> Unit,
+    onNavigateUp: () -> Unit,
+    modifier: Modifier = Modifier
+) {
     Row(
         modifier = modifier
             .fillMaxWidth()
             .padding(start = 16.dp, end = 16.dp), Arrangement.spacedBy(16.dp)
     ) {
         OutlinedButton(
-            onClick = { /*TODO*/ },
+            onClick = onNavigateUp,
             shape = RectangleShape,
             modifier = Modifier
                 .weight(1f)
@@ -161,7 +173,7 @@ private fun NavigationButtons(modifier: Modifier = Modifier) {
 
         RectangularFilledButton(
             buttonText = stringResource(id = R.string.next),
-            onClick = { /*TODO*/ },
+            onClick = onNavigateToPickupScreen,
             modifier = Modifier
                 .weight(1f)
                 .padding(top = 16.dp)
@@ -180,7 +192,10 @@ private fun NavigationButtons(modifier: Modifier = Modifier) {
 private fun FlavorScreenContentDarkWithSystemUi() {
     CupcakeTheme(darkTheme = true) {
         Surface {
-            FlavorScreenContent(sharedViewModel = OrderViewModel())
+            FlavorScreenContent(
+                sharedViewModel = OrderViewModel(),
+                onNavigateToPickupScreen = {},
+                onNavigateUp = {})
         }
     }
 }
@@ -190,7 +205,10 @@ private fun FlavorScreenContentDarkWithSystemUi() {
 @Composable
 private fun FlavorScreenContentLightPreview() {
     CupcakeTheme(darkTheme = false) {
-        FlavorScreenContent(sharedViewModel = OrderViewModel())
+        FlavorScreenContent(sharedViewModel = OrderViewModel(),
+            onNavigateToPickupScreen = {},
+            onNavigateUp = {}
+        )
     }
 }
 
@@ -199,6 +217,9 @@ private fun FlavorScreenContentLightPreview() {
 @Composable
 private fun FlavorScreenContentDarkPreview() {
     CupcakeTheme(darkTheme = true) {
-        FlavorScreenContent(sharedViewModel = OrderViewModel())
+        FlavorScreenContent(sharedViewModel = OrderViewModel(),
+            onNavigateToPickupScreen = {},
+            onNavigateUp = {}
+        )
     }
 }
