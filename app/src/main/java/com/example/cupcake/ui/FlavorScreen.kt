@@ -21,9 +21,8 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
@@ -79,15 +78,18 @@ private fun FlavorScreenContent(sharedViewModel: OrderViewModel, modifier: Modif
             stringResource(R.string.salted_caramel),
             stringResource(R.string.coffee),
         )
+
+        val selectedOption by sharedViewModel.flavor.observeAsState(flavors[0])
         FlavorPickerRadioGroup(
             flavors,
+            selectedOption,
             onFlavorSelected = { flavor -> sharedViewModel.setFlavor(flavor) },
-            modifier = Modifier.padding(start = 16.dp))
+            modifier = Modifier.padding(start = 16.dp)
+        )
 
         Divider(modifier = Modifier.padding(horizontal = 16.dp))
 
-        val price = remember { mutableStateOf("0.0") }
-
+        val price by sharedViewModel.price.observeAsState("0.0")
         SubtotalPrice(
             price = price,
             modifier = Modifier
@@ -102,24 +104,20 @@ private fun FlavorScreenContent(sharedViewModel: OrderViewModel, modifier: Modif
 @Composable
 private fun FlavorPickerRadioGroup(
     flavors: List<String>,
+    selectedOption: String,
     onFlavorSelected: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val (selectedOption: String, onOptionSelected: (String) -> Unit) =
-        remember { mutableStateOf(flavors[0]) }
-    Column {
-        Column(Modifier.selectableGroup()) {
-            flavors.forEach { text ->
-                RadioButtonWithRipple(
-                    text = text,
-                    selected = (text == selectedOption),
-                    modifier = modifier.padding(vertical = 16.dp),
-                    onClick = {
-                        onOptionSelected(text)
-                        onFlavorSelected(text)
-                    }
-                )
-            }
+    Column(Modifier.selectableGroup()) {
+        flavors.forEach { text ->
+            RadioButtonWithRipple(
+                text = text,
+                selected = (text == selectedOption),
+                modifier = modifier.padding(vertical = 16.dp),
+                onClick = {
+                    onFlavorSelected(text)
+                }
+            )
         }
     }
 }
@@ -136,9 +134,9 @@ fun Divider(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun SubtotalPrice(price: MutableState<String>, modifier: Modifier = Modifier) {
+fun SubtotalPrice(price: String, modifier: Modifier = Modifier) {
     Text(
-        text = stringResource(id = R.string.subtotal_price, price.value),
+        text = stringResource(id = R.string.subtotal_price, price),
         fontSize = 20.sp,
         modifier = modifier
     )
