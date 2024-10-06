@@ -41,7 +41,7 @@ fun RadioGroupOptionPicker(
             modifier = Modifier.padding(start = 16.dp)
         )
 
-        Divider(modifier = Modifier.padding(horizontal = 16.dp))
+        CupcakeDivider(modifier = Modifier.padding(horizontal = 16.dp))
 
         SubtotalPrice(
             stringResource(id = R.string.subtotal_price, price),
@@ -73,17 +73,6 @@ private fun FlavorPickerRadioGroup(
             )
         }
     }
-}
-
-@Composable
-private fun Divider(modifier: Modifier = Modifier) {
-    HorizontalDivider(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(vertical = 16.dp),
-        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.12f),
-        thickness = 1.dp
-    )
 }
 
 @Composable
