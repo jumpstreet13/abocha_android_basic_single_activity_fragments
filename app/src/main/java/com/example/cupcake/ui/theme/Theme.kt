@@ -4,12 +4,15 @@ import android.app.Activity
 import android.os.Build
 import android.view.View
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.material.ripple.RippleAlpha
+import androidx.compose.material.ripple.RippleTheme
 import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.compositeOver
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalView
@@ -89,4 +92,19 @@ private fun setNavigationBarAppearance(activity: Activity, colorScheme: ColorSch
         colorScheme.primaryContainer.toArgb()
     WindowCompat.getInsetsController(activity.window, view)
         .isAppearanceLightStatusBars = false
+}
+
+object WhiteTintRippleTheme : RippleTheme {
+    // Here you should return the ripple color you want
+    // and not use the defaultRippleColor extension on RippleTheme.
+    // Using that will override the ripple color set in DarkMode
+    // or when you set light parameter to false
+    @Composable
+    override fun defaultColor(): Color = Color.White
+
+    @Composable
+    override fun rippleAlpha(): RippleAlpha = RippleTheme.defaultRippleAlpha(
+        Color.Black,
+        lightTheme = !isSystemInDarkTheme()
+    )
 }
