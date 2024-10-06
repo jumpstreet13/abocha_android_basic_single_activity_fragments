@@ -1,4 +1,4 @@
-package com.example.cupcake.ui
+package com.example.cupcake.ui.screens
 
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.padding

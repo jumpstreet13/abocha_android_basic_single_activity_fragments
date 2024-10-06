@@ -9,9 +9,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.example.cupcake.model.OrderViewModel
-import com.example.cupcake.ui.FlavorScreen
-import com.example.cupcake.ui.StartScreen
-import com.example.cupcake.ui.PickupScreen
+import com.example.cupcake.ui.screens.FlavorScreen
+import com.example.cupcake.ui.screens.StartScreen
+import com.example.cupcake.ui.screens.PickupScreen
 import kotlinx.serialization.Serializable
 
 @Serializable
