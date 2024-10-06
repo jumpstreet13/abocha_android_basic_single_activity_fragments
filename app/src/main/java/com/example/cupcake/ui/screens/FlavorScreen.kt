@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -17,8 +19,8 @@ import com.example.cupcake.ui.widgets.RadioGroupOptionPicker
 @Composable
 fun FlavorScreen(
     sharedViewModel: OrderViewModel,
-    onNavigateToPickupScreen: () -> Unit,
-    onNavigateUp: () -> Unit,
+    onNavigateNext: () -> Unit,
+    onNavigateBack: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Scaffold(
@@ -26,16 +28,16 @@ fun FlavorScreen(
             CupcakeTopBar(
                 title = stringResource(id = R.string.choose_flavor),
                 showUpArrow = true,
-                onNavigateUp = onNavigateUp
+                onNavigateUp = onNavigateBack
             )
         }
     )
     { paddingValues ->
         FlavorScreenContent(
-            sharedViewModel,
-            onNavigateToPickupScreen,
-            onNavigateUp,
-            modifier.padding(paddingValues)
+            sharedViewModel = sharedViewModel,
+            onNavigateToPickupScreen = onNavigateNext,
+            onNavigateUp = onNavigateBack,
+            modifier = modifier.padding(paddingValues)
         )
     }
 }
@@ -55,7 +57,17 @@ private fun FlavorScreenContent(
         stringResource(R.string.coffee),
     )
 
-    RadioGroupOptionPicker(flavors, sharedViewModel, onNavigateToPickupScreen, onNavigateUp, modifier)
+    val selectedOption: String by sharedViewModel.flavor.observeAsState(flavors[0])
+    val price by sharedViewModel.price.observeAsState("0.0")
+    RadioGroupOptionPicker(
+        options = flavors,
+        selectedOption = selectedOption,
+        price = price,
+        onOptionSelected = { flavor  -> sharedViewModel.setFlavor(flavor) },
+        onConfirmSelection = onNavigateToPickupScreen,
+        onCancel = onNavigateUp,
+        modifier = modifier
+    )
 }
 
 @Preview(

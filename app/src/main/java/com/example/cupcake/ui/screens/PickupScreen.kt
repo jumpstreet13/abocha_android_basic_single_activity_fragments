@@ -4,23 +4,24 @@ import android.content.res.Configuration
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.sp
 import com.example.cupcake.R
 import com.example.cupcake.model.OrderViewModel
 import com.example.cupcake.ui.theme.CupcakeTheme
 import com.example.cupcake.ui.widgets.CupcakeTopBar
+import com.example.cupcake.ui.widgets.RadioGroupOptionPicker
 
 
 @Composable
 fun PickupScreen(
     sharedViewModel: OrderViewModel,
-    onNavigateToStartScreen: () -> Unit,
-    onNavigateUp: () -> Unit,
+    onNavigateNext: () -> Unit,
+    onNavigateBack: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Scaffold(
@@ -28,18 +29,40 @@ fun PickupScreen(
             CupcakeTopBar(
                 title = stringResource(id = R.string.pickup_date),
                 showUpArrow = true,
-                onNavigateUp = onNavigateUp
+                onNavigateUp = onNavigateBack
             )
         }
     )
     { paddingValues ->
-        PickupScreenContent(modifier.padding(paddingValues))
+        PickupScreenContent(
+            sharedViewModel = sharedViewModel,
+            onNavigateNext = onNavigateNext,
+            onNavigateUp = onNavigateBack,
+            modifier = modifier.padding(paddingValues)
+        )
     }
 }
 
 @Composable
-fun PickupScreenContent(modifier: Modifier = Modifier) {
-    Text("Pickup date", fontSize = 24.sp, modifier = modifier)
+fun PickupScreenContent(
+    sharedViewModel: OrderViewModel,
+    onNavigateNext: () -> Unit,
+    onNavigateUp: () -> Unit,
+    modifier: Modifier = Modifier) {
+
+    val dates = sharedViewModel.dateOptions
+    val selectedOption: String by sharedViewModel.date.observeAsState(dates[0])
+    val price by sharedViewModel.price.observeAsState("0.0")
+
+    RadioGroupOptionPicker(
+        options = dates,
+        selectedOption = selectedOption,
+        price,
+        onOptionSelected = { sharedViewModel.setDate(it) },
+        onConfirmSelection = onNavigateNext,
+        onCancel = onNavigateUp,
+        modifier = modifier
+    )
 }
 
 @Preview(
@@ -49,10 +72,14 @@ fun PickupScreenContent(modifier: Modifier = Modifier) {
     showSystemUi = true
 )
 @Composable
-private fun FlavorScreenContentDarkWithSystemUi() {
+private fun FPickupScreenContentDarkWithSystemUi() {
     CupcakeTheme(darkTheme = true) {
         Surface {
-            PickupScreenContent()
+            PickupScreenContent(
+                sharedViewModel = OrderViewModel(),
+                onNavigateNext = {},
+                onNavigateUp = {}
+            )
         }
     }
 }

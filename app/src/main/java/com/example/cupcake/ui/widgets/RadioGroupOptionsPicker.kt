@@ -11,8 +11,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
@@ -20,13 +18,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.cupcake.R
-import com.example.cupcake.model.OrderViewModel
 
 
 @Composable
 fun RadioGroupOptionPicker(
     options: List<String>,
-    sharedViewModel: OrderViewModel,
+    selectedOption: String,
+    price: String,
+    onOptionSelected: (String) -> Unit,
     onConfirmSelection: () -> Unit,
     onCancel: () -> Unit,
     modifier: Modifier
@@ -35,19 +34,17 @@ fun RadioGroupOptionPicker(
         modifier = modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        val selectedOption by sharedViewModel.flavor.observeAsState(options[0])
         FlavorPickerRadioGroup(
             options,
             selectedOption,
-            onFlavorSelected = { flavor -> sharedViewModel.setFlavor(flavor) },
+            onOptionSelected = onOptionSelected,
             modifier = Modifier.padding(start = 16.dp)
         )
 
         Divider(modifier = Modifier.padding(horizontal = 16.dp))
 
-        val price by sharedViewModel.price.observeAsState("0.0")
         SubtotalPrice(
-            price = price,
+            stringResource(id = R.string.subtotal_price, price),
             modifier = Modifier
                 .padding(top = 0.dp, end = 16.dp)
                 .align(alignment = Alignment.End)
@@ -61,7 +58,7 @@ fun RadioGroupOptionPicker(
 private fun FlavorPickerRadioGroup(
     flavors: List<String>,
     selectedOption: String,
-    onFlavorSelected: (String) -> Unit,
+    onOptionSelected: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(Modifier.selectableGroup()) {
@@ -71,7 +68,7 @@ private fun FlavorPickerRadioGroup(
                 selected = (text == selectedOption),
                 modifier = modifier.padding(vertical = 16.dp),
                 onClick = {
-                    onFlavorSelected(text)
+                    onOptionSelected(text)
                 }
             )
         }
@@ -90,9 +87,9 @@ private fun Divider(modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun SubtotalPrice(price: String, modifier: Modifier = Modifier) {
+private fun SubtotalPrice(result: String, modifier: Modifier = Modifier) {
     Text(
-        text = stringResource(id = R.string.subtotal_price, price),
+        text = result,
         fontSize = 20.sp,
         modifier = modifier
     )

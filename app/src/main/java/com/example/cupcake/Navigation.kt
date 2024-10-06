@@ -12,6 +12,7 @@ import com.example.cupcake.model.OrderViewModel
 import com.example.cupcake.ui.screens.FlavorScreen
 import com.example.cupcake.ui.screens.StartScreen
 import com.example.cupcake.ui.screens.PickupScreen
+import com.example.cupcake.ui.screens.SummaryScreen
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -22,6 +23,9 @@ object FlavorDestination
 
 @Serializable
 object PickupDestination
+
+@Serializable
+object SummaryDestination
 
 
 @Composable
@@ -45,8 +49,8 @@ fun Navigation(sharedViewModel: OrderViewModel, modifier: Modifier = Modifier) {
 
             FlavorScreen(
                 sharedViewModel = sharedViewModel,
-                onNavigateToPickupScreen = navigateToPickupScreen(navController),
-                onNavigateUp = navigateUp(navController),
+                onNavigateNext = navigateToPickupScreen(navController),
+                onNavigateBack = navigateUp(navController),
                 modifier = modifier
             )
         }
@@ -57,30 +61,42 @@ fun Navigation(sharedViewModel: OrderViewModel, modifier: Modifier = Modifier) {
 
             PickupScreen(
                 sharedViewModel = sharedViewModel,
-                onNavigateToStartScreen = navigateToStartScreen(navController),
-                onNavigateUp = navigateUp(navController),
+                onNavigateNext = navigateToSummaryScreen(navController),
+                onNavigateBack = navigateUp(navController),
                 modifier = modifier
             )
         }
 
+        composable<SummaryDestination> { navBackStackEntry ->
+            SummaryScreen(
+                sharedViewModel,
+                onNavigateNext = navigateToStartScreen(navController),
+                onNavigateBack = navigateUp(navController),
+                modifier = modifier
+            )
+        }
     }
 }
 
-private fun navigateToFlavorScreen(navController: NavHostController) = {
+private fun navigateToFlavorScreen(navController: NavHostController): () -> Unit = {
     navController.navigate(FlavorDestination)
 }
 
-private fun navigateToStartScreen(navController: NavHostController) = {
+private fun navigateToStartScreen(navController: NavHostController): () -> Unit = {
     navController.navigate(StartDestination) {
         popUpTo(StartDestination) { inclusive = true }
     }
 }
 
-private fun navigateToPickupScreen(navController: NavHostController) = {
+private fun navigateToPickupScreen(navController: NavHostController): () -> Unit = {
     navController.navigate(PickupDestination)
 }
 
-private fun navigateUp(navController: NavHostController) = {
+private fun navigateToSummaryScreen(navController: NavHostController): () -> Unit = {
+    navController.navigate(SummaryDestination)
+}
+
+private fun navigateUp(navController: NavHostController): () -> Unit = {
     navController.navigateUp()
-    Unit
+//    Unit
 }
