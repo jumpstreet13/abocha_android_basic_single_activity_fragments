@@ -21,7 +21,7 @@ import com.example.cupcake.ui.widgets.RadioGroupOptionPicker
 fun PickupScreen(
     sharedViewModel: OrderViewModel,
     onNavigateNext: () -> Unit,
-    onNavigateBack: () -> Unit,
+    onNavigateToStart: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Scaffold(
@@ -29,7 +29,7 @@ fun PickupScreen(
             CupcakeTopBar(
                 title = stringResource(id = R.string.pickup_date),
                 showUpArrow = true,
-                onNavigateUp = onNavigateBack
+                onNavigateUp = onNavigateToStart
             )
         }
     )
@@ -37,7 +37,7 @@ fun PickupScreen(
         PickupScreenContent(
             sharedViewModel = sharedViewModel,
             onNavigateNext = onNavigateNext,
-            onNavigateUp = onNavigateBack,
+            onNavigateToStart = onNavigateToStart,
             modifier = modifier.padding(paddingValues)
         )
     }
@@ -47,7 +47,7 @@ fun PickupScreen(
 fun PickupScreenContent(
     sharedViewModel: OrderViewModel,
     onNavigateNext: () -> Unit,
-    onNavigateUp: () -> Unit,
+    onNavigateToStart: () -> Unit,
     modifier: Modifier = Modifier) {
 
     val dates = sharedViewModel.dateOptions
@@ -60,7 +60,7 @@ fun PickupScreenContent(
         price,
         onOptionSelected = { sharedViewModel.setDate(it) },
         onConfirmSelection = onNavigateNext,
-        onCancel = onNavigateUp,
+        onCancel = cancelOrder(sharedViewModel, onNavigateToStart),
         modifier = modifier
     )
 }
@@ -78,7 +78,7 @@ private fun FPickupScreenContentDarkWithSystemUi() {
             PickupScreenContent(
                 sharedViewModel = OrderViewModel(),
                 onNavigateNext = {},
-                onNavigateUp = {}
+                onNavigateToStart = {}
             )
         }
     }

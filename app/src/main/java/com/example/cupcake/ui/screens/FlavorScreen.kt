@@ -20,7 +20,7 @@ import com.example.cupcake.ui.widgets.RadioGroupOptionPicker
 fun FlavorScreen(
     sharedViewModel: OrderViewModel,
     onNavigateNext: () -> Unit,
-    onNavigateBack: () -> Unit,
+    onNavigateToStart: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Scaffold(
@@ -28,7 +28,7 @@ fun FlavorScreen(
             CupcakeTopBar(
                 title = stringResource(id = R.string.choose_flavor),
                 showUpArrow = true,
-                onNavigateUp = onNavigateBack
+                onNavigateUp = onNavigateToStart
             )
         }
     )
@@ -36,7 +36,7 @@ fun FlavorScreen(
         FlavorScreenContent(
             sharedViewModel = sharedViewModel,
             onNavigateToPickupScreen = onNavigateNext,
-            onNavigateUp = onNavigateBack,
+            onNavigateToStart = onNavigateToStart,
             modifier = modifier.padding(paddingValues)
         )
     }
@@ -46,7 +46,7 @@ fun FlavorScreen(
 private fun FlavorScreenContent(
     sharedViewModel: OrderViewModel,
     onNavigateToPickupScreen: () -> Unit,
-    onNavigateUp: () -> Unit,
+    onNavigateToStart: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val flavors = listOf(
@@ -59,13 +59,14 @@ private fun FlavorScreenContent(
 
     val selectedOption: String by sharedViewModel.flavor.observeAsState(flavors[0])
     val price by sharedViewModel.price.observeAsState("0.0")
+
     RadioGroupOptionPicker(
         options = flavors,
         selectedOption = selectedOption,
         price = price,
         onOptionSelected = { flavor  -> sharedViewModel.setFlavor(flavor) },
         onConfirmSelection = onNavigateToPickupScreen,
-        onCancel = onNavigateUp,
+        onCancel = cancelOrder(sharedViewModel, onNavigateToStart),
         modifier = modifier
     )
 }
@@ -83,7 +84,7 @@ private fun FlavorScreenContentDarkWithSystemUi() {
             FlavorScreenContent(
                 sharedViewModel = OrderViewModel(),
                 onNavigateToPickupScreen = {},
-                onNavigateUp = {})
+                onNavigateToStart = {})
         }
     }
 }
@@ -95,7 +96,7 @@ private fun FlavorScreenContentLightPreview() {
     CupcakeTheme(darkTheme = false) {
         FlavorScreenContent(sharedViewModel = OrderViewModel(),
             onNavigateToPickupScreen = {},
-            onNavigateUp = {}
+            onNavigateToStart = {}
         )
     }
 }
@@ -107,7 +108,7 @@ private fun FlavorScreenContentDarkPreview() {
     CupcakeTheme(darkTheme = true) {
         FlavorScreenContent(sharedViewModel = OrderViewModel(),
             onNavigateToPickupScreen = {},
-            onNavigateUp = {}
+            onNavigateToStart = {}
         )
     }
 }

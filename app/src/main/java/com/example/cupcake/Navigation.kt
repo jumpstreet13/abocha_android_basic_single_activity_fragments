@@ -50,7 +50,7 @@ fun Navigation(sharedViewModel: OrderViewModel, modifier: Modifier = Modifier) {
             FlavorScreen(
                 sharedViewModel = sharedViewModel,
                 onNavigateNext = navigateToPickupScreen(navController),
-                onNavigateBack = navigateUp(navController),
+                onNavigateToStart = navigateToStartScreen(navController),
                 modifier = modifier
             )
         }
@@ -62,7 +62,7 @@ fun Navigation(sharedViewModel: OrderViewModel, modifier: Modifier = Modifier) {
             PickupScreen(
                 sharedViewModel = sharedViewModel,
                 onNavigateNext = navigateToSummaryScreen(navController),
-                onNavigateBack = navigateUp(navController),
+                onNavigateToStart = navigateToStartScreen(navController),
                 modifier = modifier
             )
         }
@@ -71,7 +71,7 @@ fun Navigation(sharedViewModel: OrderViewModel, modifier: Modifier = Modifier) {
             SummaryScreen(
                 sharedViewModel,
                 onNavigateNext = navigateToStartScreen(navController),
-                onNavigateBack = navigateUp(navController),
+                onNavigateToStart = navigateToStartScreen(navController),
                 modifier = modifier
             )
         }
@@ -98,5 +98,4 @@ private fun navigateToSummaryScreen(navController: NavHostController): () -> Uni
 
 private fun navigateUp(navController: NavHostController): () -> Unit = {
     navController.navigateUp()
-//    Unit
 }
