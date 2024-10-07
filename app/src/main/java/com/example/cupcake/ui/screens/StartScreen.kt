@@ -22,8 +22,9 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.cupcake.R
 import com.example.cupcake.model.OrderViewModel
 import com.example.cupcake.ui.theme.CupcakeTheme
@@ -82,7 +83,6 @@ private fun OrderCupcakeButtons(sharedViewModel: OrderViewModel, onNavigateToFla
                 sharedViewModel.orderCupcake(quantity, defaultFlavor)
                 onNavigateToFlavorScreen()
             },
-            modifier = Modifier.padding(top = 8.dp, bottom = 8.dp)
         )
     }
 }
@@ -94,9 +94,9 @@ fun CupcakeImage(modifier: Modifier = Modifier) {
         contentDescription = "Cupcake",
         contentScale = ContentScale.Inside,
         modifier = modifier
-            .width(300.dp)
-            .height(300.dp)
-            .padding(top = 8.dp)
+            .width(dimensionResource(R.dimen.image_size))
+            .height(dimensionResource(R.dimen.image_size))
+            .padding(dimensionResource(id = R.dimen.margin_between_elements))
     )
 }
 
@@ -104,9 +104,11 @@ fun CupcakeImage(modifier: Modifier = Modifier) {
 fun OrderCupcakesText(modifier: Modifier = Modifier) {
     Text(
         text = stringResource(id = R.string.order_cupcakes),
-        style = MaterialTheme.typography.headlineLarge,
-        color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f),
-        modifier = modifier.padding(bottom = 16.dp),
+        fontFamily = FontFamily.SansSerif,
+        style = MaterialTheme.typography.bodyMedium,
+        fontSize = 34.sp,
+        color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f),
+        modifier = modifier.padding(bottom = dimensionResource(id = R.dimen.side_margin)),
     )
 }
 
