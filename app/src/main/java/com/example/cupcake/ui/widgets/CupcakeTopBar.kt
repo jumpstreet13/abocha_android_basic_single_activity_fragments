@@ -14,6 +14,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.graphics.Color
 import com.example.cupcake.ui.theme.WhiteTintRippleTheme
+import com.example.cupcake.ui.theme.onTopAppBarContainer
+import com.example.cupcake.ui.theme.topAppBarContainer
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -25,8 +27,8 @@ fun CupcakeTopBar(
     CompositionLocalProvider(LocalRippleTheme provides WhiteTintRippleTheme) {
         TopAppBar(
             colors = TopAppBarDefaults.topAppBarColors(
-                containerColor = MaterialTheme.colorScheme.primary,
-                titleContentColor = MaterialTheme.colorScheme.onPrimary,
+                containerColor = MaterialTheme.colorScheme.topAppBarContainer,
+                titleContentColor = MaterialTheme.colorScheme.onTopAppBarContainer
             ),
             title = {
                 Text(text = title)

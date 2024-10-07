@@ -18,7 +18,7 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 
-private val DarkColorScheme = darkColorScheme(
+private val DarkColorScheme: ColorScheme = darkColorScheme(
     primary = Pink400,
     onPrimary = Black,
     secondary = Purple400,
@@ -34,15 +34,24 @@ private val LightColorScheme = lightColorScheme(
     onSecondary = Black,
     primaryContainer = Pink950,      // colorPrimaryVariant
     secondaryContainer = Purple700,  // colorSecondaryVariant
-
-    /* Other default colors to override
-    onTertiary = Color.White,
-    background = Color(0xFFFFFBFE),
-    onBackground = Color(0xFF1C1B1F),
-    surface = Color(0xFFFFFBFE),
-    onSurface = Color(0xFF1C1B1F),
-    */
 )
+
+val ColorScheme.topAppBarContainer: Color
+    @Composable
+    get() = if (isSystemInDarkTheme()) Black
+    else Pink600
+
+val ColorScheme.onTopAppBarContainer: Color
+    get() = Color.White
+
+
+/* Other default colors to override
+onTertiary = Color.White,
+background = Color(0xFFFFFBFE),
+onBackground = Color(0xFF1C1B1F),
+surface = Color(0xFFFFFBFE),
+onSurface = Color(0xFF1C1B1F),
+*/
 
 @Composable
 fun CupcakeTheme(
