@@ -15,10 +15,12 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.cupcake.R
 import com.example.cupcake.model.OrderViewModel
+import com.example.cupcake.ui.theme.CupcakeTheme
 import com.example.cupcake.ui.widgets.CupcakeDivider
 import com.example.cupcake.ui.widgets.CupcakeTopBar
 import com.example.cupcake.ui.widgets.RectangularFilledButton
@@ -149,6 +151,18 @@ private fun CancelOrderButton(sharedViewModel: OrderViewModel, onNavigateToStart
     ) {
         Text(
             text = stringResource(R.string.cancel).uppercase(),
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun SummaryScreenPreview() {
+    CupcakeTheme {
+        SummaryScreen(
+            sharedViewModel = OrderViewModel(),
+            onNavigateUp = { },
+            onNavigateToStart = { }
         )
     }
 }
