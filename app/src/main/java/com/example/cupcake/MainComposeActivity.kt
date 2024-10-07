@@ -18,7 +18,6 @@ class MainComposeActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContent {
             CupcakeTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
