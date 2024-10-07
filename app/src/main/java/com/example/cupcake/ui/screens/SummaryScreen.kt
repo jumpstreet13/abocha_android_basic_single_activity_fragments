@@ -74,7 +74,6 @@ private fun SummaryScreenContent(
         Text(
             text = stringResource(id = R.string.total_price, sharedViewModel.price.value.toString()).uppercase(),
             fontSize = 22.sp,
-            fontWeight = FontWeight.Bold,
             modifier = Modifier
                 .padding(top = 16.dp)
                 .align(alignment = Alignment.End)
