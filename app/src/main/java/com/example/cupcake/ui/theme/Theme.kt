@@ -71,7 +71,7 @@ private fun SetStatusAndNavigationBarsAppearance(colorScheme: ColorScheme, darkT
             val activity = view.context as Activity
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 setNavigationBarAppearance(activity, colorScheme, view, darkTheme)
-                setStatusBarAppearance(activity, colorScheme, view)
+                setStatusBarAppearance(activity, colorScheme.primaryContainer, view)
             }
         }
     }
@@ -84,15 +84,13 @@ private fun setNavigationBarAppearance(
     darkTheme: Boolean
 ) {
     activity.window.navigationBarColor =
-        colorScheme.primary.copy(alpha = 0.2f)
-            .compositeOver(colorScheme.surface.copy()).toArgb()
+        colorScheme.primary.copy(alpha = 0.2f).compositeOver(colorScheme.surface.copy()).toArgb()
     WindowCompat.getInsetsController(activity.window, view)
         .isAppearanceLightNavigationBars = !darkTheme
 }
 
-private fun setStatusBarAppearance(activity: Activity, colorScheme: ColorScheme, view: View) {
-    activity.window.statusBarColor =
-        colorScheme.primaryContainer.toArgb()
+private fun setStatusBarAppearance(activity: Activity, color: Color, view: View) {
+    activity.window.statusBarColor = color.toArgb()
     WindowCompat.getInsetsController(activity.window, view)
         .isAppearanceLightStatusBars = false
 }
