@@ -26,6 +26,7 @@ import com.example.cupcake.ui.widgets.RectangularFilledButton
 @Composable
 fun SummaryScreen(
     sharedViewModel: OrderViewModel,
+    onNavigateUp: () -> Unit,
     onNavigateNext: () -> Unit,
     onNavigateToStart: () -> Unit,
     modifier: Modifier = Modifier
@@ -35,7 +36,7 @@ fun SummaryScreen(
             CupcakeTopBar(
                 title = stringResource(id = R.string.choose_flavor),
                 showUpArrow = true,
-                onNavigateUp = onNavigateToStart
+                onNavigateUp = onNavigateUp
             )
         }
     )

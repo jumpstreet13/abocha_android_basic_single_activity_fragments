@@ -19,6 +19,7 @@ import com.example.cupcake.ui.widgets.RadioGroupOptionPicker
 @Composable
 fun FlavorScreen(
     sharedViewModel: OrderViewModel,
+    onNavigateUp: () -> Unit,
     onNavigateNext: () -> Unit,
     onNavigateToStart: () -> Unit,
     modifier: Modifier = Modifier
@@ -28,7 +29,7 @@ fun FlavorScreen(
             CupcakeTopBar(
                 title = stringResource(id = R.string.choose_flavor),
                 showUpArrow = true,
-                onNavigateUp = onNavigateToStart
+                onNavigateUp = onNavigateUp
             )
         }
     )

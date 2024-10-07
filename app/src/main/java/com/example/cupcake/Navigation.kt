@@ -49,6 +49,7 @@ fun Navigation(sharedViewModel: OrderViewModel, modifier: Modifier = Modifier) {
 
             FlavorScreen(
                 sharedViewModel = sharedViewModel,
+                onNavigateUp = navigateUp(navController),
                 onNavigateNext = navigateToPickupScreen(navController),
                 onNavigateToStart = navigateToStartScreen(navController),
                 modifier = modifier
@@ -61,6 +62,7 @@ fun Navigation(sharedViewModel: OrderViewModel, modifier: Modifier = Modifier) {
 
             PickupScreen(
                 sharedViewModel = sharedViewModel,
+                onNavigateUp = navigateUp(navController),
                 onNavigateNext = navigateToSummaryScreen(navController),
                 onNavigateToStart = navigateToStartScreen(navController),
                 modifier = modifier
@@ -70,6 +72,7 @@ fun Navigation(sharedViewModel: OrderViewModel, modifier: Modifier = Modifier) {
         composable<SummaryDestination> { navBackStackEntry ->
             SummaryScreen(
                 sharedViewModel,
+                onNavigateUp = navigateUp(navController),
                 onNavigateNext = navigateToStartScreen(navController),
                 onNavigateToStart = navigateToStartScreen(navController),
                 modifier = modifier

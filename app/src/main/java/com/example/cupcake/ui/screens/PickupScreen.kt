@@ -20,6 +20,7 @@ import com.example.cupcake.ui.widgets.RadioGroupOptionPicker
 @Composable
 fun PickupScreen(
     sharedViewModel: OrderViewModel,
+    onNavigateUp: () -> Unit,
     onNavigateNext: () -> Unit,
     onNavigateToStart: () -> Unit,
     modifier: Modifier = Modifier
@@ -29,7 +30,7 @@ fun PickupScreen(
             CupcakeTopBar(
                 title = stringResource(id = R.string.pickup_date),
                 showUpArrow = true,
-                onNavigateUp = onNavigateToStart
+                onNavigateUp = onNavigateUp
             )
         }
     )
