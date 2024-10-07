@@ -27,7 +27,6 @@ import com.example.cupcake.ui.widgets.RectangularFilledButton
 fun SummaryScreen(
     sharedViewModel: OrderViewModel,
     onNavigateUp: () -> Unit,
-    onNavigateNext: () -> Unit,
     onNavigateToStart: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -43,8 +42,7 @@ fun SummaryScreen(
     { paddingValues ->
         SummaryScreenContent(
             sharedViewModel = sharedViewModel,
-            onNavigateToPickupScreen = onNavigateNext,
-            onNavigateUp = onNavigateToStart,
+            onNavigateToStart = onNavigateToStart,
             modifier = modifier.padding(paddingValues)
         )
     }
@@ -53,8 +51,7 @@ fun SummaryScreen(
 @Composable
 private fun SummaryScreenContent(
     sharedViewModel: OrderViewModel,
-    onNavigateToPickupScreen: () -> Unit,
-    onNavigateUp: () -> Unit,
+    onNavigateToStart: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier.padding(horizontal = 16.dp)) {
@@ -78,28 +75,12 @@ private fun SummaryScreenContent(
             text = stringResource(id = R.string.total_price, sharedViewModel.price.value.toString()).uppercase(),
             fontSize = 22.sp,
             fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(top = 16.dp).align(alignment = Alignment.End)
-        )
-
-
-        val context = LocalContext.current
-        RectangularFilledButton(
-            buttonText = stringResource(R.string.send).uppercase(),
-            onClick = { sendOrder(context, sharedViewModel) },
-            modifier = Modifier.padding(top = 16.dp).fillMaxWidth()
-        )
-
-        OutlinedButton(
-            onClick = onNavigateUp,
-            shape = RectangleShape,
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 8.dp)
-        ) {
-            Text(
-                text = stringResource(R.string.cancel).uppercase(),
-            )
-        }
+                .padding(top = 16.dp)
+                .align(alignment = Alignment.End)
+        )
+
+        SendOrderButton(sharedViewModel)
         CancelOrderButton(sharedViewModel, onNavigateToStart)
     }
 }
@@ -109,6 +90,18 @@ private fun OrderResult(name: String, value: String) {
     Text(text = name.uppercase(), fontSize = 18.sp)
     Text(text = value, fontSize = 18.sp, fontWeight = FontWeight.Bold, modifier = Modifier.padding(top = 8.dp))
     CupcakeDivider()
+}
+
+@Composable
+private fun SendOrderButton(sharedViewModel: OrderViewModel) {
+    val context = LocalContext.current
+    RectangularFilledButton(
+        buttonText = stringResource(R.string.send).uppercase(),
+        onClick = { sendOrder(context, sharedViewModel) },
+        modifier = Modifier
+            .padding(top = 16.dp)
+            .fillMaxWidth()
+    )
 }
 
 /**

@@ -73,7 +73,6 @@ fun Navigation(sharedViewModel: OrderViewModel, modifier: Modifier = Modifier) {
             SummaryScreen(
                 sharedViewModel,
                 onNavigateUp = navigateUp(navController),
-                onNavigateNext = navigateToStartScreen(navController),
                 onNavigateToStart = navigateToStartScreen(navController),
                 modifier = modifier
             )
