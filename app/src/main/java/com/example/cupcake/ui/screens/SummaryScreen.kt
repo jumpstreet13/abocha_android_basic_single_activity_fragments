@@ -100,6 +100,7 @@ private fun SummaryScreenContent(
                 text = stringResource(R.string.cancel).uppercase(),
             )
         }
+        CancelOrderButton(sharedViewModel, onNavigateToStart)
     }
 }
 
@@ -140,5 +141,23 @@ private fun makeOrderSummary(
         sharedViewModel.price.value.toString()
     )
     return orderSummary
+}
+
+@Composable
+private fun CancelOrderButton(sharedViewModel: OrderViewModel, onNavigateToStart: () -> Unit) {
+    OutlinedButton(
+        onClick = {
+            sharedViewModel.resetOrder()
+            onNavigateToStart()
+        },
+        shape = RectangleShape,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 8.dp)
+    ) {
+        Text(
+            text = stringResource(R.string.cancel).uppercase(),
+        )
+    }
 }
 
