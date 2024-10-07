@@ -54,7 +54,7 @@ fun CupcakeTheme(
         else -> LightColorScheme
     }
 
-    SetStatusNavigationBarsAppearance(colorScheme, darkTheme)
+    SetStatusAndNavigationBarsAppearance(colorScheme, darkTheme)
 
     MaterialTheme(
         colorScheme = colorScheme,
@@ -64,20 +64,20 @@ fun CupcakeTheme(
 }
 
 @Composable
-private fun SetStatusNavigationBarsAppearance(colorScheme: ColorScheme, darkTheme: Boolean) {
+private fun SetStatusAndNavigationBarsAppearance(colorScheme: ColorScheme, darkTheme: Boolean) {
     val view = LocalView.current
     if (!view.isInEditMode) {
         SideEffect {
             val activity = view.context as Activity
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                setStatusBarAppearance(activity, colorScheme, view, darkTheme)
-                setNavigationBarAppearance(activity, colorScheme, view)
+                setNavigationBarAppearance(activity, colorScheme, view, darkTheme)
+                setStatusBarAppearance(activity, colorScheme, view)
             }
         }
     }
 }
 
-private fun setStatusBarAppearance(
+private fun setNavigationBarAppearance(
     activity: Activity,
     colorScheme: ColorScheme,
     view: View,
@@ -90,7 +90,7 @@ private fun setStatusBarAppearance(
         .isAppearanceLightNavigationBars = !darkTheme
 }
 
-private fun setNavigationBarAppearance(activity: Activity, colorScheme: ColorScheme, view: View) {
+private fun setStatusBarAppearance(activity: Activity, colorScheme: ColorScheme, view: View) {
     activity.window.statusBarColor =
         colorScheme.primaryContainer.toArgb()
     WindowCompat.getInsetsController(activity.window, view)
