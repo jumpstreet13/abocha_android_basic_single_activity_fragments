@@ -83,6 +83,7 @@ private fun OrderCupcakeButtons(sharedViewModel: OrderViewModel, onNavigateToFla
                 sharedViewModel.orderCupcake(quantity, defaultFlavor)
                 onNavigateToFlavorScreen()
             },
+            modifier = Modifier.padding(top = dimensionResource(id = R.dimen.margin_between_elements))
         )
     }
 }
