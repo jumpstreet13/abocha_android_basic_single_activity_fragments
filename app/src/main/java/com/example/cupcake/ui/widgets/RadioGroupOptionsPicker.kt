@@ -29,8 +29,7 @@ fun RadioGroupOptionPicker(
 ) {
     Column(
         modifier = modifier
-            .fillMaxWidth()
-            .padding(dimensionResource(id = R.dimen.side_margin)),
+            .fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         FlavorPickerRadioGroup(
