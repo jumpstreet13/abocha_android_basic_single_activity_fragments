@@ -2,12 +2,15 @@ package com.example.cupcake.ui.screens
 
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.cupcake.R
@@ -35,12 +38,18 @@ fun PickupScreen(
         }
     )
     { paddingValues ->
-        PickupScreenContent(
-            sharedViewModel = sharedViewModel,
-            onNavigateNext = onNavigateNext,
-            onNavigateToStart = onNavigateToStart,
-            modifier = modifier.padding(paddingValues)
-        )
+        Surface(
+            modifier = modifier
+                .padding(paddingValues)
+                .padding(dimensionResource(id = R.dimen.side_margin))
+                .verticalScroll(rememberScrollState())
+        ) {
+            PickupScreenContent(
+                sharedViewModel = sharedViewModel,
+                onNavigateNext = onNavigateNext,
+                onNavigateToStart = onNavigateToStart,
+            )
+        }
     }
 }
 
@@ -49,7 +58,8 @@ fun PickupScreenContent(
     sharedViewModel: OrderViewModel,
     onNavigateNext: () -> Unit,
     onNavigateToStart: () -> Unit,
-    modifier: Modifier = Modifier) {
+    modifier: Modifier = Modifier
+) {
 
     val dates = sharedViewModel.dateOptions
     val selectedOption: String by sharedViewModel.date.observeAsState(dates[0])
@@ -58,7 +68,7 @@ fun PickupScreenContent(
     RadioGroupOptionPicker(
         options = dates,
         selectedOption = selectedOption,
-        price,
+        price = price,
         onOptionSelected = { sharedViewModel.setDate(it) },
         onConfirmSelection = onNavigateNext,
         onCancel = cancelOrder(sharedViewModel, onNavigateToStart),
@@ -73,7 +83,7 @@ fun PickupScreenContent(
     showSystemUi = true
 )
 @Composable
-private fun FPickupScreenContentDarkWithSystemUi() {
+private fun PickupScreenContentDarkWithSystemUi() {
     CupcakeTheme(darkTheme = true) {
         Surface {
             PickupScreenContent(
