@@ -1,21 +1,18 @@
 package com.example.cupcake.ui.widgets
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.selection.selectableGroup
-import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.cupcake.R
 
@@ -31,22 +28,27 @@ fun RadioGroupOptionPicker(
     modifier: Modifier
 ) {
     Column(
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(dimensionResource(id = R.dimen.side_margin)),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         FlavorPickerRadioGroup(
             options,
             selectedOption,
             onOptionSelected = onOptionSelected,
-            modifier = Modifier.padding(start = 16.dp)
+            modifier = Modifier
         )
 
-        CupcakeDivider(modifier = Modifier.padding(horizontal = 16.dp))
+        CupcakeDivider(
+            modifier = Modifier
+                .padding(top = dimensionResource(id = R.dimen.side_margin))
+        )
 
         SubtotalPrice(
             stringResource(id = R.string.subtotal_price, price),
             modifier = Modifier
-                .padding(top = 0.dp, end = 16.dp)
+                .padding(top = dimensionResource(id = R.dimen.side_margin))
                 .align(alignment = Alignment.End)
         )
 
@@ -66,7 +68,8 @@ private fun FlavorPickerRadioGroup(
             RadioButtonWithRipple(
                 text = text,
                 selected = (text == selectedOption),
-                modifier = modifier.padding(vertical = 16.dp),
+                modifier = modifier
+                    .padding(vertical = dimensionResource(id = R.dimen.margin_between_elements)),
                 onClick = {
                     onOptionSelected(text)
                 }
@@ -93,14 +96,14 @@ private fun ConfirmCancelButtons(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .padding(start = 16.dp, end = 16.dp), Arrangement.spacedBy(16.dp)
+            .padding(top = dimensionResource(id = R.dimen.side_margin)),
     ) {
         OutlinedButton(
             onClick = onCancel,
             shape = RectangleShape,
             modifier = Modifier
                 .weight(1f)
-                .padding(top = 16.dp),
+                .padding(end = dimensionResource(id = R.dimen.side_margin))
         ) {
             Text(text = stringResource(id = R.string.cancel))
         }
@@ -110,7 +113,6 @@ private fun ConfirmCancelButtons(
             onClick = onConfirmSelection,
             modifier = Modifier
                 .weight(1f)
-                .padding(top = 16.dp)
         )
     }
 }
