@@ -25,6 +25,8 @@ private val DarkColorScheme: ColorScheme = darkColorScheme(
     onSecondary = Black,
     primaryContainer = Pink950,     // colorPrimaryVariant
     secondaryContainer = Purple400, // colorSecondaryVariant
+    surface = DarkDefaultBackground,
+    background = DarkDefaultBackground,
 )
 
 private val LightColorScheme = lightColorScheme(
@@ -38,7 +40,7 @@ private val LightColorScheme = lightColorScheme(
 
 val ColorScheme.topAppBarContainer: Color
     @Composable
-    get() = if (isSystemInDarkTheme()) Black
+    get() = if (isSystemInDarkTheme()) DarkDefaultBackground
     else Pink600
 
 val ColorScheme.onTopAppBarContainer: Color

@@ -9,3 +9,5 @@ val Purple400 = Color(0xFFAB47BC)
 val Purple700 = Color(0xFF7B1FA2)
 val Black = Color(0xFF000000)
 val White = Color(0xFFFFFFFF)
+
+val DarkDefaultBackground = Color(0xFF121212)
