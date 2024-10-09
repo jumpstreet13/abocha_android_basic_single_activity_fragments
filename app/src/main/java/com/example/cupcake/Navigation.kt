@@ -1,19 +1,24 @@
 package com.example.cupcake
 
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.toRoute
 import com.example.cupcake.model.OrderViewModel
+import com.example.cupcake.ui.animation.getScreenSlideInTransition
+import com.example.cupcake.ui.animation.getScreenSlideOutTransition
+import com.example.cupcake.ui.animation.slideInLeftToRightFullWidth
+import com.example.cupcake.ui.animation.slideInRightToLeftFullWidth
+import com.example.cupcake.ui.animation.slideOutRightToLeftFullWidth
 import com.example.cupcake.ui.screens.FlavorScreen
-import com.example.cupcake.ui.screens.StartScreen
 import com.example.cupcake.ui.screens.PickupScreen
+import com.example.cupcake.ui.screens.StartScreen
 import com.example.cupcake.ui.screens.SummaryScreen
 import kotlinx.serialization.Serializable
+
 
 @Serializable
 object StartDestination
@@ -33,20 +38,28 @@ fun Navigation(sharedViewModel: OrderViewModel, modifier: Modifier = Modifier) {
     val navController = rememberNavController()
 
     NavHost(navController = navController, startDestination = StartDestination) {
-        composable<StartDestination> { backStackEntry: NavBackStackEntry ->
-
-            val start: StartDestination = backStackEntry.toRoute()
-
+        composable<StartDestination>(
+            enterTransition = slideInRightToLeftFullWidth,
+            exitTransition = slideOutRightToLeftFullWidth,
+            popEnterTransition = {
+                getScreenSlideInTransition(sharedViewModel.isOrderCanceled)()
+            },
+        ) { _ ->
             StartScreen(
                 sharedViewModel,
                 onNavigateToFlavorScreen = navigateToFlavorScreen(navController),
                 modifier = modifier
             )
         }
-        composable<FlavorDestination> { backStackEntry: NavBackStackEntry ->
-
-            val flavorDestination: FlavorDestination = backStackEntry.toRoute()
-
+        composable<FlavorDestination>(
+            enterTransition = slideInRightToLeftFullWidth,
+            exitTransition = slideOutRightToLeftFullWidth,
+            popEnterTransition = slideInLeftToRightFullWidth,
+            popExitTransition = {
+                Log.e("Navigation", "FlavorDestination popExitTransition")
+                getScreenSlideOutTransition(sharedViewModel.isOrderCanceled)()
+            },
+        ) { _ ->
             FlavorScreen(
                 sharedViewModel = sharedViewModel,
                 onNavigateUp = navigateUp(navController),
@@ -56,10 +69,14 @@ fun Navigation(sharedViewModel: OrderViewModel, modifier: Modifier = Modifier) {
             )
         }
 
-        composable<PickupDestination> { backStackEntry: NavBackStackEntry ->
-
-            val summaryDestination: PickupDestination = backStackEntry.toRoute()
-
+        composable<PickupDestination>(
+            enterTransition = slideInRightToLeftFullWidth,
+            exitTransition = slideOutRightToLeftFullWidth,
+            popEnterTransition = slideInLeftToRightFullWidth,
+            popExitTransition = {
+                getScreenSlideOutTransition(sharedViewModel.isOrderCanceled)()
+            },
+        ) { _ ->
             PickupScreen(
                 sharedViewModel = sharedViewModel,
                 onNavigateUp = navigateUp(navController),
@@ -69,7 +86,14 @@ fun Navigation(sharedViewModel: OrderViewModel, modifier: Modifier = Modifier) {
             )
         }
 
-        composable<SummaryDestination> { navBackStackEntry ->
+        composable<SummaryDestination>(
+            enterTransition = slideInRightToLeftFullWidth,
+            exitTransition = slideOutRightToLeftFullWidth,
+            popEnterTransition = slideInLeftToRightFullWidth,
+            popExitTransition = {
+                getScreenSlideOutTransition(sharedViewModel.isOrderCanceled)()
+            },
+        ) { _ ->
             SummaryScreen(
                 sharedViewModel,
                 onNavigateUp = navigateUp(navController),
@@ -85,9 +109,10 @@ private fun navigateToFlavorScreen(navController: NavHostController): () -> Unit
 }
 
 private fun navigateToStartScreen(navController: NavHostController): () -> Unit = {
-    navController.navigate(StartDestination) {
-        popUpTo(StartDestination) { inclusive = true }
-    }
+//    navController.navigate(StartDestination) {
+//        popUpTo(StartDestination) { inclusive = true }
+//    }
+    navController.popBackStack(StartDestination, inclusive = false)
 }
 
 private fun navigateToPickupScreen(navController: NavHostController): () -> Unit = {

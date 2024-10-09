@@ -154,10 +154,7 @@ private fun makeOrderSummary(
 @Composable
 private fun CancelOrderButton(sharedViewModel: OrderViewModel, onNavigateToStart: () -> Unit) {
     OutlinedButton(
-        onClick = {
-            sharedViewModel.resetOrder()
-            onNavigateToStart()
-        },
+        onClick = cancelOrder(sharedViewModel, onNavigateToStart),
         shape = RectangleShape,
         modifier = Modifier
             .fillMaxWidth()

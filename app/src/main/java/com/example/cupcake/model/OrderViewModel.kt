@@ -122,6 +122,14 @@ class OrderViewModel : ViewModel() {
         _flavor.value = ""
         _date.value = dateOptions[0]
         _price.value = 0.0
+        isOrderCanceled = true
+    }
+
+    var isOrderCanceled: Boolean = false
+        private set
+
+    fun resetOrderCanceled() {
+        isOrderCanceled = false
     }
 
     /**
