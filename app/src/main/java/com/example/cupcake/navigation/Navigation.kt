@@ -1,4 +1,4 @@
-package com.example.cupcake
+package com.example.cupcake.navigation
 
 import android.util.Log
 import androidx.compose.runtime.Composable
@@ -56,7 +56,6 @@ fun Navigation(sharedViewModel: OrderViewModel, modifier: Modifier = Modifier) {
             exitTransition = slideOutRightToLeftFullWidth,
             popEnterTransition = slideInLeftToRightFullWidth,
             popExitTransition = {
-                Log.e("Navigation", "FlavorDestination popExitTransition")
                 getScreenSlideOutTransition(sharedViewModel.isOrderCanceled)()
             },
         ) { _ ->
@@ -109,9 +108,6 @@ private fun navigateToFlavorScreen(navController: NavHostController): () -> Unit
 }
 
 private fun navigateToStartScreen(navController: NavHostController): () -> Unit = {
-//    navController.navigate(StartDestination) {
-//        popUpTo(StartDestination) { inclusive = true }
-//    }
     navController.popBackStack(StartDestination, inclusive = false)
 }
 
