@@ -10,18 +10,14 @@
         android:theme="@style/Theme.Cupcake">
 
         <activity
-            android:name=".MainActivity"
+            android:name=".MainComposeActivity"
+            android:label="@string/title_activity_main_compose"
+            android:theme="@style/Theme.Cupcake"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-
-        <activity
-            android:name=".MainComposeActivity"
-            android:label="@string/title_activity_main_compose"
-            android:theme="@style/Theme.Cupcake">
         </activity>
 
     </application>
