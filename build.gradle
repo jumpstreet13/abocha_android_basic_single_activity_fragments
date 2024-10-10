@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
+
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
     ext.kotlin_version = '1.9.22'
@@ -19,6 +21,24 @@ allprojects {
     repositories {
         google()
         mavenCentral()
+    }
+
+    tasks.withType(KotlinCompilationTask.class).configureEach {
+        it.kotlinOptions {
+            // Treat all Kotlin warnings as errors
+            allWarningsAsErrors = false
+
+            freeCompilerArgs += [
+                    "-P",
+                    "plugin:androidx.compose.compiler.plugins.kotlin:reportsDestination=" +
+                            layout.buildDirectory.asFile.get().absolutePath + "/compose_metrics",
+            ]
+            freeCompilerArgs += [
+                    "-P",
+                    "plugin:androidx.compose.compiler.plugins.kotlin:metricsDestination=" +
+                            layout.buildDirectory.asFile.get().absolutePath + "/compose_metrics",
+            ]
+        }
     }
 }
 
