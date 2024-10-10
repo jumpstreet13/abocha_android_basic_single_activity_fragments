@@ -1,0 +1,142 @@
+restartable scheme("[androidx.compose.ui.UiComposable]") fun Navigation(
+  unstable sharedViewModel: OrderViewModel
+  stable modifier: Modifier? = @static Companion
+)
+restartable scheme("[androidx.compose.ui.UiComposable]") fun FlavorScreen(
+  unstable sharedViewModel: OrderViewModel
+  stable onNavigateUp: Function0<Unit>
+  stable onNavigateNext: Function0<Unit>
+  stable onNavigateToStart: Function0<Unit>
+  stable modifier: Modifier? = @static Companion
+)
+restartable scheme("[androidx.compose.ui.UiComposable]") fun FlavorScreenContent(
+  unstable sharedViewModel: OrderViewModel
+  stable onNavigateToPickupScreen: Function0<Unit>
+  stable onNavigateToStart: Function0<Unit>
+  stable modifier: Modifier? = @static Companion
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun FlavorScreenContentDarkWithSystemUi()
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun FlavorScreenContentLightPreview()
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun FlavorScreenContentDarkPreview()
+restartable scheme("[androidx.compose.ui.UiComposable]") fun PickupScreen(
+  unstable sharedViewModel: OrderViewModel
+  stable onNavigateUp: Function0<Unit>
+  stable onNavigateNext: Function0<Unit>
+  stable onNavigateToStart: Function0<Unit>
+  stable modifier: Modifier? = @static Companion
+)
+restartable scheme("[androidx.compose.ui.UiComposable]") fun PickupScreenContent(
+  unstable sharedViewModel: OrderViewModel
+  stable onNavigateNext: Function0<Unit>
+  stable onNavigateToStart: Function0<Unit>
+  stable modifier: Modifier? = @static Companion
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun PickupScreenContentDarkWithSystemUi()
+restartable scheme("[androidx.compose.ui.UiComposable]") fun StartScreen(
+  unstable sharedViewModel: OrderViewModel
+  stable onNavigateToFlavorScreen: Function0<Unit>
+  stable modifier: Modifier? = @static Companion
+)
+restartable scheme("[androidx.compose.ui.UiComposable]") fun StartScreenContent(
+  unstable sharedViewModel: OrderViewModel
+  stable onNavigateToFlavorScreen: Function0<Unit>
+  stable modifier: Modifier
+)
+restartable scheme("[androidx.compose.ui.UiComposable]") fun OrderCupcakeButtons(
+  unstable sharedViewModel: OrderViewModel
+  stable onNavigateToFlavorScreen: Function0<Unit>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun CupcakeImage(
+  stable modifier: Modifier? = @static Companion
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun OrderCupcakesText(
+  stable modifier: Modifier? = @static Companion
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun StartScreenLightPreview()
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun StartScreenDarkPreview()
+restartable scheme("[androidx.compose.ui.UiComposable]") fun SummaryScreen(
+  unstable sharedViewModel: OrderViewModel
+  stable onNavigateUp: Function0<Unit>
+  stable onNavigateToStart: Function0<Unit>
+  stable modifier: Modifier? = @static Companion
+)
+restartable scheme("[androidx.compose.ui.UiComposable]") fun SummaryScreenContent(
+  unstable sharedViewModel: OrderViewModel
+  stable onNavigateToStart: Function0<Unit>
+  stable modifier: Modifier? = @static Companion
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun OrderResult(
+  stable name: String
+  stable value: String
+)
+restartable scheme("[androidx.compose.ui.UiComposable]") fun SendOrderButton(
+  unstable sharedViewModel: OrderViewModel
+)
+restartable scheme("[androidx.compose.ui.UiComposable]") fun CancelOrderButton(
+  unstable sharedViewModel: OrderViewModel
+  stable onNavigateToStart: Function0<Unit>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun SummaryScreenPreview()
+fun <get-topAppBarContainer>(
+  unused stable <this>: ColorScheme
+): Color
+restartable skippable scheme("[0, [0]]") fun CupcakeTheme(
+  stable darkTheme: Boolean = @dynamic isSystemInDarkTheme($composer, 0)
+  stable content: Function2<Composer, Int, Unit>
+)
+restartable skippable fun SetStatusAndNavigationBarsAppearance(
+  stable colorScheme: ColorScheme
+  stable darkTheme: Boolean
+)
+fun defaultColor(
+  unused stable <this>: WhiteTintRippleTheme
+): Color
+fun rippleAlpha(
+  unused stable <this>: WhiteTintRippleTheme
+): RippleAlpha
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun CupcakeDivider(
+  stable modifier: Modifier? = @static Companion
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun CupcakeTopBar(
+  stable title: String
+  stable showUpArrow: Boolean = @static false
+  stable onNavigateUp: Function0<Unit>? = @static {
+
+}
+
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun RadioButtonWithRipple(
+  stable text: String
+  stable selected: Boolean
+  stable modifier: Modifier? = @static Companion
+  stable onClick: Function0<Unit>
+)
+restartable scheme("[androidx.compose.ui.UiComposable]") fun RadioGroupOptionPicker(
+  unstable options: List<String>
+  stable selectedOption: String
+  stable price: String
+  stable onOptionSelected: Function1<String, Unit>
+  stable onConfirmSelection: Function0<Unit>
+  stable onCancel: Function0<Unit>
+  stable modifier: Modifier
+)
+restartable scheme("[androidx.compose.ui.UiComposable]") fun FlavorPickerRadioGroup(
+  unstable flavors: List<String>
+  stable selectedOption: String
+  stable onOptionSelected: Function1<String, Unit>
+  stable modifier: Modifier? = @static Companion
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun SubtotalPrice(
+  stable result: String
+  stable modifier: Modifier? = @static Companion
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun ConfirmCancelButtons(
+  stable onConfirmSelection: Function0<Unit>
+  stable onCancel: Function0<Unit>
+  stable modifier: Modifier? = @static Companion
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun RectangularFilledButton(
+  stable buttonText: String
+  stable onClick: Function0<Unit>
+  stable modifier: Modifier? = @static Companion
+)
