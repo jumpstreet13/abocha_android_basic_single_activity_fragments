@@ -17,9 +17,10 @@ package com.example.cupcake.model
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-//import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.map
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -35,7 +36,7 @@ private const val PRICE_FOR_SAME_DAY_PICKUP = 3.00
  * [OrderViewModel] holds information about a cupcake order in terms of quantity, flavor, and
  * pickup date. It also knows how to calculate the total price based on these order details.
  */
-class OrderViewModel : ViewModel() {
+class OrderViewModel : ViewModel(), ScreenTransitionHandler {
 
     // Quantity of cupcakes in this order
     private val _quantity = MutableLiveData<Int>()
@@ -156,5 +157,12 @@ class OrderViewModel : ViewModel() {
             calendar.add(Calendar.DATE, 1)
         }
         return options
+    }
+
+    private var _isScreenTransitionInProgress = MutableStateFlow(false)
+    override val isScreenTransitionInProgress = _isScreenTransitionInProgress.asStateFlow()
+
+    override fun setScreenTransitionInProgress(isInProgress: Boolean) {
+        _isScreenTransitionInProgress.value = isInProgress
     }
 }

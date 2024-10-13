@@ -25,7 +25,8 @@ fun RadioGroupOptionPicker(
     onOptionSelected: (String) -> Unit,
     onConfirmSelection: () -> Unit,
     onCancel: () -> Unit,
-    modifier: Modifier
+    modifier: Modifier,
+    enabled : Boolean = true,
 ) {
     Column(
         modifier = modifier
@@ -36,7 +37,8 @@ fun RadioGroupOptionPicker(
             options,
             selectedOption,
             onOptionSelected = onOptionSelected,
-            modifier = Modifier
+            modifier = Modifier,
+            enabled = enabled
         )
 
         CupcakeDivider(
@@ -51,7 +53,7 @@ fun RadioGroupOptionPicker(
                 .align(alignment = Alignment.End)
         )
 
-        ConfirmCancelButtons(onConfirmSelection, onCancel)
+        ConfirmCancelButtons(onConfirmSelection, onCancel, enabled)
     }
 }
 
@@ -60,7 +62,8 @@ private fun FlavorPickerRadioGroup(
     flavors: List<String>,
     selectedOption: String,
     onOptionSelected: (String) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true,
 ) {
     Column(Modifier.selectableGroup()) {
         flavors.forEach { text ->
@@ -71,7 +74,8 @@ private fun FlavorPickerRadioGroup(
                     .padding(vertical = dimensionResource(id = R.dimen.margin_between_elements)),
                 onClick = {
                     onOptionSelected(text)
-                }
+                },
+                enabled = enabled
             )
         }
     }
@@ -90,7 +94,8 @@ private fun SubtotalPrice(result: String, modifier: Modifier = Modifier) {
 private fun ConfirmCancelButtons(
     onConfirmSelection: () -> Unit,
     onCancel: () -> Unit,
-    modifier: Modifier = Modifier
+    enabled : Boolean,
+    modifier: Modifier = Modifier,
 ) {
     Row(
         modifier = modifier
@@ -100,6 +105,7 @@ private fun ConfirmCancelButtons(
         OutlinedButton(
             onClick = onCancel,
             shape = RectangleShape,
+            enabled = enabled,
             modifier = Modifier
                 .weight(1f)
                 .padding(end = dimensionResource(id = R.dimen.side_margin))
@@ -110,6 +116,7 @@ private fun ConfirmCancelButtons(
         RectangularFilledButton(
             buttonText = stringResource(id = R.string.next),
             onClick = onConfirmSelection,
+            enabled = enabled,
             modifier = Modifier
                 .weight(1f)
         )

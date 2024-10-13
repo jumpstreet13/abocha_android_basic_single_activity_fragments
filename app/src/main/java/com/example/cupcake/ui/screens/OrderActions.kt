@@ -7,5 +7,6 @@ internal fun cancelOrder(
     onNavigateToStart: () -> Unit
 ): () -> Unit = {
     sharedViewModel.resetOrder()
+    sharedViewModel.setScreenTransitionInProgress(true)
     onNavigateToStart()
 }

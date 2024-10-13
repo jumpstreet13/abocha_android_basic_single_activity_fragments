@@ -22,7 +22,8 @@ import com.example.cupcake.ui.theme.topAppBarContainer
 fun CupcakeTopBar(
     title: String,
     showUpArrow: Boolean = false,
-    onNavigateUp: () -> Unit = {}
+    onNavigateUp: () -> Unit = {},
+    enabled: Boolean = true
 ) {
     CompositionLocalProvider(LocalRippleTheme provides WhiteTintRippleTheme) {
         TopAppBar(
@@ -35,7 +36,7 @@ fun CupcakeTopBar(
             },
             navigationIcon = {
                 if (showUpArrow) {
-                    IconButton(onClick = onNavigateUp) {
+                    IconButton(onClick = onNavigateUp, enabled = enabled) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = null,

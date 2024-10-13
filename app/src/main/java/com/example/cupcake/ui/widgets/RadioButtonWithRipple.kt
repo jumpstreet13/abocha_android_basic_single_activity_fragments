@@ -28,7 +28,11 @@ import androidx.compose.ui.unit.sp
  */
 @Composable
 fun RadioButtonWithRipple(
-    text: String, selected: Boolean, modifier: Modifier = Modifier, onClick: () -> Unit
+    text: String,
+    selected: Boolean,
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit,
+    enabled: Boolean = true
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val ripple = rememberRipple(bounded = false)
@@ -38,29 +42,37 @@ fun RadioButtonWithRipple(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Box(
-            modifier = Modifier
-                .clickable(
+            modifier = if (enabled) {
+                Modifier.clickable(
                     interactionSource = interactionSource,
                     indication = ripple,
                     onClick = onClick
                 )
+            } else {
+                Modifier
+            }
         ) {
             RadioButton(
                 selected = selected,
                 onClick = null,
-                modifier = Modifier.padding(4.dp)
+                modifier = Modifier.padding(4.dp),
+                enabled = enabled
             )
         }
         Text(
             text = text,
             fontSize = 18.sp,
-            modifier = Modifier
-                .padding(start = 8.dp)
-                .clickable(
-                    interactionSource = interactionSource,
-                    indication = null,
-                    onClick = onClick
-                )
+            modifier = if (enabled) {
+                Modifier
+                    .padding(start = 8.dp)
+                    .clickable(
+                        interactionSource = interactionSource,
+                        indication = null,
+                        onClick = onClick
+                    )
+            } else {
+                Modifier.padding(start = 8.dp)
+            },
         )
     }
 }

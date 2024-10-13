@@ -28,12 +28,16 @@ fun PickupScreen(
     onNavigateToStart: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+
+    ScreenTransitionInProgressFinishedEffect(sharedViewModel)
+
     Scaffold(
         topBar = {
             CupcakeTopBar(
                 title = stringResource(id = R.string.pickup_date),
                 showUpArrow = true,
-                onNavigateUp = onNavigateUp
+                onNavigateUp = onNavigateUp,
+                enabled = isUiEnabled(sharedViewModel)
             )
         }
     )
@@ -72,7 +76,8 @@ private fun PickupScreenContent(
         onOptionSelected = { sharedViewModel.setDate(it) },
         onConfirmSelection = onNavigateNext,
         onCancel = cancelOrder(sharedViewModel, onNavigateToStart),
-        modifier = modifier
+        modifier = modifier,
+        enabled = isUiEnabled(sharedViewModel)
     )
 }
 

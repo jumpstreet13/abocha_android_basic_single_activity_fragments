@@ -27,19 +27,26 @@ fun FlavorScreen(
     onNavigateToStart: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+
+    ScreenTransitionInProgressFinishedEffect(sharedViewModel)
+
     Scaffold(
         topBar = {
             CupcakeTopBar(
                 title = stringResource(id = R.string.choose_flavor),
                 showUpArrow = true,
-                onNavigateUp = onNavigateUp
+                onNavigateUp = onNavigateUp,
+                enabled = isUiEnabled(sharedViewModel)
             )
         }
     )
     { paddingValues ->
-        Surface(modifier = modifier
-            .padding(paddingValues).padding(dimensionResource(id = R.dimen.side_margin))
-            .verticalScroll(rememberScrollState())) {
+        Surface(
+            modifier = modifier
+                .padding(paddingValues)
+                .padding(dimensionResource(id = R.dimen.side_margin))
+                .verticalScroll(rememberScrollState())
+        ) {
             FlavorScreenContent(
                 sharedViewModel = sharedViewModel,
                 onNavigateToPickupScreen = onNavigateNext,
@@ -74,7 +81,8 @@ private fun FlavorScreenContent(
         onOptionSelected = { flavor  -> sharedViewModel.setFlavor(flavor) },
         onConfirmSelection = onNavigateToPickupScreen,
         onCancel = cancelOrder(sharedViewModel, onNavigateToStart),
-        modifier = modifier
+        modifier = modifier,
+        enabled = isUiEnabled(sharedViewModel)
     )
 }
 

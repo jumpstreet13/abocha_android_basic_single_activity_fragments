@@ -13,11 +13,13 @@ import com.example.cupcake.R
 fun RectangularFilledButton(
     buttonText: String,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true,
 ) {
     Button(
         onClick = onClick,
         shape = RectangleShape,
+        enabled = enabled,
         modifier = modifier
             .widthIn(min = dimensionResource(id = R.dimen.order_cupcake_button_width))
     ) {

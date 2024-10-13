@@ -35,12 +35,16 @@ fun SummaryScreen(
     onNavigateToStart: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+
+    ScreenTransitionInProgressFinishedEffect(sharedViewModel)
+
     Scaffold(
         topBar = {
             CupcakeTopBar(
                 title = stringResource(id = R.string.choose_flavor),
                 showUpArrow = true,
-                onNavigateUp = onNavigateUp
+                onNavigateUp = onNavigateUp,
+                enabled = isUiEnabled(sharedViewModel)
             )
         }
     )
@@ -115,7 +119,8 @@ private fun SendOrderButton(sharedViewModel: OrderViewModel) {
         onClick = { sendOrder(context, sharedViewModel) },
         modifier = Modifier
             .padding(top = dimensionResource(R.dimen.side_margin))
-            .fillMaxWidth()
+            .fillMaxWidth(),
+        enabled = isUiEnabled(sharedViewModel)
     )
 }
 
@@ -158,7 +163,8 @@ private fun CancelOrderButton(sharedViewModel: OrderViewModel, onNavigateToStart
         shape = RectangleShape,
         modifier = Modifier
             .fillMaxWidth()
-            .padding(top = dimensionResource(R.dimen.margin_between_elements))
+            .padding(top = dimensionResource(R.dimen.margin_between_elements)),
+        enabled = isUiEnabled(sharedViewModel)
     ) {
         Text(
             text = stringResource(R.string.cancel).uppercase(),

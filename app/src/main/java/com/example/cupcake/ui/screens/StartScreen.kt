@@ -34,6 +34,9 @@ import com.example.cupcake.ui.widgets.RectangularFilledButton
 
 @Composable
 fun StartScreen(sharedViewModel: OrderViewModel, onNavigateToFlavorScreen: () -> Unit, modifier: Modifier = Modifier) {
+
+    ScreenTransitionInProgressFinishedEffect(sharedViewModel)
+
     Scaffold(
         topBar = {
             CupcakeTopBar(stringResource(id = R.string.app_name))
@@ -45,9 +48,12 @@ fun StartScreen(sharedViewModel: OrderViewModel, onNavigateToFlavorScreen: () ->
             sharedViewModel.resetOrderCanceled()
         }
 
-        Surface(modifier = modifier
-            .padding(paddingValues).padding(dimensionResource(id = R.dimen.side_margin))
-            .verticalScroll(rememberScrollState())) {
+        Surface(
+            modifier = modifier
+                .padding(paddingValues)
+                .padding(dimensionResource(id = R.dimen.side_margin))
+                .verticalScroll(rememberScrollState())
+        ) {
             StartScreenContent(sharedViewModel, onNavigateToFlavorScreen, modifier)
         }
     }
@@ -88,6 +94,7 @@ private fun OrderCupcakeButtons(sharedViewModel: OrderViewModel, onNavigateToFla
                 sharedViewModel.orderCupcake(quantity, defaultFlavor)
                 onNavigateToFlavorScreen()
             },
+            enabled = isUiEnabled(sharedViewModel),
             modifier = Modifier.padding(top = dimensionResource(id = R.dimen.margin_between_elements))
         )
     }
