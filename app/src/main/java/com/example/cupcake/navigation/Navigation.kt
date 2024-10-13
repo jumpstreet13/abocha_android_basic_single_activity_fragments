@@ -1,13 +1,12 @@
 package com.example.cupcake.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.cupcake.model.OrderViewModel
-import com.example.cupcake.model.ScreenTransitionHandler
 import com.example.cupcake.ui.animation.getScreenSlideInTransition
 import com.example.cupcake.ui.animation.getScreenSlideOutTransition
 import com.example.cupcake.ui.animation.slideInLeftToRightFullWidth
@@ -36,6 +35,7 @@ object SummaryDestination
 @Composable
 fun Navigation(sharedViewModel: OrderViewModel, modifier: Modifier = Modifier) {
     val navController = rememberNavController()
+    val actions = remember(navController) { NavigationActions(navController, sharedViewModel) }
 
     NavHost(navController = navController, startDestination = StartDestination) {
         composable<StartDestination>(
@@ -47,7 +47,7 @@ fun Navigation(sharedViewModel: OrderViewModel, modifier: Modifier = Modifier) {
         ) { _ ->
             StartScreen(
                 sharedViewModel,
-                onNavigateToFlavorScreen = navigateToFlavorScreen(navController, sharedViewModel),
+                onNavigateToFlavorScreen = actions.navigateToFlavorScreen,
                 modifier = modifier
             )
         }
@@ -61,9 +61,9 @@ fun Navigation(sharedViewModel: OrderViewModel, modifier: Modifier = Modifier) {
         ) { _ ->
             FlavorScreen(
                 sharedViewModel = sharedViewModel,
-                onNavigateUp = navigateUp(navController, sharedViewModel),
-                onNavigateNext = navigateToPickupScreen(navController, sharedViewModel),
-                onNavigateToStart = navigateToStartScreen(navController, sharedViewModel),
+                onNavigateUp = actions.navigateUp,
+                onNavigateNext = actions.navigateToPickupScreen,
+                onNavigateToStart = actions.navigateToStartScreen,
                 modifier = modifier
             )
         }
@@ -78,9 +78,9 @@ fun Navigation(sharedViewModel: OrderViewModel, modifier: Modifier = Modifier) {
         ) { _ ->
             PickupScreen(
                 sharedViewModel = sharedViewModel,
-                onNavigateUp = navigateUp(navController, sharedViewModel),
-                onNavigateNext = navigateToSummaryScreen(navController, sharedViewModel),
-                onNavigateToStart = navigateToStartScreen(navController, sharedViewModel),
+                onNavigateUp = actions.navigateUp,
+                onNavigateNext = actions.navigateToSummaryScreen,
+                onNavigateToStart = actions.navigateToStartScreen,
                 modifier = modifier
             )
         }
@@ -95,50 +95,10 @@ fun Navigation(sharedViewModel: OrderViewModel, modifier: Modifier = Modifier) {
         ) { _ ->
             SummaryScreen(
                 sharedViewModel,
-                onNavigateUp = navigateUp(navController, sharedViewModel),
-                onNavigateToStart = navigateToStartScreen(navController, sharedViewModel),
+                onNavigateUp = actions.navigateUp,
+                onNavigateToStart = actions.navigateToStartScreen,
                 modifier = modifier
             )
         }
     }
-}
-
-private fun navigateToFlavorScreen(
-    navController: NavHostController,
-    screenTransitionHandler: ScreenTransitionHandler
-): () -> Unit = {
-    screenTransitionHandler.setScreenTransitionInProgress(true)
-    navController.navigate(FlavorDestination)
-}
-
-private fun navigateToStartScreen(
-    navController: NavHostController,
-    screenTransitionHandler: ScreenTransitionHandler
-): () -> Unit = {
-    screenTransitionHandler.setScreenTransitionInProgress(true)
-    navController.popBackStack(StartDestination, inclusive = false)
-}
-
-private fun navigateToPickupScreen(
-    navController: NavHostController,
-    screenTransitionHandler: ScreenTransitionHandler
-): () -> Unit = {
-    screenTransitionHandler.setScreenTransitionInProgress(true)
-    navController.navigate(PickupDestination)
-}
-
-private fun navigateToSummaryScreen(
-    navController: NavHostController,
-    screenTransitionHandler: ScreenTransitionHandler
-): () -> Unit = {
-    screenTransitionHandler.setScreenTransitionInProgress(true)
-    navController.navigate(SummaryDestination)
-}
-
-private fun navigateUp(
-    navController: NavHostController,
-    screenTransitionHandler: ScreenTransitionHandler
-): () -> Unit = {
-    screenTransitionHandler.setScreenTransitionInProgress(true)
-    navController.navigateUp()
 }
