@@ -29,6 +29,7 @@ fun FlavorScreen(
 ) {
 
     ScreenTransitionInProgressFinishedEffect(sharedViewModel)
+    BackPressedHandlerWithDisablingClicks(sharedViewModel)
 
     Scaffold(
         topBar = {

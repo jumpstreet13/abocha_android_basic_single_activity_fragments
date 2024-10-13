@@ -30,6 +30,7 @@ fun PickupScreen(
 ) {
 
     ScreenTransitionInProgressFinishedEffect(sharedViewModel)
+    BackPressedHandlerWithDisablingClicks(sharedViewModel)
 
     Scaffold(
         topBar = {

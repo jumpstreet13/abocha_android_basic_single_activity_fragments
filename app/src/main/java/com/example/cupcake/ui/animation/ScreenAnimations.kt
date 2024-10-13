@@ -11,7 +11,7 @@ import androidx.compose.animation.slideOutVertically
 import androidx.navigation.NavBackStackEntry
 
 
-private const val TWEEN_TIME_MS = 500
+private const val TWEEN_TIME_MS = 1000
 
 fun getScreenSlideOutTransition(
     isOrderCanceled: Boolean,

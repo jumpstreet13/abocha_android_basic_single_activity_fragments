@@ -37,6 +37,7 @@ fun SummaryScreen(
 ) {
 
     ScreenTransitionInProgressFinishedEffect(sharedViewModel)
+    BackPressedHandlerWithDisablingClicks(sharedViewModel)
 
     Scaffold(
         topBar = {
