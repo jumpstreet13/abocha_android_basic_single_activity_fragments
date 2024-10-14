@@ -42,7 +42,7 @@ fun Navigation(sharedViewModel: OrderViewModel, modifier: Modifier = Modifier) {
             enterTransition = slideInRightToLeftFullWidth,
             exitTransition = slideOutRightToLeftFullWidth,
             popEnterTransition = {
-                getScreenSlideInTransition(sharedViewModel.isOrderCanceled)()
+                getScreenSlideInTransition(sharedViewModel.isOrderCanceled.value)()
             },
         ) { _ ->
             StartScreen(
@@ -56,7 +56,7 @@ fun Navigation(sharedViewModel: OrderViewModel, modifier: Modifier = Modifier) {
             exitTransition = slideOutRightToLeftFullWidth,
             popEnterTransition = slideInLeftToRightFullWidth,
             popExitTransition = {
-                getScreenSlideOutTransition(sharedViewModel.isOrderCanceled)()
+                getScreenSlideOutTransition(sharedViewModel.isOrderCanceled.value)()
             },
         ) { _ ->
             FlavorScreen(
@@ -73,7 +73,7 @@ fun Navigation(sharedViewModel: OrderViewModel, modifier: Modifier = Modifier) {
             exitTransition = slideOutRightToLeftFullWidth,
             popEnterTransition = slideInLeftToRightFullWidth,
             popExitTransition = {
-                getScreenSlideOutTransition(sharedViewModel.isOrderCanceled)()
+                getScreenSlideOutTransition(sharedViewModel.isOrderCanceled.value)()
             },
         ) { _ ->
             PickupScreen(
@@ -90,7 +90,7 @@ fun Navigation(sharedViewModel: OrderViewModel, modifier: Modifier = Modifier) {
             exitTransition = slideOutRightToLeftFullWidth,
             popEnterTransition = slideInLeftToRightFullWidth,
             popExitTransition = {
-                getScreenSlideOutTransition(sharedViewModel.isOrderCanceled)()
+                getScreenSlideOutTransition(sharedViewModel.isOrderCanceled.value)()
             },
         ) { _ ->
             SummaryScreen(

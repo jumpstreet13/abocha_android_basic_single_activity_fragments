@@ -20,6 +20,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.map
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import java.text.NumberFormat
 import java.text.SimpleDateFormat
@@ -60,6 +61,9 @@ class OrderViewModel : ViewModel(), ScreenTransitionHandler {
         // Format the price into the local currency and return this as LiveData<String>
         NumberFormat.getCurrencyInstance().format(it)
     }
+
+    private val _isOrderCanceled = MutableStateFlow(false)
+    val isOrderCanceled: StateFlow<Boolean> get() = _isOrderCanceled
 
     init {
         // Set initial values for the order
@@ -123,14 +127,11 @@ class OrderViewModel : ViewModel(), ScreenTransitionHandler {
         _flavor.value = ""
         _date.value = dateOptions[0]
         _price.value = 0.0
-        isOrderCanceled = true
+        _isOrderCanceled.value = true
     }
 
-    var isOrderCanceled: Boolean = false
-        private set
-
     fun resetOrderCanceled() {
-        isOrderCanceled = false
+        _isOrderCanceled.value = false
     }
 
     /**
