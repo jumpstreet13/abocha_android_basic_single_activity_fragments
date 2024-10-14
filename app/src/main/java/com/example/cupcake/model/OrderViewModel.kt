@@ -17,8 +17,11 @@ package com.example.cupcake.model
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.map
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -34,7 +37,7 @@ private const val PRICE_FOR_SAME_DAY_PICKUP = 3.00
  * [OrderViewModel] holds information about a cupcake order in terms of quantity, flavor, and
  * pickup date. It also knows how to calculate the total price based on these order details.
  */
-class OrderViewModel : ViewModel() {
+class OrderViewModel : ViewModel(), ScreenTransitionHandler {
 
     // Quantity of cupcakes in this order
     private val _quantity = MutableLiveData<Int>()
@@ -53,14 +56,31 @@ class OrderViewModel : ViewModel() {
 
     // Price of the order so far
     private val _price = MutableLiveData<Double>()
-    val price: LiveData<String> = Transformations.map(_price) {
+//    val price: LiveData<String> = Transformations.map(_price) {
+    val price: LiveData<String> = _price.map {
         // Format the price into the local currency and return this as LiveData<String>
         NumberFormat.getCurrencyInstance().format(it)
     }
 
+    private val _isOrderCanceled = MutableStateFlow(false)
+    val isOrderCanceled: StateFlow<Boolean> get() = _isOrderCanceled
+
     init {
         // Set initial values for the order
         resetOrder()
+    }
+
+    /**
+     * Set the quantity of cupcakes and default flavor if not set.
+     *
+     * @param quantity Number of cupcakes to order
+     * @param defaultFlavor Default flavor to set if no flavor is selected
+     */
+    fun orderCupcake(quantity: Int, defaultFlavor: String) {
+        setQuantity(quantity)
+        if (hasNoFlavorSet()) {
+            setFlavor(defaultFlavor)
+        }
     }
 
     /**
@@ -107,6 +127,11 @@ class OrderViewModel : ViewModel() {
         _flavor.value = ""
         _date.value = dateOptions[0]
         _price.value = 0.0
+        _isOrderCanceled.value = true
+    }
+
+    fun resetOrderCanceled() {
+        _isOrderCanceled.value = false
     }
 
     /**
@@ -133,5 +158,12 @@ class OrderViewModel : ViewModel() {
             calendar.add(Calendar.DATE, 1)
         }
         return options
+    }
+
+    private var _isScreenTransitionInProgress = MutableStateFlow(false)
+    override val isScreenTransitionInProgress = _isScreenTransitionInProgress.asStateFlow()
+
+    override fun setScreenTransitionInProgress(isInProgress: Boolean) {
+        _isScreenTransitionInProgress.value = isInProgress
     }
 }

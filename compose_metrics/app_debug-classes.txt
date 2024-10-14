@@ -1,0 +1,42 @@
+unstable class MainComposeActivity {
+  unstable val sharedViewModel$delegate: Lazy<OrderViewModel>
+  <runtime stability> = Unstable
+}
+unstable class OrderViewModel {
+  unstable val _quantity: MutableLiveData<Int>
+  unstable val quantity: LiveData<Int>
+  unstable val _flavor: MutableLiveData<String>
+  unstable val flavor: LiveData<String>
+  unstable val dateOptions: List<String>
+  unstable val _date: MutableLiveData<String>
+  unstable val date: LiveData<String>
+  unstable val _price: MutableLiveData<Double>
+  unstable val price: LiveData<String>
+  unstable val _isOrderCanceled: MutableStateFlow<Boolean>
+  unstable var _isScreenTransitionInProgress: MutableStateFlow<Boolean>
+  unstable val isScreenTransitionInProgress: StateFlow<Boolean>
+  <runtime stability> = Unstable
+}
+stable class StartDestination {
+  <runtime stability> = Stable
+}
+stable class FlavorDestination {
+  <runtime stability> = Stable
+}
+stable class PickupDestination {
+  <runtime stability> = Stable
+}
+stable class SummaryDestination {
+  <runtime stability> = Stable
+}
+stable class NavigationActions {
+  stable val navigateToFlavorScreen: Function0<Unit>
+  stable val navigateToStartScreen: Function0<Unit>
+  stable val navigateToPickupScreen: Function0<Unit>
+  stable val navigateToSummaryScreen: Function0<Unit>
+  stable val navigateUp: Function0<Unit>
+  <runtime stability> = Stable
+}
+stable class WhiteTintRippleTheme {
+  <runtime stability> = Stable
+}
