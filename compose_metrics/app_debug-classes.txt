@@ -1,14 +1,20 @@
-unstable class FlavorFragment {
-  unstable var binding: FragmentFlavorBinding?
-  unstable val sharedViewModel$delegate: Lazy<OrderViewModel>
-  <runtime stability> = Unstable
-}
-unstable class MainActivity {
-  unstable var navController: NavController
-  <runtime stability> = Unstable
-}
 unstable class MainComposeActivity {
   unstable val sharedViewModel$delegate: Lazy<OrderViewModel>
+  <runtime stability> = Unstable
+}
+unstable class OrderViewModel {
+  unstable val _quantity: MutableLiveData<Int>
+  unstable val quantity: LiveData<Int>
+  unstable val _flavor: MutableLiveData<String>
+  unstable val flavor: LiveData<String>
+  unstable val dateOptions: List<String>
+  unstable val _date: MutableLiveData<String>
+  unstable val date: LiveData<String>
+  unstable val _price: MutableLiveData<Double>
+  unstable val price: LiveData<String>
+  unstable val _isOrderCanceled: MutableStateFlow<Boolean>
+  unstable var _isScreenTransitionInProgress: MutableStateFlow<Boolean>
+  unstable val isScreenTransitionInProgress: StateFlow<Boolean>
   <runtime stability> = Unstable
 }
 stable class StartDestination {
@@ -23,33 +29,13 @@ stable class PickupDestination {
 stable class SummaryDestination {
   <runtime stability> = Stable
 }
-unstable class PickupFragment {
-  unstable var binding: FragmentPickupBinding?
-  unstable val sharedViewModel$delegate: Lazy<OrderViewModel>
-  <runtime stability> = Unstable
-}
-unstable class StartFragment {
-  unstable var binding: FragmentStartBinding?
-  unstable val sharedViewModel$delegate: Lazy<OrderViewModel>
-  <runtime stability> = Unstable
-}
-unstable class SummaryFragment {
-  unstable var binding: FragmentSummaryBinding?
-  unstable val sharedViewModel$delegate: Lazy<OrderViewModel>
-  <runtime stability> = Unstable
-}
-unstable class OrderViewModel {
-  unstable val _quantity: MutableLiveData<Int>
-  unstable val quantity: LiveData<Int>
-  unstable val _flavor: MutableLiveData<String>
-  unstable val flavor: LiveData<String>
-  unstable val dateOptions: List<String>
-  unstable val _date: MutableLiveData<String>
-  unstable val date: LiveData<String>
-  unstable val _price: MutableLiveData<Double>
-  unstable val price: LiveData<String>
-  stable var isOrderCanceled: Boolean
-  <runtime stability> = Unstable
+stable class NavigationActions {
+  stable val navigateToFlavorScreen: Function0<Unit>
+  stable val navigateToStartScreen: Function0<Unit>
+  stable val navigateToPickupScreen: Function0<Unit>
+  stable val navigateToSummaryScreen: Function0<Unit>
+  stable val navigateUp: Function0<Unit>
+  <runtime stability> = Stable
 }
 stable class WhiteTintRippleTheme {
   <runtime stability> = Stable
