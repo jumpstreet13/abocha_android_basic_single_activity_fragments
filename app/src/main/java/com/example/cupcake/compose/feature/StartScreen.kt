@@ -25,6 +25,15 @@ import com.example.cupcake.compose.ui.theme.CupcakeTheme
 import com.example.cupcake.compose.ui.util.IMAGE_SIZE
 import com.example.cupcake.compose.ui.util.MARGIN_BETWEEN_ELEMENTS
 import com.example.cupcake.compose.ui.util.SIDE_MARGIN
+import com.example.cupcake.utils.Route
+
+fun NavGraphBuilder.startScreen(
+    onButtonClick: (Int) -> Unit
+) {
+    composable(route = Route.START.toString()) {
+        StartRoute(onButtonClick)
+    }
+}
 
 @Composable
 fun StartRoute(
