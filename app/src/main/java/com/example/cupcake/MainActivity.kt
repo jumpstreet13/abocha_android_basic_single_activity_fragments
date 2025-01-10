@@ -16,33 +16,125 @@
 package com.example.cupcake
 
 import android.os.Bundle
+import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.NavController
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExitTransition
+import androidx.compose.animation.core.AnimationSpec
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.MutableTransitionState
+import androidx.compose.animation.core.Transition
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.rememberNavController
+import androidx.navigation.compose.composable
+import com.example.cupcake.model.OrderViewModel
+
+sealed class Routes(val route: String) {
+    object Start : Routes("Start")
+    object Flavor : Routes("Flavor")
+    object Pickup : Routes("Pickup")
+    object Summary : Routes("Summary")
+}
+
+@Composable
+fun AnimatedStartScreen(viewModel : OrderViewModel, navController : NavHostController) {
+    val state = remember {
+        MutableTransitionState(false).apply { targetState = true }
+    }
+    AnimatedVisibility(visibleState = state,
+            //enter = slideInVertically(tween(2000)),
+            enter = scaleIn(tween(2000)),
+            exit = ExitTransition.None) {
+        StartScreen(viewModel, navController)
+    }
+}
+
+@Composable
+fun AnimatedFlavorScreen(viewModel : OrderViewModel, navController : NavHostController) {
+    val state = remember {
+        MutableTransitionState(false).apply { targetState = true }
+    }
+    AnimatedVisibility(visibleState = state,
+            enter = expandVertically(tween(1000)),
+            exit = ExitTransition.None) {
+        FlavorScreen(viewModel, navController)
+    }
+}
+
+@Composable
+fun AnimatedPickupScreen(viewModel : OrderViewModel, navController : NavHostController) {
+    val state = remember {
+        MutableTransitionState(false).apply { targetState = true }
+    }
+    AnimatedVisibility(visibleState = state,
+            enter = expandVertically(tween(1000)),
+            exit = ExitTransition.None) {
+        PickupScreen(viewModel, navController)
+    }
+}
+
+@Composable
+fun AnimatedSummaryScreen(viewModel : OrderViewModel, navController : NavHostController, activity : AppCompatActivity) {
+    val state = remember {
+        MutableTransitionState(false).apply { targetState = true }
+    }
+    AnimatedVisibility(visibleState = state,
+            enter = slideInVertically(tween(1000), initialOffsetY = { -it }),
+            exit = fadeOut(tween(1000), targetAlpha = 0f)) {
+        SummaryScreen(viewModel, navController, activity)
+    }
+}
+
+@Composable
+fun Main(viewModel : OrderViewModel = viewModel(), activity : AppCompatActivity) {
+    val navController : NavHostController = rememberNavController()
+
+        NavHost(navController = navController, startDestination = Routes.Start.route) {
+            composable(Routes.Start.route) {
+                activity.setTitle(stringResource(id = R.string.app_name))
+                AnimatedStartScreen(viewModel, navController)
+            }
+            composable(Routes.Flavor.route) {
+                activity.setTitle(stringResource(id = R.string.choose_flavor))
+                AnimatedFlavorScreen(viewModel, navController)
+            }
+            composable(Routes.Pickup.route) {
+                activity.setTitle(stringResource(id = R.string.choose_pickup_date))
+                AnimatedPickupScreen(viewModel, navController)
+            }
+            composable(Routes.Summary.route) {
+                activity.setTitle(stringResource(id = R.string.order_summary))
+                AnimatedSummaryScreen(viewModel, navController, activity)
+            }
+        }
+}
 
 /**
  * Activity for cupcake order flow.
  */
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
-
-    private lateinit var navController: NavController
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Retrieve NavController from the NavHostFragment
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-        navController = navHostFragment.navController
-
-        // Set up the action bar for use with the NavController
-        setupActionBarWithNavController(navController)
-    }
-
-    /**
-     * Handle navigation when the user chooses Up from the action bar.
-     */
-    override fun onSupportNavigateUp(): Boolean {
-        return navController.navigateUp() || super.onSupportNavigateUp()
+        setContent {
+            Main(activity = this)
+        }
     }
 }

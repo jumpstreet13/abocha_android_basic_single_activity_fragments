@@ -21,4 +21,6 @@
     <dimen name="margin_between_elements">8dp</dimen>
     <dimen name="radio_button_padding">8dp</dimen>
     <dimen name="order_summary_margin">4dp</dimen>
+    <dimen name="button_height">60dp</dimen>
+    <dimen name="nav_button_width">180dp</dimen>
 </resources>
