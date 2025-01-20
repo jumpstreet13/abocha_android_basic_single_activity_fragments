@@ -28,8 +28,8 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         super.onCreate(savedInstanceState)
 
         setContent {
-            //CupcakeOrder(activity = this)
-            CustomLayout()
+            CupcakeOrder(activity = this)
+            //CustomLayout()
         }
     }
 }

@@ -1,0 +1,49 @@
+restartable scheme("[androidx.compose.ui.UiComposable]") fun AnimatedStartScreen(
+  unstable viewModel: OrderViewModel
+  unstable navController: NavHostController
+)
+restartable scheme("[androidx.compose.ui.UiComposable]") fun AnimatedFlavorScreen(
+  unstable viewModel: OrderViewModel
+  unstable navController: NavHostController
+)
+restartable scheme("[androidx.compose.ui.UiComposable]") fun AnimatedPickupScreen(
+  unstable viewModel: OrderViewModel
+  unstable navController: NavHostController
+)
+restartable scheme("[androidx.compose.ui.UiComposable]") fun AnimatedSummaryScreen(
+  unstable viewModel: OrderViewModel
+  unstable navController: NavHostController
+  stable sendOrder: Function1<String, Unit>
+)
+restartable scheme("[androidx.compose.ui.UiComposable]") fun CupcakeOrder(
+  unstable activity: AppCompatActivity
+  unstable viewModel: OrderViewModel? = @dynamic viewModel(null, null, null, null, $composer, 0, 0b1111)
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun FlavorScreen(
+  unstable sharedViewModel: OrderViewModel? = @dynamic viewModel(null, null, null, null, $composer, 0, 0b1111)
+  unstable navController: NavHostController? = @static null
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun PreviewFlavorScreen()
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun PickupScreen(
+  unstable sharedViewModel: OrderViewModel? = @dynamic viewModel(null, null, null, null, $composer, 0, 0b1111)
+  unstable navController: NavHostController? = @static null
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun PreviewPickupScreen()
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun StartScreen(
+  unstable sharedViewModel: OrderViewModel? = @dynamic viewModel(null, null, null, null, $composer, 0, 0b1111)
+  unstable navController: NavHostController? = @static null
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun PreviewStartScreen()
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun SummaryScreen(
+  unstable sharedViewModel: OrderViewModel? = @dynamic viewModel(null, null, null, null, $composer, 0, 0b1111)
+  unstable navController: NavHostController? = @static null
+  stable sendOrder: Function1<String, Unit>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun PreviewSummaryScreen()
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun CustomLayout()
+restartable skippable scheme("[androidx.compose.ui.UiComposable, [androidx.compose.ui.UiComposable]]") fun MultiColumn(
+  stable columnCount: Int = @static 1
+  stable modifier: Modifier? = @static Companion
+  stable content: Function2<Composer, Int, Unit>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun MultiColumnPreview()
