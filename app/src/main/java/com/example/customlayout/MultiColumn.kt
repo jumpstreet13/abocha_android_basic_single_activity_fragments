@@ -3,6 +3,7 @@ package com.example.customlayout
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.Layout
+import androidx.compose.ui.tooling.preview.Preview
 import kotlin.math.min
 
 // Custom Layout Definition
@@ -21,21 +22,25 @@ fun MultiColumn(
     // measure layout itself
     val width = placables.maxOf { it.width }
     val widthLayout = min(constraints.maxWidth, width * columnCount)
+    val heightLayout = constraints.maxHeight
     // layout children
-    layout(widthLayout, constraints.maxHeight, placementBlock = {
+    layout(widthLayout, heightLayout, placementBlock = {
         var height = 0  // current row height, calculated for each row
         var count = 0
         var x = 0
         var y = 0
-        placables.forEach {
-            it.placeRelative(x, y)
-            if (it.height > height) {
-                height = it.height
+        for (it in placables) {
+            if (x < widthLayout) {
+                it.placeRelative(x, y)
+                if (it.height > height) {
+                    height = it.height
+                }
             }
             if ((++count % columnCount) == 0) {
-                x = 0
                 y += height
+                if (y >= heightLayout) break;
                 height = 0
+                x = 0
             }
             else {
                 x += width
@@ -43,3 +48,4 @@ fun MultiColumn(
         }
     })
 }
+
