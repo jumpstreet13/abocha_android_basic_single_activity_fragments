@@ -5,7 +5,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.cupcake.model.OrderViewModel
 
 @Composable
-fun ScreenLauncher(activity: MainActivity, viewModel: OrderViewModel = viewModel()) {
+fun ScreenLauncher(viewModel: OrderViewModel = viewModel(), sendOrder: (String) -> Unit) {
     val navigationState = rememberNavigationState()
 
     AppNavGraph(
@@ -32,7 +32,7 @@ fun ScreenLauncher(activity: MainActivity, viewModel: OrderViewModel = viewModel
             SummaryScreen(
                 viewModel = viewModel,
                 navigationState = navigationState,
-                activity = activity
+                sendOrder = sendOrder
             )
         }
     )

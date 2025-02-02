@@ -38,7 +38,7 @@ import com.example.cupcake.model.OrderViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun StartScreen(viewModel: OrderViewModel, navigationState: NavigationState) {
+fun StartScreen(modifier: Modifier = Modifier, viewModel: OrderViewModel, navigationState: NavigationState) {
     val imageSize = dimensionResource(R.dimen.image_size)
     val sideMargin = dimensionResource(R.dimen.side_margin)
     val marginBetweenElements = dimensionResource(R.dimen.margin_between_elements)
@@ -46,21 +46,9 @@ fun StartScreen(viewModel: OrderViewModel, navigationState: NavigationState) {
     val defaultFlavor = stringResource(R.string.vanilla)
     val state = remember { MutableTransitionState(false).apply { targetState = true } }
 
-    fun orderCupCake(quantity: Int) {
-        // Update the view model with the quantity
-        viewModel.setQuantity(quantity)
-
-        // If no flavor is set in the view model yet, select vanilla as default flavor
-        if (viewModel.hasNoFlavorSet()) {
-            viewModel.setFlavor(defaultFlavor)
-        }
-
-        // Navigate to the next destination to select the flavor of the cupcakes
-        navigationState.navigateTo(Screen.Flavor.route)
-    }
-
     val density = LocalDensity.current
     AnimatedVisibility(
+        modifier = modifier,
         visibleState = state,
         enter = slideInHorizontally(animationSpec = tween(300)) { with(density) { 150.dp.roundToPx() } }
                 + fadeIn(animationSpec = tween(150)),
@@ -106,7 +94,7 @@ fun StartScreen(viewModel: OrderViewModel, navigationState: NavigationState) {
                 Button(modifier = Modifier
                     .width(buttonWidth),
                     shape = MaterialTheme.shapes.extraSmall,
-                    onClick = { orderCupCake(1) }) {
+                    onClick = { orderCupCake(1, viewModel, navigationState, defaultFlavor) }) {
                     Text(
                         text = stringResource(R.string.one_cupcake).uppercase(),
                         fontSize = 16.sp
@@ -116,7 +104,7 @@ fun StartScreen(viewModel: OrderViewModel, navigationState: NavigationState) {
                 Button(modifier = Modifier
                     .width(buttonWidth),
                     shape = MaterialTheme.shapes.extraSmall,
-                    onClick = { orderCupCake(6) }) {
+                    onClick = { orderCupCake(6, viewModel, navigationState, defaultFlavor) }) {
                     Text(
                         text = stringResource(R.string.six_cupcakes).uppercase(),
                         fontSize = 16.sp
@@ -126,7 +114,7 @@ fun StartScreen(viewModel: OrderViewModel, navigationState: NavigationState) {
                 Button(modifier = Modifier
                     .width(buttonWidth),
                     shape = MaterialTheme.shapes.extraSmall,
-                    onClick = { orderCupCake(12) }) {
+                    onClick = { orderCupCake(12, viewModel, navigationState, defaultFlavor) }) {
                     Text(
                         text = stringResource(R.string.twelve_cupcakes).uppercase(),
                         fontSize = 16.sp
@@ -135,5 +123,18 @@ fun StartScreen(viewModel: OrderViewModel, navigationState: NavigationState) {
             }
         }
     }
+}
+
+private fun orderCupCake(quantity: Int, viewModel: OrderViewModel, navigationState: NavigationState, defaultFlavor: String) {
+    // Update the view model with the quantity
+    viewModel.setQuantity(quantity)
+
+    // If no flavor is set in the view model yet, select vanilla as default flavor
+    if (viewModel.hasNoFlavorSet()) {
+        viewModel.setFlavor(defaultFlavor)
+    }
+
+    // Navigate to the next destination to select the flavor of the cupcakes
+    navigationState.navigateTo(Screen.Flavor.route)
 }
 

@@ -12,26 +12,17 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material3.Button
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
@@ -39,31 +30,22 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.TextUnit
-import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.cupcake.model.OrderViewModel
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FlavorScreen(viewModel: OrderViewModel, navigationState: NavigationState) {
+fun FlavorScreen(
+    modifier: Modifier = Modifier,
+    viewModel: OrderViewModel,
+    navigationState: NavigationState,
+) {
     val sideMargin = dimensionResource(R.dimen.side_margin)
     val state = remember { MutableTransitionState(false).apply { targetState = true } }
-
-    fun cancelOrder() {
-        // Reset order in view model
-        viewModel.resetOrder()
-        navigationState.navigateTo(Screen.Start.route)
-    }
-
-    fun goToNextScreen() {
-        // Navigate to the next destination
-        navigationState.navigateTo(Screen.Pickup.route)
-    }
-
     val density = LocalDensity.current
+
     AnimatedVisibility(
+        modifier = modifier,
         visibleState = state,
         enter = slideInHorizontally(animationSpec = tween(300)) { with(density) { 150.dp.roundToPx() } }
                 + fadeIn(animationSpec = tween(150)),
@@ -71,27 +53,10 @@ fun FlavorScreen(viewModel: OrderViewModel, navigationState: NavigationState) {
     ) {
         Scaffold(
             topBar = {
-                TopAppBar(
-                    title = {
-                        Text(
-                            text = stringResource(R.string.choose_flavor)
-                        )
-                    },
-                    navigationIcon = {
-                        IconButton(
-                            onClick = { navigationState.navigateTo(Screen.Start.route, true) }
-                        ) {
-                            Icon(
-                                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                contentDescription = null
-                            )
-                        }
-                    },
-                    colors = TopAppBarDefaults.topAppBarColors(
-                        containerColor = MaterialTheme.colorScheme.primary,
-                        titleContentColor = MaterialTheme.colorScheme.onPrimary,
-                        navigationIconContentColor = MaterialTheme.colorScheme.onPrimary
-                    )
+                TopAppBarWithArrow(
+                    stringResource(R.string.choose_flavor),
+                    navigationState,
+                    Screen.Start.route
                 )
             }
         ) { paddingValues ->
@@ -102,7 +67,10 @@ fun FlavorScreen(viewModel: OrderViewModel, navigationState: NavigationState) {
                     .padding(sideMargin),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                FlavorRadioGroup(viewModel, sideMargin)
+                FlavorRadioGroup(
+                    viewModel = viewModel,
+                    sideMargin = sideMargin
+                )
                 Spacer(modifier = Modifier.height(sideMargin))
                 HorizontalDivider()
                 Spacer(modifier = Modifier.height(sideMargin))
@@ -113,30 +81,12 @@ fun FlavorScreen(viewModel: OrderViewModel, navigationState: NavigationState) {
                     fontSize = 18.sp
                 )
                 Spacer(modifier = Modifier.height(sideMargin))
-                Row {
-                    OutlinedButton(
-                        modifier = Modifier.weight(1f),
-                        shape = MaterialTheme.shapes.extraSmall,
-                        onClick = { cancelOrder() }
-                    ) {
-                        Text(
-                            text = stringResource(R.string.cancel).uppercase(),
-                            letterSpacing = TextUnit(1f, TextUnitType.Sp)
-                        )
-
-                    }
-                    Spacer(modifier = Modifier.width(sideMargin))
-                    Button(
-                        modifier = Modifier.weight(1f),
-                        shape = MaterialTheme.shapes.extraSmall,
-                        onClick = { goToNextScreen() }
-                    ) {
-                        Text(
-                            text = stringResource(R.string.next).uppercase(),
-                            letterSpacing = TextUnit(1f, TextUnitType.Sp)
-                        )
-                    }
-                }
+                ButtonsRaw(
+                    viewModel = viewModel,
+                    navigationState = navigationState,
+                    route = Screen.Pickup.route,
+                    sideMargin = sideMargin
+                )
             }
         }
     }
@@ -144,7 +94,11 @@ fun FlavorScreen(viewModel: OrderViewModel, navigationState: NavigationState) {
 
 
 @Composable
-fun FlavorRadioGroup(viewModel: OrderViewModel, sideMargin: Dp) {
+private fun FlavorRadioGroup(
+    modifier: Modifier = Modifier,
+    viewModel: OrderViewModel,
+    sideMargin: Dp,
+) {
     val radioOptions = listOf(
         stringResource(R.string.vanilla),
         stringResource(R.string.chocolate),
@@ -152,8 +106,8 @@ fun FlavorRadioGroup(viewModel: OrderViewModel, sideMargin: Dp) {
         stringResource(R.string.salted_caramel),
         stringResource(R.string.coffee)
     )
-    val (selectedOption, onOptionSelected) = remember { mutableStateOf(radioOptions[0]) }
-    Column(modifier = Modifier.selectableGroup()) {
+    val (selectedOption, onOptionSelected) = rememberSaveable { mutableStateOf(radioOptions[0]) }
+    Column(modifier = modifier.selectableGroup()) {
         radioOptions.forEach { text ->
             Row(
                 modifier = Modifier
