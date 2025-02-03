@@ -36,9 +36,9 @@ import com.example.cupcake.model.OrderViewModel
 
 @Composable
 fun PickupScreen(
-    modifier: Modifier = Modifier,
     viewModel: OrderViewModel,
     navigationState: NavigationState,
+    modifier: Modifier = Modifier,
 ) {
     val sideMargin = dimensionResource(R.dimen.side_margin)
     val state = remember { MutableTransitionState(false).apply { targetState = true } }
@@ -95,9 +95,9 @@ fun PickupScreen(
 
 @Composable
 private fun PickupRadioGroup(
-    modifier: Modifier = Modifier,
     viewModel: OrderViewModel,
     sideMargin: Dp,
+    modifier: Modifier = Modifier,
 ) {
     val radioOptions = viewModel.dateOptions
     val (selectedOption, onOptionSelected) = rememberSaveable { mutableStateOf(radioOptions[0]) }

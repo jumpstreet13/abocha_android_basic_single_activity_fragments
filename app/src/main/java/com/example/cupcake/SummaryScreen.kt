@@ -37,10 +37,10 @@ import com.example.cupcake.model.OrderViewModel
 
 @Composable
 fun SummaryScreen(
-    modifier: Modifier = Modifier,
     viewModel: OrderViewModel,
     navigationState: NavigationState,
     sendOrder: (String) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     val sideMargin = dimensionResource(R.dimen.side_margin)
     val state = remember { MutableTransitionState(false).apply { targetState = true } }
@@ -111,10 +111,10 @@ fun SummaryScreen(
 
 @Composable
 private fun TextBlock(
-    modifier: Modifier = Modifier,
     headerText: String,
     bodyText: String,
     sideMargin: Dp,
+    modifier: Modifier = Modifier,
 ) {
     Column(modifier = modifier) {
         Text(
@@ -135,7 +135,7 @@ private fun TextBlock(
 }
 
 @Composable
-fun OrderDetails(modifier: Modifier = Modifier, viewModel: OrderViewModel, sideMargin: Dp) {
+fun OrderDetails(viewModel: OrderViewModel, sideMargin: Dp, modifier: Modifier = Modifier) {
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(sideMargin)

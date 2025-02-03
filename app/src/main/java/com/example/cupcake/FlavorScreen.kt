@@ -36,9 +36,9 @@ import com.example.cupcake.model.OrderViewModel
 
 @Composable
 fun FlavorScreen(
-    modifier: Modifier = Modifier,
     viewModel: OrderViewModel,
     navigationState: NavigationState,
+    modifier: Modifier = Modifier,
 ) {
     val sideMargin = dimensionResource(R.dimen.side_margin)
     val state = remember { MutableTransitionState(false).apply { targetState = true } }
@@ -95,9 +95,9 @@ fun FlavorScreen(
 
 @Composable
 private fun FlavorRadioGroup(
-    modifier: Modifier = Modifier,
     viewModel: OrderViewModel,
     sideMargin: Dp,
+    modifier: Modifier = Modifier,
 ) {
     val radioOptions = listOf(
         stringResource(R.string.vanilla),

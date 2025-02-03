@@ -38,7 +38,11 @@ import com.example.cupcake.model.OrderViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun StartScreen(modifier: Modifier = Modifier, viewModel: OrderViewModel, navigationState: NavigationState) {
+fun StartScreen(
+    viewModel: OrderViewModel,
+    navigationState: NavigationState,
+    modifier: Modifier = Modifier,
+) {
     val imageSize = dimensionResource(R.dimen.image_size)
     val sideMargin = dimensionResource(R.dimen.side_margin)
     val marginBetweenElements = dimensionResource(R.dimen.margin_between_elements)
@@ -125,7 +129,12 @@ fun StartScreen(modifier: Modifier = Modifier, viewModel: OrderViewModel, naviga
     }
 }
 
-private fun orderCupCake(quantity: Int, viewModel: OrderViewModel, navigationState: NavigationState, defaultFlavor: String) {
+private fun orderCupCake(
+    quantity: Int,
+    viewModel: OrderViewModel,
+    navigationState: NavigationState,
+    defaultFlavor: String,
+) {
     // Update the view model with the quantity
     viewModel.setQuantity(quantity)
 

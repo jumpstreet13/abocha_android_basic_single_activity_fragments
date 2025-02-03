@@ -1,15 +1,4 @@
-restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun SummaryScreen(
-  stable modifier: Modifier? = @static Companion
-  viewModel: OrderViewModel
-  navigationState: NavigationState
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun ScreenLauncher(
+  viewModel: OrderViewModel? = @dynamic viewModel(null, null, null, null, $composer, 0, 0b1111)
   stable sendOrder: Function1<String, Unit>
-)
-restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun TextBlock(
-  stable headerText: String
-  stable bodyText: String
-  stable sideMargin: Dp
-)
-restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun OrderDetails(
-  viewModel: OrderViewModel
-  stable sideMargin: Dp
 )

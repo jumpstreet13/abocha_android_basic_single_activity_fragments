@@ -1,4 +1,2 @@
 package,name,composable,skippable,restartable,readonly,inline,isLambda,hasDefaults,defaultsGroup,groups,calls,
-com.example.cupcake.SummaryScreen,SummaryScreen,1,1,1,0,0,0,0,0,1,6,
-com.example.cupcake.TextBlock,TextBlock,1,1,1,0,0,0,0,0,1,1,
-com.example.cupcake.OrderDetails,OrderDetails,1,1,1,0,0,0,0,0,1,1,
+com.example.cupcake.ScreenLauncher,ScreenLauncher,1,1,1,0,0,0,1,0,2,7,
