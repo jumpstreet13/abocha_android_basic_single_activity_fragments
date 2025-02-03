@@ -1,0 +1,4 @@
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun ScreenLauncher(
+  viewModel: OrderViewModel? = @dynamic viewModel(null, null, null, null, $composer, 0, 0b1111)
+  stable sendOrder: Function1<String, Unit>
+)
