@@ -1,0 +1,30 @@
+unstable class CupcakeViewModel {
+  unstable val ingredientOptions: List<@[EnhancedNullability] String>
+  unstable val _order: MutableStateFlow<OrderState>
+  unstable val order: StateFlow<OrderState>
+  <runtime stability> = Unstable
+}
+unstable class CupcakeViewModelFactory {
+  unstable val context: Context
+  <runtime stability> = Unstable
+}
+unstable class MainActivity {
+  unstable var navController: NavController
+  <runtime stability> = Unstable
+}
+stable class Start {
+  <runtime stability> = Stable
+}
+stable class Flavor {
+  <runtime stability> = Stable
+}
+stable class PickUp {
+  <runtime stability> = Stable
+}
+stable class Summary {
+  <runtime stability> = Stable
+}
+stable class NavRouters {
+  stable val route: String
+  <runtime stability> = Stable
+}

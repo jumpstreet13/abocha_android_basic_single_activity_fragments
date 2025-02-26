@@ -16,10 +16,18 @@
 package com.example.cupcake
 
 import android.os.Bundle
+import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.navigation.compose.rememberNavController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import com.example.cupcake.compose_screens.ChooseOptionScreen
+import com.example.cupcake.compose_screens.Start
+import com.example.cupcake.compose_screens.Summary
 
 /**
  * Activity for cupcake order flow.
@@ -31,12 +39,15 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Retrieve NavController from the NavHostFragment
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+
+        /*val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
 
-        // Set up the action bar for use with the NavController
-        setupActionBarWithNavController(navController)
+
+        setupActionBarWithNavController(navController)*/
+        setContent {
+            Main()
+        }
     }
 
     /**
@@ -45,4 +56,64 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
     override fun onSupportNavigateUp(): Boolean {
         return navController.navigateUp() || super.onSupportNavigateUp()
     }
+}
+
+@Composable
+fun Main() {
+    val navController = rememberNavController()
+    val viewModel: CupcakeViewModel = viewModel(
+        factory = CupcakeViewModelFactory(LocalContext.current)
+    )
+    NavHost(navController = navController, startDestination = NavRouters.Start.route) {
+        composable(route = NavRouters.Start.route) {
+            Start(
+                navigate = { navController.navigate(NavRouters.Flavor.route) },
+                viewModel::setAmount,
+                viewModel::setEmptyOrder
+            )
+        }
+        composable(route = NavRouters.Flavor.route) {
+            ChooseOptionScreen(
+                cancelButtonNavigate = {
+                    navController.navigate(NavRouters.Start.route) {
+                        popUpTo(0)
+                    }
+                },
+                nextButtonNavigate = { navController.navigate(NavRouters.PickUp.route) },
+                orderFlow = viewModel.order,
+                options = viewModel.ingredientOptions,
+                setSelectedOption = viewModel::setAdditionalIngredient
+            )
+        }
+        composable(NavRouters.PickUp.route) {
+            ChooseOptionScreen(
+                cancelButtonNavigate = {
+                    navController.navigate(NavRouters.Start.route) {
+                        popUpTo(0)
+                    }
+                },
+                nextButtonNavigate = { navController.navigate(NavRouters.Summary.route) },
+                orderFlow = viewModel.order,
+                options = viewModel.getDateOptions(),
+                setSelectedOption = viewModel::setDate,
+            )
+        }
+        composable(NavRouters.Summary.route) {
+            Summary(
+                orderFlow = viewModel.order,
+                cancelButtonNavigate = {
+                    navController.navigate(NavRouters.Start.route) {
+                        popUpTo(0)
+                    }
+                }
+            )
+        }
+    }
+}
+
+sealed class NavRouters(val route: String) {
+    data object Start : NavRouters("start")
+    data object Flavor : NavRouters("flavor")
+    data object PickUp : NavRouters("pickUp")
+    data object Summary : NavRouters("summary")
 }
