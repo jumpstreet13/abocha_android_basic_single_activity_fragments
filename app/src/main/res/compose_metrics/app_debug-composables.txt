@@ -1,0 +1,37 @@
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun Main()
+restartable scheme("[androidx.compose.ui.UiComposable]") fun ChooseOptionScreen(
+  stable cancelButtonNavigate: Function0<Unit>
+  stable nextButtonNavigate: Function0<Unit>
+  unstable orderFlow: StateFlow<OrderState>
+  unstable options: List<String>
+  stable setSelectedOption: Function1<@[ParameterName(name = 'value')] String, Unit>
+)
+restartable scheme("[androidx.compose.ui.UiComposable]") fun OptionsRadioGroup(
+  unstable options: List<String>
+  stable setSelectedOption: Function1<String, Unit>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun Buttons(
+  stable cancelButtonNavigate: Function0<Unit>
+  stable nextButtonNavigate: Function0<Unit>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun Start(
+  stable navigate: Function0<Unit>
+  stable setAmount: Function1<@[ParameterName(name = 'value')] Int, Unit>
+  stable setEmptyOrder: Function0<Unit>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun OrderButton(
+  stable <this>: ColumnScope
+  stable navigate: Function0<Unit>
+  stable setAmount: Function1<@[ParameterName(name = 'value')] Int, Unit>
+  stable buttonText: String
+  stable cakesAmount: Int
+)
+restartable scheme("[androidx.compose.ui.UiComposable]") fun Summary(
+  unstable orderFlow: StateFlow<OrderState>
+  stable cancelButtonNavigate: Function0<Unit>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun OrderOption(
+  stable optionName: String
+  stable optionValue: String
+  stable bottomPadding: Dp
+)
