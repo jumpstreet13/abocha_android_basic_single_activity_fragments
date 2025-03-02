@@ -1,5 +1,6 @@
 package com.example.cupcake.widgets
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -13,11 +14,15 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -41,11 +46,12 @@ fun CupcakeCustomizationStep(
             .fillMaxWidth()
             .wrapContentHeight()
             .verticalScroll(scrollState, enabled = true)
-            .padding(horizontal = 16.dp)
+            .padding(horizontal = dimensionResource(R.dimen.side_margin))
     ) {
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(dimensionResource(R.dimen.side_margin)))
 
         RadioGroup(
+            modifier = Modifier.fillMaxWidth(),
             selectedOption = selectedOption,
             onOptionSelected = onOptionSelected,
             options = options
@@ -72,10 +78,11 @@ fun CupcakeCustomizationStep(
         Row(
             modifier = Modifier.fillMaxWidth()
         ) {
-            Button(
-                shape = RoundedCornerShape(4.dp),
-                onClick = onCancel,
+            OutlinedButton(
                 modifier = Modifier.weight(0.8f),
+                shape = RoundedCornerShape(4.dp),
+                border = BorderStroke(1.dp, MaterialTheme.colorScheme.onSurface.copy(alpha = 0.12f)),
+                onClick = onCancel,
             ) {
                 Text(text = stringResource(R.string.cancel).uppercase())
             }
@@ -83,9 +90,9 @@ fun CupcakeCustomizationStep(
             Spacer(modifier = Modifier.width(16.dp))
 
             Button(
+                modifier = Modifier.weight(0.8f),
                 shape = RoundedCornerShape(4.dp),
                 onClick = onNext,
-                modifier = Modifier.weight(0.8f),
             ) {
                 Text(text = stringResource(R.string.next).uppercase())
             }

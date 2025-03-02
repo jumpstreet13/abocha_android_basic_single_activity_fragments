@@ -30,12 +30,13 @@ import com.example.cupcake.navigatoin.rememberCupcakeNavigation
 import com.example.cupcake.screens.FlavorScreen
 import com.example.cupcake.screens.PickupScreen
 import com.example.cupcake.screens.StartScreenHost
-import com.example.cupcake.screens.SummaryScreenContent
+import com.example.cupcake.screens.SummaryScreen
+import com.example.cupcake.usecase.sendOrderToAnotherApp
 
 /**
  * Activity for cupcake order flow.
  */
-class MainActivity : AppCompatActivity(R.layout.activity_main) {
+class MainActivity : AppCompatActivity() {
 
     private val viewModel by viewModels<OrderViewModel> {
         OrderViewModel.Factory()
@@ -81,7 +82,22 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
                             )
                         }
                         composable<Destination.Summary> {
-                            SummaryScreenContent()
+                            SummaryScreen(
+                                viewModel = viewModel,
+                                sendOrder = {
+                                    val orderSummary = getString(
+                                        R.string.order_details,
+                                        resources.getQuantityString(R.plurals.cupcakes, viewModel.quantity.value),
+                                        viewModel.flavor.value.toString(),
+                                        viewModel.date.value.toString(),
+                                        viewModel.price.value.toString()
+                                    )
+                                    sendOrderToAnotherApp(orderSummary)
+                                },
+                                cancel = {
+                                    navigation.backToStart()
+                                }
+                            )
                         }
                     }
             }

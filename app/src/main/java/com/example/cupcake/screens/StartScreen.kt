@@ -13,7 +13,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -29,8 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.cupcake.R
 import com.example.cupcake.model.OrderViewModel
-import com.example.cupcake.navigatoin.CupcakeNavigation
-import com.example.cupcake.navigatoin.Destination
+import com.example.cupcake.theme.CupcakeAppTheme
 
 @Composable
 fun StartScreenHost(
@@ -75,13 +73,14 @@ fun StartScreen(
             .fillMaxWidth()
             .wrapContentHeight()
             .verticalScroll(scrollState, enabled = true)
-            .padding(16.dp),
+            .padding(horizontal = dimensionResource(R.dimen.side_margin)),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(dimensionResource(R.dimen.side_margin)))
+        Spacer(modifier = Modifier.height(dimensionResource(R.dimen.margin_between_elements)))
 
         Image(
-            modifier = Modifier.size(300.dp),
+            modifier = Modifier.size(dimensionResource(R.dimen.image_size)),
             painter = painterResource(R.drawable.cupcake),
             contentDescription = null,
             contentScale = ContentScale.None
@@ -94,7 +93,8 @@ fun StartScreen(
             color = colorResource(com.google.android.material.R.color.material_on_background_emphasis_medium),
         )
 
-        Spacer(modifier = Modifier.height(24.dp))
+        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(dimensionResource(R.dimen.margin_between_elements)))
 
         Button(
             modifier = Modifier
@@ -111,7 +111,7 @@ fun StartScreen(
             )
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(dimensionResource(R.dimen.margin_between_elements)))
 
         Button(
             modifier = Modifier
@@ -128,7 +128,7 @@ fun StartScreen(
             )
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(dimensionResource(R.dimen.margin_between_elements)))
 
         Button(
             modifier = Modifier
@@ -144,13 +144,15 @@ fun StartScreen(
                 fontFamily = FontFamily.SansSerif,
             )
         }
+
+        Spacer(modifier = Modifier.height(dimensionResource(R.dimen.side_margin)))
     }
 }
 
 @Preview(showSystemUi = true, showBackground = true, device = "id:pixel")
 @Composable
 fun StartScreenPreview() {
-    MaterialTheme {
+    CupcakeAppTheme {
         StartScreen()
     }
 }
