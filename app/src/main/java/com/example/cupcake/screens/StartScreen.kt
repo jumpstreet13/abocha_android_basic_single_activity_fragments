@@ -28,28 +28,63 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.cupcake.R
+import com.example.cupcake.model.OrderViewModel
+import com.example.cupcake.navigatoin.CupcakeNavigation
+import com.example.cupcake.navigatoin.Destination
+
+@Composable
+fun StartScreenHost(
+    modifier: Modifier = Modifier,
+    viewModel: OrderViewModel,
+    navigateToFlavor: () -> Unit,
+) {
+    val defaultFlavor = stringResource(R.string.vanilla)
+    val orderCupcake = viewModel.buildOrderCupcakeAction(defaultFlavor, navigateToFlavor)
+
+    StartScreen(
+        modifier = modifier,
+        orderOneCupcake = { orderCupcake(1) },
+        orderSixCupcakes = { orderCupcake(6) },
+        orderTwelveCupcakes = { orderCupcake(12) }
+    )
+}
+
+private fun OrderViewModel.buildOrderCupcakeAction(
+    defaultFlavor: String,
+    navigateToFlavorScreen: () -> Unit
+) = fun(quantity: Int) {
+    setQuantity(quantity)
+
+    if (hasNoFlavorSet())
+        setFlavor(defaultFlavor)
+
+    navigateToFlavorScreen()
+}
 
 @Composable
 fun StartScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    orderOneCupcake: () -> Unit = {},
+    orderSixCupcakes: () -> Unit = {},
+    orderTwelveCupcakes: () -> Unit = {}
 ) {
     val scrollState = rememberScrollState()
 
     Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
             .fillMaxWidth()
             .wrapContentHeight()
             .verticalScroll(scrollState, enabled = true)
             .padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Spacer(modifier = Modifier.height(8.dp))
 
         Image(
+            modifier = Modifier.size(300.dp),
             painter = painterResource(R.drawable.cupcake),
             contentDescription = null,
-            contentScale = ContentScale.None,
-            modifier = Modifier.size(300.dp)
+            contentScale = ContentScale.None
         )
 
         Text(
@@ -62,12 +97,12 @@ fun StartScreen(
         Spacer(modifier = Modifier.height(24.dp))
 
         Button(
-            shape = RoundedCornerShape(4.dp),
-            onClick = { },
             modifier = Modifier
                 .defaultMinSize(
                     minWidth = dimensionResource(R.dimen.order_cupcake_button_width)
                 ),
+            shape = RoundedCornerShape(4.dp),
+            onClick = orderOneCupcake,
         ) {
             Text(
                 text = stringResource(R.string.one_cupcake).uppercase(),
@@ -79,12 +114,12 @@ fun StartScreen(
         Spacer(modifier = Modifier.height(16.dp))
 
         Button(
-            shape = RoundedCornerShape(4.dp),
-            onClick = { },
             modifier = Modifier
                 .defaultMinSize(
                     minWidth = dimensionResource(R.dimen.order_cupcake_button_width)
                 ),
+            shape = RoundedCornerShape(4.dp),
+            onClick = orderSixCupcakes,
         ) {
             Text(
                 text = stringResource(R.string.six_cupcakes).uppercase(),
@@ -96,12 +131,12 @@ fun StartScreen(
         Spacer(modifier = Modifier.height(16.dp))
 
         Button(
-            shape = RoundedCornerShape(4.dp),
-            onClick = { },
             modifier = Modifier
                 .defaultMinSize(
                     minWidth = dimensionResource(R.dimen.order_cupcake_button_width)
                 ),
+            shape = RoundedCornerShape(4.dp),
+            onClick = orderTwelveCupcakes,
         ) {
             Text(
                 text = stringResource(R.string.twelve_cupcakes).uppercase(),

@@ -20,17 +20,17 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.remember
-import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
 import androidx.navigation.createGraph
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.setupActionBarWithNavController
 import com.example.cupcake.model.OrderViewModel
-import com.example.cupcake.navigatoin.CupcakeNavController
+import com.example.cupcake.navigatoin.CupcakeNavigation
 import com.example.cupcake.navigatoin.Destination
-import com.example.cupcake.navigatoin.rememberCupcakeNavController
+import com.example.cupcake.navigatoin.rememberCupcakeNavigation
+import com.example.cupcake.screens.FlavorScreen
+import com.example.cupcake.screens.PickupScreen
+import com.example.cupcake.screens.StartScreenHost
+import com.example.cupcake.screens.SummaryScreenContent
 
 /**
  * Activity for cupcake order flow.
@@ -40,42 +40,62 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
     private val viewModel by viewModels<OrderViewModel> {
         OrderViewModel.Factory()
     }
-    private var _navController: CupcakeNavController? = null
+    private var _navigation: CupcakeNavigation? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            val navController = rememberCupcakeNavController()
-                .also {
-                    _navController = it
-                }
-            val navGraph = remember(navController) {
-                navController.controller.createGraph(Destination.Start) {
-                    composable<Destination.Start> {
-
+            val navigation = rememberCupcakeNavigation()
+                .also { _navigation = it }
+            val graph = remember(navigation, viewModel) {
+                navigation.controller
+                    .createGraph(Destination.Start) {
+                        composable<Destination.Start> {
+                            StartScreenHost(
+                                viewModel = viewModel,
+                                navigateToFlavor = {
+                                    navigation.toDestination(Destination.Flavor)
+                                }
+                            )
+                        }
+                        composable<Destination.Flavor> {
+                            FlavorScreen(
+                                viewModel = viewModel,
+                                navigateToPickup = {
+                                    navigation.toDestination(Destination.Pickup)
+                                },
+                                cancel = {
+                                    navigation.backToStart()
+                                }
+                            )
+                        }
+                        composable<Destination.Pickup> {
+                            PickupScreen(
+                                viewModel = viewModel,
+                                navigateToSummary = {
+                                    navigation.toDestination(Destination.Summary)
+                                },
+                                cancel = {
+                                    navigation.backToStart()
+                                }
+                            )
+                        }
+                        composable<Destination.Summary> {
+                            SummaryScreenContent()
+                        }
                     }
-                    composable<Destination.Flavor> {
-
-                    }
-                    composable<Destination.Pickup> {
-
-                    }
-                    composable<Destination.Summary> {
-
-                    }
-                }
             }
 
-            NavHost(navController.controller, navGraph)
+            NavHost(navigation.controller, graph)
         }
     }
 
     override fun onDestroy() {
-        _navController = null
+        _navigation = null
         super.onDestroy()
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        return _navController?.upPressed() == true
+        return _navigation?.upPressed() == true
     }
 }
