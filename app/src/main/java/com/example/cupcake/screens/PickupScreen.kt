@@ -27,7 +27,7 @@ fun PickupScreen(
 
     CupcakeCustomizationStep(
         modifier = modifier,
-        currentPrice = stringResource(R.string.subtotal_price, "\$${price}"),
+        currentPrice = stringResource(R.string.subtotal_price, price.value),
         selectedOption = selectedDate.value,
         onOptionSelected = { viewModel.setDate(it) },
         options = options,

@@ -25,7 +25,7 @@ fun RadioVariant(
     ) {
         RadioButton(
             selected = selected,
-            onClick = { }
+            onClick = onClick,
         )
         Text(
             text = label

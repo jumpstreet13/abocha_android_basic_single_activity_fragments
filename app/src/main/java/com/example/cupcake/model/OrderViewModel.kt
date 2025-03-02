@@ -52,7 +52,7 @@ class OrderViewModel : ViewModel() {
     val dateOptions: List<String> = getPickupOptions()
 
     // Pickup date
-    private val _date = MutableStateFlow("")
+    private val _date = MutableStateFlow(dateOptions[0])
     val date = _date.asStateFlow()
 
     // Price of the order so far
@@ -65,11 +65,6 @@ class OrderViewModel : ViewModel() {
         SharingStarted.Lazily,
         NumberFormat.getCurrencyInstance().format(0.0)
     )
-
-    init {
-        // Set initial values for the order
-        resetOrder()
-    }
 
     /**
      * Set the quantity of cupcakes for this order.

@@ -1,15 +1,15 @@
-package com.example.cupcake.navigatoin
+package com.example.cupcake.navigation
 
 import kotlinx.serialization.Serializable
 
 @Suppress("ConvertObjectToDataObject")
 sealed interface Destination {
     @Serializable
-    object Start : Destination
+    data object Start : Destination
     @Serializable
-    object Flavor : Destination
+    data object Flavor : Destination
     @Serializable
-    object Pickup : Destination
+    data object Pickup : Destination
     @Serializable
-    object Summary : Destination
+    data object Summary : Destination
 }

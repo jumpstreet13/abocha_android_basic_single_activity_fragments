@@ -26,7 +26,7 @@ fun FlavorScreen(
 
     CupcakeCustomizationStep(
         modifier = modifier,
-        currentPrice = stringResource(R.string.subtotal_price, "\$${price}"),
+        currentPrice = stringResource(R.string.subtotal_price, price.value),
         selectedOption = selectedFlavor.value,
         onOptionSelected = { viewModel.setFlavor(it) },
         options = listOf(

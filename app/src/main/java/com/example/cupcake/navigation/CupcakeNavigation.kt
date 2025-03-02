@@ -1,4 +1,4 @@
-package com.example.cupcake.navigatoin
+package com.example.cupcake.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
@@ -20,22 +20,13 @@ class CupcakeNavigation(
     fun upPressed() = controller.navigateUp()
 
     fun toDestination(destination: Destination) {
-        val route = destination
-        if (route.toString() != controller.currentDestination?.route) {
-            controller.navigate(route) {
-                launchSingleTop = true
-                restoreState = true
-            }
+        controller.navigate(destination) {
+            launchSingleTop = true
+            restoreState = true
         }
     }
 
     fun backToStart() {
-        controller.navigate(Destination.Start) {
-            launchSingleTop = true
-            restoreState = true
-            popUpTo(Destination.Start) {
-                inclusive = true
-            }
-        }
+        controller.popBackStack(Destination.Start, false)
     }
 }

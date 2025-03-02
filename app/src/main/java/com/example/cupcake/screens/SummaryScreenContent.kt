@@ -45,7 +45,7 @@ fun SummaryScreen(
 
     SummaryScreenContent(
         modifier = modifier,
-        quantity = pluralStringResource(R.plurals.cupcakes, quantity.value),
+        quantity = pluralStringResource(R.plurals.cupcakes, quantity.value, quantity.value),
         flavor = flavor.value,
         pickupDate = pickupDate.value,
         price = stringResource(R.string.total_price, price.value).uppercase(),
@@ -170,7 +170,7 @@ fun SummaryScreenContent(
 fun SummaryScreenPreview() {
     CupcakeAppTheme {
         SummaryScreenContent(
-            quantity = "2 cupcakes",
+            quantity = pluralStringResource(R.plurals.cupcakes, 6, 6),
             flavor = "Vanilla",
             pickupDate = "Sunday",
             price = stringResource(R.string.total_price, "$10").uppercase(),

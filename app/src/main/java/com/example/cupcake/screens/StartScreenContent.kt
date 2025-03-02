@@ -31,7 +31,7 @@ import com.example.cupcake.model.OrderViewModel
 import com.example.cupcake.theme.CupcakeAppTheme
 
 @Composable
-fun StartScreenHost(
+fun StartScreen(
     modifier: Modifier = Modifier,
     viewModel: OrderViewModel,
     navigateToFlavor: () -> Unit,
@@ -39,7 +39,7 @@ fun StartScreenHost(
     val defaultFlavor = stringResource(R.string.vanilla)
     val orderCupcake = viewModel.buildOrderCupcakeAction(defaultFlavor, navigateToFlavor)
 
-    StartScreen(
+    StartScreenContent(
         modifier = modifier,
         orderOneCupcake = { orderCupcake(1) },
         orderSixCupcakes = { orderCupcake(6) },
@@ -60,7 +60,7 @@ private fun OrderViewModel.buildOrderCupcakeAction(
 }
 
 @Composable
-fun StartScreen(
+fun StartScreenContent(
     modifier: Modifier = Modifier,
     orderOneCupcake: () -> Unit = {},
     orderSixCupcakes: () -> Unit = {},
@@ -153,6 +153,6 @@ fun StartScreen(
 @Composable
 fun StartScreenPreview() {
     CupcakeAppTheme {
-        StartScreen()
+        StartScreenContent()
     }
 }
