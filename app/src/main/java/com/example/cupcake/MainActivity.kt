@@ -16,33 +16,66 @@
 package com.example.cupcake
 
 import android.os.Bundle
+import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.runtime.remember
 import androidx.navigation.NavController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import androidx.navigation.createGraph
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupActionBarWithNavController
+import com.example.cupcake.model.OrderViewModel
+import com.example.cupcake.navigatoin.CupcakeNavController
+import com.example.cupcake.navigatoin.Destination
+import com.example.cupcake.navigatoin.rememberCupcakeNavController
 
 /**
  * Activity for cupcake order flow.
  */
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
-    private lateinit var navController: NavController
+    private val viewModel by viewModels<OrderViewModel> {
+        OrderViewModel.Factory()
+    }
+    private var _navController: CupcakeNavController? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContent {
+            val navController = rememberCupcakeNavController()
+                .also {
+                    _navController = it
+                }
+            val navGraph = remember(navController) {
+                navController.controller.createGraph(Destination.Start) {
+                    composable<Destination.Start> {
 
-        // Retrieve NavController from the NavHostFragment
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-        navController = navHostFragment.navController
+                    }
+                    composable<Destination.Flavor> {
 
-        // Set up the action bar for use with the NavController
-        setupActionBarWithNavController(navController)
+                    }
+                    composable<Destination.Pickup> {
+
+                    }
+                    composable<Destination.Summary> {
+
+                    }
+                }
+            }
+
+            NavHost(navController.controller, navGraph)
+        }
     }
 
-    /**
-     * Handle navigation when the user chooses Up from the action bar.
-     */
+    override fun onDestroy() {
+        _navController = null
+        super.onDestroy()
+    }
+
     override fun onSupportNavigateUp(): Boolean {
-        return navController.navigateUp() || super.onSupportNavigateUp()
+        return _navController?.upPressed() == true
     }
 }
