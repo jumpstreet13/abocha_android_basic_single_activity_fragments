@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -71,3 +73,24 @@ dependencies {
 
     implementation(libs.coil.kt.compose)
 }
+
+allprojects {
+    tasks.withType<KotlinCompilationTask<*>>().configureEach {
+        compilerOptions {
+            allWarningsAsErrors = false
+
+            freeCompilerArgs.addAll(
+                "-P",
+                "plugin:androidx.compose.compiler.plugins.kotlin:reportsDestination=" +
+                        layout.buildDirectory.asFile.get().absolutePath + "/compose_metrics",
+            )
+
+            freeCompilerArgs.addAll(
+                "-P",
+                "plugin:androidx.compose.compiler.plugins.kotlin:metricsDestination=" +
+                        layout.buildDirectory.asFile.get().absolutePath + "/compose_metrics",
+            )
+        }
+    }
+}
+
