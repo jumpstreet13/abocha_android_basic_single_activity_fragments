@@ -1,0 +1,103 @@
+fun rememberCupcakeNavigation(
+  unstable navController: NavHostController? = @dynamic rememberNavController(
+  $composer   =   $composer  , 
+  $changed   =   0
+)
+): CupcakeNavigation
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun FlavorScreen(
+  stable modifier: Modifier? = @static Companion
+  unstable viewModel: OrderViewModel
+  stable navigateToPickup: Function0<Unit>
+  stable cancel: Function0<Unit>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun FlavorScreenPreview()
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun PickupScreen(
+  stable modifier: Modifier? = @static Companion
+  unstable viewModel: OrderViewModel
+  stable navigateToSummary: Function0<Unit>
+  stable cancel: Function0<Unit>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun PickupScreenPreview()
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun StartScreen(
+  stable modifier: Modifier? = @static Companion
+  unstable viewModel: OrderViewModel
+  stable navigateToFlavor: Function0<Unit>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun StartScreenContent(
+  stable modifier: Modifier? = @static Companion
+  stable orderOneCupcake: Function0<Unit>? = @static $composer.startReplaceGroup(1532138365)
+sourceInformation($composer, "CC(remember):StartScreenContent.kt#9igjgp")
+val tmp0_group = $composer.cache(false) {
+  {
+
+  }
+
+}
+
+$composer.endReplaceGroup()
+tmp0_group@com.example.cupcake.screens.StartScreenContent
+  stable orderSixCupcakes: Function0<Unit>? = @static $composer.startReplaceGroup(1532139613)
+sourceInformation($composer, "CC(remember):StartScreenContent.kt#9igjgp")
+val tmp1_group = $composer.cache(false) {
+  {
+
+  }
+
+}
+
+$composer.endReplaceGroup()
+tmp1_group@com.example.cupcake.screens.StartScreenContent
+  stable orderTwelveCupcakes: Function0<Unit>? = @static $composer.startReplaceGroup(1532140957)
+sourceInformation($composer, "CC(remember):StartScreenContent.kt#9igjgp")
+val tmp2_group = $composer.cache(false) {
+  {
+
+  }
+
+}
+
+$composer.endReplaceGroup()
+tmp2_group@com.example.cupcake.screens.StartScreenContent
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun StartScreenPreview()
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun SummaryScreen(
+  stable modifier: Modifier? = @static Companion
+  unstable viewModel: OrderViewModel
+  stable sendOrder: Function0<Unit>
+  stable cancel: Function0<Unit>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun SummaryScreenContent(
+  stable modifier: Modifier? = @static Companion
+  stable quantity: String
+  stable flavor: String
+  stable pickupDate: String
+  stable price: String
+  stable sendOrder: Function0<Unit>
+  stable cancel: Function0<Unit>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun SummaryScreenPreview()
+restartable skippable scheme("[0, [0]]") fun CupcakeAppTheme(
+  stable darkTheme: Boolean = @dynamic isSystemInDarkTheme($composer, 0)
+  stable content: Function2<Composer, Int, Unit>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun CupcakeCustomizationStep(
+  stable modifier: Modifier? = @static Companion
+  stable currentPrice: String
+  stable selectedOption: String
+  stable onOptionSelected: Function1<String, Unit>
+  unstable options: List<String>
+  stable onNext: Function0<Unit>
+  stable onCancel: Function0<Unit>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun RadioGroup(
+  stable modifier: Modifier? = @static Companion
+  unstable options: List<String>
+  stable selectedOption: String
+  stable onOptionSelected: Function1<String, Unit>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun RadioVariant(
+  stable modifier: Modifier? = @static Companion
+  stable label: String
+  stable selected: Boolean
+  stable onClick: Function0<Unit>
+)

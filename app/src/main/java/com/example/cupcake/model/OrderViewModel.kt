@@ -15,10 +15,14 @@
  */
 package com.example.cupcake.model
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -37,31 +41,30 @@ private const val PRICE_FOR_SAME_DAY_PICKUP = 3.00
 class OrderViewModel : ViewModel() {
 
     // Quantity of cupcakes in this order
-    private val _quantity = MutableLiveData<Int>()
-    val quantity: LiveData<Int> = _quantity
+    private val _quantity = MutableStateFlow<Int>(0)
+    val quantity = _quantity.asStateFlow()
 
     // Cupcake flavor for this order
-    private val _flavor = MutableLiveData<String>()
-    val flavor: LiveData<String> = _flavor
+    private val _flavor = MutableStateFlow("")
+    val flavor = _flavor.asStateFlow()
 
     // Possible date options
     val dateOptions: List<String> = getPickupOptions()
 
     // Pickup date
-    private val _date = MutableLiveData<String>()
-    val date: LiveData<String> = _date
+    private val _date = MutableStateFlow(dateOptions[0])
+    val date = _date.asStateFlow()
 
     // Price of the order so far
-    private val _price = MutableLiveData<Double>()
-    val price: LiveData<String> = Transformations.map(_price) {
+    private val _price = MutableStateFlow<Double>(0.0)
+    val price = _price.map {
         // Format the price into the local currency and return this as LiveData<String>
         NumberFormat.getCurrencyInstance().format(it)
-    }
-
-    init {
-        // Set initial values for the order
-        resetOrder()
-    }
+    }.stateIn(
+        viewModelScope,
+        SharingStarted.Lazily,
+        NumberFormat.getCurrencyInstance().format(0.0)
+    )
 
     /**
      * Set the quantity of cupcakes for this order.
@@ -96,7 +99,7 @@ class OrderViewModel : ViewModel() {
      * Returns true if a flavor has not been selected for the order yet. Returns false otherwise.
      */
     fun hasNoFlavorSet(): Boolean {
-        return _flavor.value.isNullOrEmpty()
+        return _flavor.value.isEmpty()
     }
 
     /**
@@ -113,7 +116,7 @@ class OrderViewModel : ViewModel() {
      * Updates the price based on the order details.
      */
     private fun updatePrice() {
-        var calculatedPrice = (quantity.value ?: 0) * PRICE_PER_CUPCAKE
+        var calculatedPrice = quantity.value * PRICE_PER_CUPCAKE
         // If the user selected the first option (today) for pickup, add the surcharge
         if (dateOptions[0] == _date.value) {
             calculatedPrice += PRICE_FOR_SAME_DAY_PICKUP
@@ -133,5 +136,14 @@ class OrderViewModel : ViewModel() {
             calendar.add(Calendar.DATE, 1)
         }
         return options
+    }
+
+    companion object {
+        @Suppress("UNCHECKED_CAST")
+        fun Factory() = object : ViewModelProvider.Factory {
+            override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                return OrderViewModel() as T
+            }
+        }
     }
 }

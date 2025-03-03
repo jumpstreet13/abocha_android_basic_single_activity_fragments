@@ -1,0 +1,36 @@
+unstable class MainActivity {
+  unstable val viewModel$delegate: Lazy<OrderViewModel>
+  stable var _navigation: CupcakeNavigation?
+  <runtime stability> = Unstable
+}
+unstable class OrderViewModel {
+  unstable val _quantity: MutableStateFlow<Int>
+  unstable val quantity: StateFlow<Int>
+  unstable val _flavor: MutableStateFlow<String>
+  unstable val flavor: StateFlow<String>
+  unstable val dateOptions: List<String>
+  unstable val _date: MutableStateFlow<String>
+  unstable val date: StateFlow<String>
+  unstable val _price: MutableStateFlow<Double>
+  unstable val price: StateFlow<@[FlexibleNullability] String?>
+  <runtime stability> = Unstable
+}
+stable class CupcakeNavigation {
+  unstable val controller: NavHostController
+}
+unstable class Start {
+  unstable val $cachedSerializer$delegate: Lazy<KSerializer<Any>>
+  <runtime stability> = Unstable
+}
+unstable class Flavor {
+  unstable val $cachedSerializer$delegate: Lazy<KSerializer<Any>>
+  <runtime stability> = Unstable
+}
+unstable class Pickup {
+  unstable val $cachedSerializer$delegate: Lazy<KSerializer<Any>>
+  <runtime stability> = Unstable
+}
+unstable class Summary {
+  unstable val $cachedSerializer$delegate: Lazy<KSerializer<Any>>
+  <runtime stability> = Unstable
+}

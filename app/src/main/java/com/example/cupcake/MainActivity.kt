@@ -16,33 +16,203 @@
 package com.example.cupcake
 
 import android.os.Bundle
+import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.NavController
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.compose.animation.AnimatedContentTransitionScope.SlideDirection
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.Surface
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.createGraph
+import com.example.cupcake.model.OrderViewModel
+import com.example.cupcake.navigation.CupcakeNavigation
+import com.example.cupcake.navigation.Destination
+import com.example.cupcake.navigation.rememberCupcakeNavigation
+import com.example.cupcake.screens.FlavorScreen
+import com.example.cupcake.screens.PickupScreen
+import com.example.cupcake.screens.StartScreen
+import com.example.cupcake.screens.SummaryScreen
+import com.example.cupcake.theme.CupcakeAppTheme
+import com.example.cupcake.usecase.sendOrderToAnotherApp
 
 /**
  * Activity for cupcake order flow.
  */
-class MainActivity : AppCompatActivity(R.layout.activity_main) {
+class MainActivity : AppCompatActivity() {
 
-    private lateinit var navController: NavController
+    private val viewModel by viewModels<OrderViewModel> {
+        OrderViewModel.Factory()
+    }
+    private var _navigation: CupcakeNavigation? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContent {
+            CupcakeAppTheme {
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                ) {
+                    val navigation = rememberCupcakeNavigation()
+                        .also { _navigation = it }
+                    val graph = remember(navigation, viewModel) {
+                        navigation.controller
+                            .createGraph(Destination.Start) {
+                                composable<Destination.Start>(
+                                    enterTransition = {
+                                        slideIntoContainer(
+                                            SlideDirection.End,
+                                            tween(300, 0, LinearEasing)
+                                        )
+                                    },
+                                    exitTransition = {
+                                        slideOutOfContainer(
+                                            SlideDirection.Start,
+                                            tween(300, 0, LinearEasing)
+                                        )
+                                    }
+                                ) {
+                                    StartScreen(
+                                        viewModel = viewModel,
+                                        navigateToFlavor = {
+                                            navigation.toDestination(Destination.Flavor)
+                                        }
+                                    )
+                                }
+                                composable<Destination.Flavor>(
+                                    enterTransition = {
+                                        slideIntoContainer(
+                                            SlideDirection.Start,
+                                            tween(300, 0, LinearEasing)
+                                        )
+                                    },
+                                    exitTransition = {
+                                        slideOutOfContainer(
+                                            SlideDirection.Start,
+                                            tween(300, 0, LinearEasing)
+                                        )
+                                    },
+                                    popEnterTransition = {
+                                        slideIntoContainer(
+                                            SlideDirection.End,
+                                            tween(300, 0, LinearEasing)
+                                        )
+                                    },
+                                    popExitTransition = {
+                                        slideOutOfContainer(
+                                            SlideDirection.End,
+                                            tween(300, 0, LinearEasing)
+                                        )
+                                    }
+                                ) {
+                                    FlavorScreen(
+                                        viewModel = viewModel,
+                                        navigateToPickup = {
+                                            navigation.toDestination(Destination.Pickup)
+                                        },
+                                        cancel = {
+                                            navigation.backToStart()
+                                        }
+                                    )
+                                }
+                                composable<Destination.Pickup>(
+                                    enterTransition = {
+                                        slideIntoContainer(
+                                            SlideDirection.Start,
+                                            tween(300, 0, LinearEasing)
+                                        )
+                                    },
+                                    exitTransition = {
+                                        slideOutOfContainer(
+                                            SlideDirection.Start,
+                                            tween(300, 0, LinearEasing)
+                                        )
+                                    },
+                                    popEnterTransition = {
+                                        slideIntoContainer(
+                                            SlideDirection.End,
+                                            tween(300, 0, LinearEasing)
+                                        )
+                                    },
+                                    popExitTransition = {
+                                        slideOutOfContainer(
+                                            SlideDirection.End,
+                                            tween(300, 0, LinearEasing)
+                                        )
+                                    }
+                                ) {
+                                    PickupScreen(
+                                        viewModel = viewModel,
+                                        navigateToSummary = {
+                                            navigation.toDestination(Destination.Summary)
+                                        },
+                                        cancel = {
+                                            navigation.backToStart()
+                                        }
+                                    )
+                                }
+                                composable<Destination.Summary>(
+                                    enterTransition = {
+                                        slideIntoContainer(
+                                            SlideDirection.Start,
+                                            tween(300, 0, LinearEasing)
+                                        )
+                                    },
+                                    exitTransition = {
+                                        slideOutOfContainer(
+                                            SlideDirection.Start,
+                                            tween(300, 0, LinearEasing)
+                                        )
+                                    },
+                                    popEnterTransition = {
+                                        slideIntoContainer(
+                                            SlideDirection.End,
+                                            tween(300, 0, LinearEasing)
+                                        )
+                                    },
+                                    popExitTransition = {
+                                        slideOutOfContainer(
+                                            SlideDirection.End,
+                                            tween(300, 0, LinearEasing)
+                                        )
+                                    }
+                                ) {
+                                    SummaryScreen(
+                                        viewModel = viewModel,
+                                        sendOrder = {
+                                            val orderSummary = getString(
+                                                R.string.order_details,
+                                                resources.getQuantityString(R.plurals.cupcakes, viewModel.quantity.value),
+                                                viewModel.flavor.value.toString(),
+                                                viewModel.date.value.toString(),
+                                                viewModel.price.value.toString()
+                                            )
+                                            sendOrderToAnotherApp(orderSummary)
+                                        },
+                                        cancel = {
+                                            navigation.backToStart()
+                                        }
+                                    )
+                                }
+                            }
+                    }
 
-        // Retrieve NavController from the NavHostFragment
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-        navController = navHostFragment.navController
-
-        // Set up the action bar for use with the NavController
-        setupActionBarWithNavController(navController)
+                    NavHost(navigation.controller, graph)
+                }
+            }
+        }
     }
 
-    /**
-     * Handle navigation when the user chooses Up from the action bar.
-     */
+    override fun onDestroy() {
+        _navigation = null
+        super.onDestroy()
+    }
+
     override fun onSupportNavigateUp(): Boolean {
-        return navController.navigateUp() || super.onSupportNavigateUp()
+        return _navigation?.upPressed() == true
     }
 }
