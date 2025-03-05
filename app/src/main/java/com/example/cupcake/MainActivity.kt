@@ -15,11 +15,13 @@
  */
 package com.example.cupcake
 
+import android.content.Intent
 import android.os.Bundle
+import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.setupActionBarWithNavController
+import com.example.cupcake.navigation.NavGraph
+import com.example.cupcake.theme.ComposeSampleAppTheme
 
 /**
  * Activity for cupcake order flow.
@@ -32,11 +34,29 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         super.onCreate(savedInstanceState)
 
         // Retrieve NavController from the NavHostFragment
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-        navController = navHostFragment.navController
+//        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+//        navController = navHostFragment.navController
 
         // Set up the action bar for use with the NavController
-        setupActionBarWithNavController(navController)
+//        setupActionBarWithNavController(navController)
+        supportActionBar?.hide()
+        setContent {
+            ComposeSampleAppTheme {
+                NavGraph(
+                    sendOtherApp = {
+                        val intent = Intent(Intent.ACTION_SEND)
+                            .setType("text/plain")
+                            .putExtra(Intent.EXTRA_SUBJECT, getString(R.string.new_cupcake_order))
+                            .putExtra(Intent.EXTRA_TEXT, it)
+
+                        if (this.packageManager?.resolveActivity(intent, 0) != null) {
+                            startActivity(intent)
+                        }
+                    }
+                )
+            }
+        }
+
     }
 
     /**

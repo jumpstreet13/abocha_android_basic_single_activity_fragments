@@ -13,8 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example.cupcake
+package com.example.cupcake.presentation.summary
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -22,18 +23,20 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import com.example.cupcake.databinding.FragmentPickupBinding
+import com.example.cupcake.R
+import com.example.cupcake.databinding.FragmentSummaryBinding
 import com.example.cupcake.model.OrderViewModel
 
 /**
- * [PickupFragment] allows the user to choose a pickup date for the cupcake order.
+ * [SummaryFragment] contains a summary of the order details with a button to share the order
+ * via another app.
  */
-class PickupFragment : Fragment() {
+class SummaryFragment : Fragment() {
 
-    // Binding object instance corresponding to the fragment_pickup.xml layout
+    // Binding object instance corresponding to the fragment_summary.xml layout
     // This property is non-null between the onCreateView() and onDestroyView() lifecycle callbacks,
     // when the view hierarchy is attached to the fragment.
-    private var binding: FragmentPickupBinding? = null
+    private var binding: FragmentSummaryBinding? = null
 
     // Use the 'by activityViewModels()' Kotlin property delegate from the fragment-ktx artifact
     private val sharedViewModel: OrderViewModel by activityViewModels()
@@ -42,7 +45,7 @@ class PickupFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val fragmentBinding = FragmentPickupBinding.inflate(inflater, container, false)
+        val fragmentBinding = FragmentSummaryBinding.inflate(inflater, container, false)
         binding = fragmentBinding
         return fragmentBinding.root
     }
@@ -53,15 +56,36 @@ class PickupFragment : Fragment() {
         binding?.apply {
             lifecycleOwner = viewLifecycleOwner
             viewModel = sharedViewModel
-            pickupFragment = this@PickupFragment
+            summaryFragment = this@SummaryFragment
         }
     }
 
     /**
-     * Navigate to the next screen to see the order summary.
+     * Submit the order by sharing out the order details to another app via an implicit intent.
      */
-    fun goToNextScreen() {
-        findNavController().navigate(R.id.action_pickupFragment_to_summaryFragment)
+    fun sendOrder() {
+        // Construct the order summary text with information from the view model
+        val numberOfCupcakes = sharedViewModel.quantity.value ?: 0
+        val orderSummary = getString(
+            R.string.order_details,
+            resources.getQuantityString(R.plurals.cupcakes, numberOfCupcakes, numberOfCupcakes),
+            sharedViewModel.flavor.value.toString(),
+            sharedViewModel.date.value.toString(),
+            sharedViewModel.price.value.toString()
+        )
+
+        // Create an ACTION_SEND implicit intent with order details in the intent extras
+        val intent = Intent(Intent.ACTION_SEND)
+            .setType("text/plain")
+            .putExtra(Intent.EXTRA_SUBJECT, getString(R.string.new_cupcake_order))
+            .putExtra(Intent.EXTRA_TEXT, orderSummary)
+
+        // Check if there's an app that can handle this intent before launching it
+        if (activity?.packageManager?.resolveActivity(intent, 0) != null) {
+            // Start a new activity with the given intent (this may open the share dialog on a
+            // device if multiple apps can handle this intent)
+            startActivity(intent)
+        }
     }
 
     /**
@@ -72,7 +96,7 @@ class PickupFragment : Fragment() {
         sharedViewModel.resetOrder()
 
         // Navigate back to the [StartFragment] to start over
-        findNavController().navigate(R.id.action_pickupFragment_to_startFragment)
+        findNavController().navigate(R.id.action_summaryFragment_to_startFragment)
     }
 
     /**

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example.cupcake
+package com.example.cupcake.presentation.start
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -22,6 +22,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import com.example.cupcake.R
 import com.example.cupcake.databinding.FragmentStartBinding
 import com.example.cupcake.model.OrderViewModel
 
