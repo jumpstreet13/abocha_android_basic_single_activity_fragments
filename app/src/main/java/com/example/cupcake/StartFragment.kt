@@ -76,4 +76,5 @@ class StartFragment : Fragment() {
         super.onDestroyView()
         binding = null
     }
+
 }
