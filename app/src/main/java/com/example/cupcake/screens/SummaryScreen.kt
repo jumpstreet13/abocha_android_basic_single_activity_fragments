@@ -50,26 +50,23 @@ fun SummaryScreen(
     ) {
 
         SummaryItem(
-            modifier = modifier,
             title = stringResource(R.string.quantity),
             subtitle = pluralStringResource(R.plurals.cupcakes, quantity, quantity)
         )
 
         SummaryItem(
-            modifier = modifier,
             title = stringResource(R.string.flavor),
             subtitle = flavor
         )
 
         SummaryItem(
-            modifier = modifier,
             title = stringResource(R.string.pickup_date),
             subtitle = pickupDate
         )
 
         Text(
             text = stringResource(R.string.total_price, price).uppercase(),
-            modifier = modifier
+            modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = dimensionResource(R.dimen.side_margin)),
             color = LocalColors.current.colorText,
@@ -78,7 +75,6 @@ fun SummaryScreen(
         )
 
         SummaryBottomButtons(
-            modifier = modifier,
             onSendClick = onSendClick,
             onCancelClick = onCancelClick
         )
@@ -87,31 +83,28 @@ fun SummaryScreen(
 
 @Composable
 fun SummaryItem(
-    modifier: Modifier,
     title: String,
     subtitle: String
 ) {
 
     Column(
-        modifier = modifier,
         horizontalAlignment = Alignment.Start
     ) {
 
         Text(
-            modifier = modifier,
             text = title.uppercase(),
             style = LocalTypography.current.textAppearanceSubtitle1
         )
 
         Text(
-            modifier = modifier
+            modifier = Modifier
                 .padding(top = dimensionResource(R.dimen.order_summary_margin)),
             text = subtitle,
             style = LocalTypography.current.textAppearanceBold18
         )
 
         HorizontalDivider(
-            modifier = modifier
+            modifier = Modifier
                 .padding(
                     top = dimensionResource(R.dimen.side_margin),
                     bottom = dimensionResource(R.dimen.side_margin)
@@ -123,19 +116,18 @@ fun SummaryItem(
 
 @Composable
 fun SummaryBottomButtons(
-    modifier: Modifier = Modifier,
     onSendClick: () -> Unit,
     onCancelClick: () -> Unit
 ) {
     Column(
-        modifier = modifier
+        modifier = Modifier
             .padding(top = dimensionResource(R.dimen.side_margin))
             .fillMaxWidth(),
     ) {
 
         OutlinedButton(
             onClick = onSendClick,
-            modifier = modifier
+            modifier = Modifier
                 .fillMaxWidth(),
             shape = RoundedCornerShape(4.dp),
             colors = ButtonColors(
@@ -154,7 +146,7 @@ fun SummaryBottomButtons(
 
         Button(
             onClick = onCancelClick,
-            modifier = modifier
+            modifier = Modifier
                 .fillMaxWidth(),
             shape = RoundedCornerShape(4.dp),
             colors = ButtonColors(

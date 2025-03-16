@@ -44,24 +44,20 @@ fun StartScreen(
 
     ) {
 
-        TitleImage(modifier)
-
-        TitleText(modifier)
+        TitleImage()
+        TitleText()
 
         OrderCakesButton(
-            modifier,
             { onOrderCakesClick.invoke(1) },
             stringResource(R.string.one_cupcake)
         )
 
         OrderCakesButton(
-            modifier,
             { onOrderCakesClick.invoke(6) },
             stringResource(R.string.six_cupcakes)
         )
 
         OrderCakesButton(
-            modifier,
             { onOrderCakesClick.invoke(12) },
             stringResource(R.string.twelve_cupcakes)
         )
@@ -70,22 +66,22 @@ fun StartScreen(
 
 
 @Composable
-fun TitleImage(modifier: Modifier) {
+fun TitleImage() {
 
     Image(
         painter = painterResource(R.drawable.cupcake),
         contentDescription = "cace",
-        modifier = modifier
+        modifier = Modifier
             .size(300.dp, 300.dp)
             .padding(50.dp)
     )
 }
 
 @Composable
-fun TitleText(modifier: Modifier) {
+fun TitleText() {
     Text(
         text = stringResource(R.string.order_cupcakes),
-        modifier
+        Modifier
             .fillMaxWidth()
             .padding(bottom = dimensionResource(R.dimen.side_margin)),
         color = colorResource(R.color.material_on_background_emphasis_medium),
@@ -96,14 +92,13 @@ fun TitleText(modifier: Modifier) {
 
 @Composable
 fun OrderCakesButton(
-    modifier: Modifier,
     onClick: () -> Unit,
     buttonText: String
 ) {
 
     Button(
         onClick = onClick,
-        modifier = modifier
+        modifier = Modifier
             .defaultMinSize(dimensionResource(R.dimen.order_cupcake_button_width))
             .padding(dimensionResource(R.dimen.margin_between_elements)),
         shape = RoundedCornerShape(4.dp),
@@ -114,10 +109,6 @@ fun OrderCakesButton(
             disabledContentColor = LocalColors.current.colorOnSecondary
         )
     ) {
-        Text(
-            buttonText.uppercase(),
-            modifier
-        )
+        Text(buttonText.uppercase())
     }
-
 }

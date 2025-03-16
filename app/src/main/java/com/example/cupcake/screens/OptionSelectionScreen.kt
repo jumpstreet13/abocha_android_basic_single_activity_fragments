@@ -17,7 +17,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -79,7 +78,6 @@ fun OptionSelectionScreen(
 
                 Text(
                     text = flavor,
-                    modifier = modifier,
                     color = LocalColors.current.colorText
                 )
 
@@ -87,14 +85,14 @@ fun OptionSelectionScreen(
         }
 
         HorizontalDivider(
-            modifier = modifier
+            modifier = Modifier
                 .padding(top = dimensionResource(R.dimen.side_margin)),
             thickness = 1.dp
         )
 
         Text(
             text = stringResource(R.string.subtotal_price, currentPrice.value ?: ""),
-            modifier = modifier
+            modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = dimensionResource(R.dimen.side_margin)),
             color = LocalColors.current.colorText,
@@ -103,7 +101,6 @@ fun OptionSelectionScreen(
         )
 
         OptionSelectionBottomButtons(
-            modifier = modifier,
             onCancelClick = onCancelClick,
             onNextClick = onNextClick
         )
@@ -112,19 +109,18 @@ fun OptionSelectionScreen(
 
 @Composable
 fun OptionSelectionBottomButtons(
-    modifier: Modifier = Modifier,
     onCancelClick: () -> Unit = {},
     onNextClick: () -> Unit = {}
 ) {
     Row(
-        modifier = modifier
+        modifier = Modifier
             .padding(top = dimensionResource(R.dimen.side_margin)),
         verticalAlignment = Alignment.CenterVertically
     ) {
 
         OutlinedButton(
             onClick = onCancelClick,
-            modifier = modifier
+            modifier = Modifier
                 .weight(1F)
                 .padding(end = dimensionResource(R.dimen.margin_between_elements)),
             shape = RoundedCornerShape(4.dp),
@@ -144,7 +140,7 @@ fun OptionSelectionBottomButtons(
 
         Button(
             onClick = onNextClick,
-            modifier = modifier
+            modifier = Modifier
                 .weight(1F)
                 .padding(start = dimensionResource(R.dimen.margin_between_elements)),
             shape = RoundedCornerShape(4.dp),
@@ -160,6 +156,5 @@ fun OptionSelectionBottomButtons(
                 text = stringResource(R.string.next).uppercase()
             )
         }
-
     }
 }
