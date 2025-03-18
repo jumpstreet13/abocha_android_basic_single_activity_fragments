@@ -15,11 +15,15 @@
  */
 package com.example.cupcake
 
+import android.content.Intent
 import android.os.Bundle
+import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.setupActionBarWithNavController
+import com.example.cupcake.model.OrderViewModel
+import com.example.cupcake.navigation.CupcakeApp
+import com.example.cupcake.screen.OrderButton
 
 /**
  * Activity for cupcake order flow.
@@ -27,16 +31,41 @@ import androidx.navigation.ui.setupActionBarWithNavController
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
     private lateinit var navController: NavController
+    val viewModel = OrderViewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         // Retrieve NavController from the NavHostFragment
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
+        supportActionBar?.hide()
+        setContent {
+            CupcakeApp(
+                viewModel = viewModel,
+                sendToAnotherApp = { sendToAnotherApp() }
+            )
+        }
+    }
 
-        // Set up the action bar for use with the NavController
-        setupActionBarWithNavController(navController)
+    private fun sendToAnotherApp() {
+        val numberOfCupcakes = viewModel.quantity.value ?: 0
+        val orderSummary = getString(
+            R.string.order_details,
+            resources.getQuantityString(R.plurals.cupcakes, numberOfCupcakes, numberOfCupcakes),
+            viewModel.flavor.value.toString(),
+            viewModel.date.value.toString(),
+            viewModel.price.value.toString()
+        )
+        val intent = Intent(Intent.ACTION_SEND)
+            .setType("text/plain")
+            .putExtra(Intent.EXTRA_SUBJECT, getString(R.string.new_cupcake_order))
+            .putExtra(Intent.EXTRA_TEXT, orderSummary)
+
+        if (this.packageManager?.resolveActivity(intent, 0) != null) {
+            startActivity(intent)
+        }
     }
 
     /**
